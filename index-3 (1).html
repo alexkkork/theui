@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oblivion UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/editor/editor.main.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "SF Pro Text", "Helvetica Neue", sans-serif;
+            color: var(--interactive-text-icon-color, #DCDDDE);
+            background-color: var(--page-bg-color, #0D0D0D);
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        :root, body[data-theme="oblivion-dark"] {
+            --page-bg-color: #0D0D0D;
+            --main-ui-bg: #151515;
+            --button-bg-color: #1B1B1B;
+            --button-hover-bg-color: #2C2C2C;
+            --button-active-bg-color: #252525;
+            --interactive-text-icon-color: #DCDDDE;
+            --settings-text-secondary: #A0A0A0;
+            --global-stroke-color: #1F1F1F;
+            --editor-wrapper-stroke-color: #1A1A1A;
+            --input-bg-color: #2A2A2A;
+            --input-border-color: #3A3A3A;
+            --input-focus-border-color: var(--oblivion-grad-mid);
+            --tab-active-bg: #252525;
+            --tab-hover-bg: #222222;
+            --console-bg: #1C1C1C;
+            --console-text-color: #B0B0B0;
+            --scrollbar-thumb-bg: #2a2a2a;
+            --scrollbar-thumb-hover-bg: #3c3c3c;
+            --notification-bg: #48BB78;
+            --notification-text-color: #FFFFFF;
+            --oblivion-grad-start: #6EE7B7;
+            --oblivion-grad-mid: #7DD3FC;
+            --oblivion-grad-end: #93C5FD;
+            --auth-accent-color: #48BB78;
+            --auth-accent-hover-color: #3da068;
+            --auth-error-color: #F56565;
+            --toggle-bg-off: #3A3A3C;
+            --toggle-bg-on: var(--oblivion-grad-mid);
+            --avatar-gradient: linear-gradient(135deg, var(--oblivion-grad-start), var(--oblivion-grad-end));
+            --add-tab-gradient: linear-gradient(to right, var(--oblivion-grad-end), var(--oblivion-grad-mid), var(--oblivion-grad-start));
+
+            --btn-img-border-color: #202020;
+            --btn-img-highlight: rgba(255, 255, 255, 0.05);
+            --btn-img-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0,0,0,0.15);
+            --btn-img-radius: 6px;
+
+            --editor-img-stroke-color: #1D1D1D;
+            --editor-img-radius: 8px;
+            --editor-img-shadow: 0 1px 3px rgba(0,0,0,0.15);
+
+            --header-bottom-border-color: transparent;
+
+            --add-tab-btn-text-stroke-color: rgba(0,0,0,0.5);
+            --add-tab-btn-text-shadow-color: rgba(0,0,0,0.2);
+        }
+
+        body[data-theme="oblivion-light"] {
+            --page-bg-color: #F0F2F5;
+            --main-ui-bg: #FFFFFF;
+            --button-bg-color: #F0F0F0;
+            --button-hover-bg-color: #E0E0E0;
+            --button-active-bg-color: #D5D5D5;
+            --interactive-text-icon-color: #202124;
+            --settings-text-secondary: #5f6368;
+            --global-stroke-color: #D1D5DB;
+            --editor-wrapper-stroke-color: #DCDCDC;
+            --input-bg-color: #FFFFFF;
+            --input-border-color: #C0C0C0;
+            --input-focus-border-color: var(--oblivion-grad-mid);
+            --tab-active-bg: #E8EAED;
+            --tab-hover-bg: #F1F3F4;
+            --console-bg: #F8F9FA;
+            --console-text-color: #3C4043;
+            --scrollbar-thumb-bg: #C1C1C1;
+            --scrollbar-thumb-hover-bg: #A8A8A8;
+            --notification-bg: #34A853;
+            --notification-text-color: #FFFFFF;
+            --oblivion-grad-start: #10B981;
+            --oblivion-grad-mid: #3B82F6;
+            --oblivion-grad-end: #60A5FA;
+            --auth-accent-color: #34A853;
+            --auth-accent-hover-color: #2b8a44;
+            --auth-error-color: #E53E3E;
+            --toggle-bg-off: #BDC1C6;
+            --toggle-bg-on: var(--oblivion-grad-mid);
+            --avatar-gradient: linear-gradient(135deg, var(--oblivion-grad-start), var(--oblivion-grad-end));
+            --add-tab-gradient: linear-gradient(to right, var(--oblivion-grad-end), var(--oblivion-grad-mid), var(--oblivion-grad-start));
+
+            --btn-img-border-color: #D8D8D8;
+            --btn-img-highlight: rgba(255, 255, 255, 0.3);
+            --btn-img-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 1px 1px rgba(0,0,0,0.06);
+            --btn-img-radius: 6px;
+            --editor-img-stroke-color: #E0E0E0;
+            --editor-img-radius: 8px;
+            --editor-img-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            --header-bottom-border-color: transparent;
+
+            --add-tab-btn-text-stroke-color: rgba(255,255,255,0.6);
+            --add-tab-btn-text-shadow-color: rgba(255,255,255,0.3);
+        }
+
+        body[data-theme="github-dark"] {
+            --page-bg-color: #010409;
+            --main-ui-bg: #0D1117;
+            --button-bg-color: #21262D;
+            --button-hover-bg-color: #30363D;
+            --button-active-bg-color: #282E34;
+            --interactive-text-icon-color: #C9D1D9;
+            --settings-text-secondary: #8B949E;
+            --global-stroke-color: #30363D;
+            --editor-wrapper-stroke-color: #30363D;
+            --input-bg-color: #0D1117;
+            --input-border-color: #30363D;
+            --input-focus-border-color: #58A6FF;
+            --tab-active-bg: #161B22;
+            --tab-hover-bg: #1F242C;
+            --console-bg: #161B22;
+            --console-text-color: #C9D1D9;
+            --scrollbar-thumb-bg: #3A3F47;
+            --scrollbar-thumb-hover-bg: #4A4F57;
+            --notification-bg: #238636;
+            --notification-text-color: #FFFFFF;
+            --oblivion-grad-start: #3FB950;
+            --oblivion-grad-mid: #58A6FF;
+            --oblivion-grad-end: #79C0FF;
+            --auth-accent-color: #238636;
+            --auth-accent-hover-color: #2ea043;
+            --auth-error-color: #f85149;
+            --toggle-bg-off: #484F58;
+            --toggle-bg-on: #3FB950;
+            --avatar-gradient: linear-gradient(135deg, #3FB950, #58A6FF);
+            --add-tab-gradient: linear-gradient(to right, #58A6FF, #3FB950);
+
+            --btn-img-border-color: #282E34;
+            --btn-img-highlight: rgba(255, 255, 255, 0.05);
+            --btn-img-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0,0,0,0.15);
+            --btn-img-radius: 6px;
+            --editor-img-stroke-color: #161B22;
+            --editor-img-radius: 8px;
+            --editor-img-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            --header-bottom-border-color: transparent;
+
+            --add-tab-btn-text-stroke-color: rgba(0,0,0,0.5);
+            --add-tab-btn-text-shadow-color: rgba(0,0,0,0.2);
+        }
+
+        body[data-theme="nord"] {
+            --page-bg-color: #2E3440;
+            --main-ui-bg: #3B4252;
+            --button-bg-color: #434C5E;
+            --button-hover-bg-color: #4C566A;
+            --button-active-bg-color: #475062;
+            --interactive-text-icon-color: #D8DEE9;
+            --settings-text-secondary: #A3ABB2;
+            --global-stroke-color: #4C566A;
+            --editor-wrapper-stroke-color: #434C5E;
+            --input-bg-color: #3B4252;
+            --input-border-color: #4C566A;
+            --input-focus-border-color: #88C0D0;
+            --tab-active-bg: #434C5E;
+            --tab-hover-bg: #4C566A;
+            --console-bg: #3B4252;
+            --console-text-color: #D8DEE9;
+            --scrollbar-thumb-bg: #4C566A;
+            --scrollbar-thumb-hover-bg: #5E81AC;
+            --notification-bg: #A3BE8C;
+            --notification-text-color: #2E3440;
+            --oblivion-grad-start: #A3BE8C;
+            --oblivion-grad-mid: #88C0D0;
+            --oblivion-grad-end: #5E81AC;
+            --auth-accent-color: #A3BE8C;
+            --auth-accent-hover-color: #8FBCBB;
+            --auth-error-color: #BF616A;
+            --toggle-bg-off: #4C566A;
+            --toggle-bg-on: #88C0D0;
+            --avatar-gradient: linear-gradient(135deg, #A3BE8C, #5E81AC);
+            --add-tab-gradient: linear-gradient(to right, #5E81AC, #88C0D0, #A3BE8C);
+
+            --btn-img-border-color: #475062;
+            --btn-img-highlight: rgba(236, 239, 244, 0.08);
+            --btn-img-shadow: 0 1px 2px rgba(46, 52, 64, 0.25), 0 1px 1px rgba(46, 52, 64, 0.15);
+            --btn-img-radius: 6px;
+            --editor-img-stroke-color: #373D49;
+            --editor-img-radius: 8px;
+            --editor-img-shadow: 0 1px 3px rgba(46, 52, 64, 0.15);
+            --header-bottom-border-color: transparent;
+
+            --add-tab-btn-text-stroke-color: rgba(46, 52, 64, 0.6);
+            --add-tab-btn-text-shadow-color: rgba(46, 52, 64, 0.25);
+        }
+
+        body[data-theme="dracula"] {
+            --page-bg-color: #21222C;
+            --main-ui-bg: #282A36;
+            --button-bg-color: #44475A;
+            --button-hover-bg-color: #4D5066;
+            --button-active-bg-color: #3E4052;
+            --interactive-text-icon-color: #F8F8F2;
+            --settings-text-secondary: #BD93F9;
+            --global-stroke-color: #44475A;
+            --editor-wrapper-stroke-color: #191A21;
+            --input-bg-color: #282A36;
+            --input-border-color: #6272A4;
+            --input-focus-border-color: #FF79C6;
+            --tab-active-bg: #44475A;
+            --tab-hover-bg: #4D5066;
+            --console-bg: #1D1E26;
+            --console-text-color: #F8F8F2;
+            --scrollbar-thumb-bg: #44475A;
+            --scrollbar-thumb-hover-bg: #6272A4;
+            --notification-bg: #50FA7B;
+            --notification-text-color: #282A36;
+            --oblivion-grad-start: #50FA7B;
+            --oblivion-grad-mid: #8BE9FD;
+            --oblivion-grad-end: #FF79C6;
+            --auth-accent-color: #50FA7B;
+            --auth-accent-hover-color: #47e06e;
+            --auth-error-color: #FF5555;
+            --toggle-bg-off: #6272A4;
+            --toggle-bg-on: #FF79C6;
+            --avatar-gradient: linear-gradient(135deg, #50FA7B, #FF79C6);
+            --add-tab-gradient: linear-gradient(to right, #FF79C6, #8BE9FD, #50FA7B);
+
+            --btn-img-border-color: #3E4052;
+            --btn-img-highlight: rgba(248, 248, 242, 0.06);
+            --btn-img-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0,0,0,0.15);
+            --btn-img-radius: 6px;
+            --editor-img-stroke-color: #21222C;
+            --editor-img-radius: 8px;
+            --editor-img-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            --header-bottom-border-color: transparent;
+
+            --add-tab-btn-text-stroke-color: rgba(33, 34, 44, 0.6);
+            --add-tab-btn-text-shadow-color: rgba(33, 34, 44, 0.25);
+        }
+
+        #auth-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 360px;
+            padding: 30px 40px;
+            background-color: var(--main-ui-bg);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: var(--interactive-text-icon-color);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+        #auth-screen.hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            display: none !important;
+        }
+        .auth-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-image: var(--avatar-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--notification-text-color);
+            margin-bottom: 10px;
+            border: 3px solid var(--interactive-text-icon-color);
+            font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "SF Pro Display", "Helvetica Neue", sans-serif;
+            font-weight: 200;
+        }
+        .auth-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--interactive-text-icon-color);
+        }
+        .auth-input-group {
+            width: 100%;
+            margin-bottom: 18px;
+        }
+        .auth-input {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--input-bg-color);
+            border: 1px solid var(--input-border-color);
+            border-radius: var(--btn-img-radius);
+            color: var(--interactive-text-icon-color);
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+        .auth-input:focus {
+            outline: none;
+            border-color: var(--input-focus-border-color);
+        }
+        .auth-input.error {
+            border-color: var(--auth-error-color) !important;
+        }
+        #auth-activate-btn {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--auth-accent-color);
+            color: var(--notification-text-color);
+            border: none;
+            border-radius: var(--btn-img-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: inset 0 -2px 0px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        #auth-activate-btn:hover {
+            background-color: var(--auth-accent-hover-color);
+            box-shadow: inset 0 -2px 0px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .auth-error-message {
+            color: var(--auth-error-color);
+            font-size: 0.8rem;
+            text-align: center;
+            height: 1.2em;
+            margin-top: 5px;
+        }
+
+        #loading-screen {
+            background-image: url('https://storage.googleapis.com/generativeai-downloads/images/OblivionUI/DownloadBackground.png');
+            background-repeat: repeat;
+            background-color: #101012;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease-out 0.7s;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+        #loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+            display: none !important;
+        }
+        .loading-content-box {
+            width: 480px;
+            height: 270px;
+            background-image: linear-gradient(to bottom, #A8E063, #56A8C0);
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+        .loading-main-logo {
+            font-size: 100px;
+            font-weight: 200;
+            color: white;
+            border: 4px solid white;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .loading-text-message {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: white;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+         .loading-text-message .fa-check-circle {
+            color: white;
+            margin-left: 8px;
+            font-size: 1.2em;
+        }
+        .loading-progress-bar-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            overflow: hidden;
+        }
+        .loading-progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: white;
+            transition: width 0.3s ease-out;
+        }
+
+
+        #app-container {
+            flex-direction: column;
+            background-color: var(--main-ui-bg);
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        #app-header {
+            background-color: var(--main-ui-bg);
+            padding: 0.5rem 0.75rem; display: flex;
+            align-items: center; justify-content: space-between; height: 50px; flex-shrink: 0;
+            border-bottom: 1px solid var(--header-bottom-border-color);
+        }
+        #app-header .header-left-section { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; min-width: 0; }
+        #app-header .menu-btn {
+            background-color: var(--button-bg-color);
+            color: var(--interactive-text-icon-color);
+            width: 40px; height: 32px;
+            border-radius: var(--btn-img-radius);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+            font-size: 0.9rem;
+            border: 1px solid var(--btn-img-border-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), var(--btn-img-shadow);
+        }
+         #app-header .menu-btn.menu-btn-collapsed .fa-bars { display: none; }
+         #app-header .menu-btn:not(.menu-btn-collapsed) .fa-times { display: none; }
+
+        #app-header .menu-btn:hover {
+            background-color: var(--button-hover-bg-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), 0 2px 4px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+        }
+        #app-header .app-title-text { font-weight: 600; font-size: 1rem; color: var(--interactive-text-icon-color);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #app-header .header-center-section {
+            flex-grow: 1; display: flex; justify-content: center; align-items: center;
+            position: relative; height: 100%; min-width: 0;
+            overflow: hidden;
+        }
+        #app-header .header-icon-buttons {
+            display: flex; align-items: center; gap: 0.5rem;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out, max-height 0.3s ease-out;
+            opacity: 1;
+            transform: translateY(0);
+            max-height: 40px;
+            overflow: hidden;
+        }
+        #app-header .header-icon-buttons.hidden-by-notification {
+             opacity: 0; visibility: hidden; pointer-events: none;
+        }
+        #app-header .header-icon-buttons.header-icons-collapsed {
+            opacity: 0;
+            transform: translateY(-10px);
+            max-height: 0;
+            pointer-events: none;
+        }
+
+        #app-header .header-icon-btn {
+            background-color: var(--button-bg-color);
+            color: var(--interactive-text-icon-color);
+            width: 32px; height: 32px;
+            border-radius: var(--btn-img-radius);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; font-size: 0.9rem;
+            border: 1px solid var(--btn-img-border-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), var(--btn-img-shadow);
+        }
+        #app-header .header-icon-btn:hover {
+            background-color: var(--button-hover-bg-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), 0 2px 4px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+        }
+        #app-header .header-right-section { display: flex; align-items: center; flex-shrink: 0; min-width: 0; }
+        #app-header .user-profile {
+            display: flex; align-items: center; gap: 0.65rem; background-color: var(--button-bg-color);
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--btn-img-radius);
+            border: 1px solid var(--btn-img-border-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), var(--btn-img-shadow);
+        }
+        #app-header .user-profile .avatar-gradient { width: 24px; height: 24px; border-radius: 50%;
+            background-image: var(--avatar-gradient); }
+        #app-header .user-profile .username { font-size: 0.875rem; color: var(--interactive-text-icon-color); white-space: nowrap; }
+
+        #header-notification-bar {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -150%); width: auto;
+            max-width: calc(100% - 20px); padding: 0.5rem 1rem;
+            background-color: var(--notification-bg);
+            color: var(--notification-text-color);
+            font-size: 0.9rem; font-weight: 500; text-align: center;
+            border-radius: 6px; box-shadow: 0 3px 10px rgba(0,0,0,0.3); z-index: 10;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+            opacity: 0;
+            pointer-events: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        #header-notification-bar.visible { transform: translate(-50%, -50%); opacity: 1; pointer-events: auto; }
+
+        #main-execution-view {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow: hidden;
+            transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+         #main-execution-view.hidden-for-settings {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.97);
+            pointer-events: none;
+            position: absolute;
+            width: 100%;
+            height: calc(100% - 50px);
+        }
+
+
+        #tab-bar {
+            background-color: var(--main-ui-bg);
+            display: flex; align-items: center;
+            padding: 0.35rem 0.5rem; height: 45px; flex-shrink: 0; box-sizing: border-box;
+        }
+        .add-tab-btn-styled {
+            background-image: var(--add-tab-gradient);
+            color: var(--interactive-text-icon-color);
+            font-weight: 600;
+            padding: 0 0.85rem; line-height: 32px;
+            height: 34px; box-sizing: border-box;
+            border-radius: var(--btn-img-radius);
+            display: flex; align-items: center;
+            gap: 0.4rem; cursor: pointer;
+            border: 1px solid var(--btn-img-border-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), var(--btn-img-shadow);
+            transition: filter 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            margin-right: 0.5rem; flex-shrink: 0; font-size: 0.875rem;
+            -webkit-text-stroke-width: 0.5px;
+            -webkit-text-stroke-color: var(--add-tab-btn-text-stroke-color);
+            paint-order: stroke fill;
+            text-shadow: 0 0 2px var(--add-tab-btn-text-shadow-color);
+        }
+        .add-tab-btn-styled:hover {
+            filter: brightness(1.15);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), 0 2px 5px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.25);
+        }
+        .add-tab-btn-styled i {
+            font-size: 0.9em;
+        }
+        #tabs-container { display: flex; flex-grow: 1; align-items: center; overflow-x: auto; overflow-y: hidden; height: 100%; }
+        #tabs-container::-webkit-scrollbar { height: 6px; }
+        #tabs-container::-webkit-scrollbar-track { background: var(--main-ui-bg); border-radius: 3px; }
+        #tabs-container::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: 3px; }
+        #tabs-container::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-bg); }
+
+        #tab-bar .tab {
+            display: flex; align-items: center;
+            background-color: var(--button-bg-color);
+            color: var(--interactive-text-icon-color);
+            padding: 0 0.85rem; margin-right: 0.35rem;
+            border-radius: var(--btn-img-radius);
+            cursor: pointer; font-size: 0.875rem;
+            white-space: nowrap; opacity: 1; transform: scale(1); height: 34px; box-sizing: border-box;
+            line-height: 32px; max-height: 34px;
+            border: 1px solid var(--btn-img-border-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), var(--btn-img-shadow);
+            transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
+                        opacity 0.25s ease, transform 0.25s ease,
+                        max-height 0.25s ease, padding 0.25s ease, margin-right 0.25s ease, border-color 0.2s ease;
+        }
+        #tab-bar .tab.tab-adding {
+            opacity: 0;
+            transform: scale(0.95) translateY(-5px);
+            max-height: 0;
+            padding-top: 0; padding-bottom: 0;
+            margin-right: 0;
+            height: 0;
+            overflow: hidden;
+        }
+        #tab-bar .tab.tab-removing {
+            opacity: 0;
+            transform: scale(0.9) translateY(5px);
+            max-height: 0 !important;
+            height: 0 !important;
+            padding-top: 0 !important; padding-bottom: 0 !important;
+            margin-right: 0 !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
+            overflow: hidden;
+        }
+        #tab-bar .tab .tab-icon { margin-right: 0.5rem; color: var(--interactive-text-icon-color); }
+        #tab-bar .tab.active {
+            background-color: var(--tab-active-bg);
+            color: var(--interactive-text-icon-color);
+            font-weight: 500;
+            border-color: var(--btn-img-border-color);
+             box-shadow: inset 0 1px 0 var(--btn-img-highlight), var(--btn-img-shadow);
+        }
+        #tab-bar .tab:not(.active):hover {
+            background-color: var(--tab-hover-bg);
+            color: var(--interactive-text-icon-color);
+            border-color: var(--btn-img-border-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), 0 2px 3px rgba(0,0,0,0.2);
+        }
+        #tab-bar .tab .tab-name { margin-right: 0.5rem; outline: none; }
+        #tab-bar .tab .close-tab { color: var(--interactive-text-icon-color); font-size: 0.875rem; transition: color 0.2s ease; opacity: 0.7; }
+        #tab-bar .tab:hover .close-tab, #tab-bar .tab.active .close-tab { opacity: 1; }
+
+        #main-content-area {
+            flex-grow: 1; display: flex; flex-direction: column; overflow: hidden;
+            background-color: var(--main-ui-bg);
+            padding: 0.75rem;
+            padding-top: 0.75rem;
+            position: relative;
+        }
+        #actual-editor-wrapper {
+             flex-grow: 1;
+             border-radius: var(--editor-img-radius);
+             overflow: hidden;
+             border: 1px solid var(--editor-img-stroke-color);
+             box-shadow: var(--editor-img-shadow);
+             display: flex;
+        }
+        #editor-container { width: 100%; height: 100%; }
+
+        #console-section {
+            height: 0;
+            opacity: 0;
+            background-color: var(--console-bg);
+            flex-shrink: 0; display: flex; flex-direction: column; overflow: hidden;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out, background-color 0.3s ease, border-color 0.3s ease;
+        }
+        #console-section.console-visible {
+            height: 150px;
+            opacity: 1;
+        }
+        #console-output {
+            flex-grow: 1; padding: 8px 10px; overflow-y: auto;
+            font-family: "SF Mono", -apple-system-ui-monospace, "Monaco", "Menlo", "Consolas", "Courier New", monospace;
+            font-size: 0.8rem; color: var(--console-text-color); white-space: pre-wrap;
+        }
+        #console-output::-webkit-scrollbar { width: 6px; }
+        #console-output::-webkit-scrollbar-track { background: var(--console-bg); }
+        #console-output::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius:3px;}
+        #console-output::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-bg); }
+        #console-output div { padding-bottom: 4px; margin-bottom: 4px; line-height: 1.4; }
+        #console-output div:not(:last-child) { border-bottom: 1px dashed var(--global-stroke-color); }
+
+        #app-footer {
+            background-color: var(--main-ui-bg);
+            padding: 0.5rem 0.75rem; display: flex;
+            align-items: center; justify-content: space-between; height: 50px;
+            flex-shrink: 0;
+        }
+        .footer-left-group, .footer-right-group { display: flex; align-items: center; }
+        #app-footer .footer-btn {
+            background-color: var(--button-bg-color);
+            color: var(--interactive-text-icon-color);
+            padding: 0.375rem 0.75rem;
+            border-radius: var(--btn-img-radius);
+            margin-right: 0.5rem; font-size: 0.875rem;
+            display: flex; align-items: center; gap: 0.375rem; cursor: pointer;
+            border: 1px solid var(--btn-img-border-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), var(--btn-img-shadow);
+            transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+         #app-footer .port-display {
+            background-color: var(--button-bg-color);
+            color: var(--interactive-text-icon-color);
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            margin-right: 0.5rem; font-size: 0.875rem;
+            display: flex; align-items: center; gap: 0.375rem; cursor: default;
+            border: 1px solid var(--btn-img-border-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), var(--btn-img-shadow);
+            transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .footer-left-group .footer-btn:last-child, .footer-right-group .footer-btn:last-child { margin-right: 0; }
+        #app-footer .attach-btn { margin-right: 0; }
+        #app-footer .footer-btn i { color: var(--interactive-text-icon-color); }
+
+        #app-footer .footer-btn:hover {
+            background-color: var(--button-hover-bg-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), 0 2px 4px rgba(0,0,0,0.3), 0 0 0 1px var(--global-stroke-color);
+            transform: translateY(-1px);
+        }
+        #app-footer .footer-btn:hover, #app-footer .footer-btn:hover i { color: var(--interactive-text-icon-color); }
+        #app-footer .footer-btn:active {
+            background-color: var(--button-active-bg-color);
+            transform: translateY(0px);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), var(--btn-img-shadow), 0 0 0 1px var(--global-stroke-color);
+        }
+        #app-footer .port-display:hover {
+            background-color: var(--button-bg-color);
+            box-shadow: inset 0 1px 0 var(--btn-img-highlight), var(--btn-img-shadow);
+            transform: none;
+        }
+        #app-footer .attach-btn.status-online { border-color: var(--auth-accent-color) !important; }
+        #app-footer .attach-btn.status-offline { border-color: var(--auth-error-color) !important; }
+        #app-footer .attach-btn.status-waiting { border-color: var(--input-focus-border-color) !important; }
+
+
+        #settings-page-container {
+            opacity: 0;
+            transform: translateY(20px) scale(0.97);
+            pointer-events: none;
+            position: absolute;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 50px);
+            z-index: 50;
+            flex-direction: column;
+            background-color: var(--main-ui-bg);
+            padding: 1.5rem 2rem;
+            overflow-y: auto;
+            color: var(--interactive-text-icon-color);
+            transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, color 0.3s ease;
+        }
+        #settings-page-container.settings-page-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        #settings-page-container::-webkit-scrollbar { width: 8px; }
+        #settings-page-container::-webkit-scrollbar-track { background: var(--main-ui-bg); }
+        #settings-page-container::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: 4px; }
+        #settings-page-container::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-bg); }
+        .settings-section-title { font-size: 1.1rem; font-weight: 600; color: var(--interactive-text-icon-color); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--global-stroke-color); transition: color 0.3s ease, border-color 0.3s ease; }
+        .settings-color-palette { display: flex; gap: 1rem; margin-bottom: 2rem; padding: 1rem; background-color: var(--button-bg-color); border-radius: 8px; border: 1px solid var(--global-stroke-color); transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .color-circle { width: 50px; height: 50px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: transform 0.2s ease, border-color 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .color-circle:hover { transform: scale(1.1); }
+        .color-circle.active-theme-circle { border-color: var(--oblivion-grad-mid); box-shadow: 0 0 10px var(--oblivion-grad-mid); }
+        .color-circle-1 { background-image: linear-gradient(135deg, #4A4A4A, #6A6A6A); }
+        .color-circle-2 { background-image: linear-gradient(135deg, #F0F2F5, #BCC1C6); }
+        .color-circle-3 { background-image: linear-gradient(135deg, #161B22, #21262D); }
+        .color-circle-4 { background-image: linear-gradient(135deg, #8FBCBB, #5E81AC); }
+        .color-circle-5 { background-image: linear-gradient(135deg, #BD93F9, #FF79C6); }
+        .settings-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1rem; background-color: var(--button-bg-color); border-radius: 6px; border: 1px solid var(--global-stroke-color); transition: background-color 0.2s ease, border-color 0.2s ease; }
+        .setting-item:hover { background-color: var(--button-hover-bg-color); }
+        .setting-item-label { display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; color: var(--interactive-text-icon-color); }
+        .setting-item-label i { font-size: 1.1em; color: var(--settings-text-secondary); width: 20px; text-align: center; transition: color 0.3s ease; }
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--toggle-bg-off); transition: .3s; border-radius: 24px; }
+        .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        input:checked + .toggle-slider { background-color: var(--toggle-bg-on); }
+        input:checked + .toggle-slider:before { transform: translateX(20px); }
+        .font-size-input { background-color: var(--input-bg-color); color: var(--interactive-text-icon-color); border: 1px solid var(--input-border-color); border-radius: 4px; padding: 0.25rem 0.5rem; width: 60px; text-align: right; font-size: 0.9rem; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+        .font-size-input::-webkit-outer-spin-button, .font-size-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .font-size-input[type=number] { -moz-appearance: textfield; }
+        #app-container, #app-header, #tab-bar, #main-content-area, #console-section, #app-footer, .menu-btn, .header-icon-btn, .user-profile, .tab, .footer-btn, .port-display, .settings-section-title, .settings-color-palette, .setting-item, .font-size-input { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+        .add-tab-btn-styled, .avatar-gradient { transition: background-image 0.3s ease, filter 0.2s ease, box-shadow 0.2s ease; }
+
+    </style>
+</head>
+<body>
+    <div id="auth-screen">
+        <div class="auth-logo">O</div>
+        <h2 class="auth-title">Oblivion UI Access</h2>
+        <div class="auth-input-group">
+            <input type="text" id="auth-username" class="auth-input" placeholder="Username">
+        </div>
+        <div class="auth-input-group">
+            <input type="password" id="auth-license-key" class="auth-input" placeholder="License Key">
+        </div>
+        <button id="auth-activate-btn">
+            <span class="btn-text">Activate License</span>
+        </button>
+        <div id="auth-error-message" class="auth-error-message"></div>
+    </div>
+
+    <div id="loading-screen" style="display: none;">
+        <div class="loading-content-box">
+            <div class="loading-main-logo">O</div>
+            <div class="loading-text-message">
+                <span id="loading-status-text">Loading Oblivion UI</span>
+                <i id="loading-status-check" class="fas fa-check-circle" style="display: none;"></i>
+            </div>
+            <div class="loading-progress-bar-container">
+                <div class="loading-progress-bar" id="loading-progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-container" style="display: none;">
+        <header id="app-header">
+            <div class="header-left-section">
+                <button class="menu-btn" title="Menu">
+                    <i class="fas fa-bars"></i> <i class="fas fa-times"></i> </button>
+                <span class="app-title-text">Oblivion UI</span>
+            </div>
+            <div class="header-center-section">
+                <div class="header-icon-buttons" id="header-icon-buttons-collapsible">
+                    <button class="header-icon-btn" id="home-btn-settings" title="Home"><i class="fas fa-house"></i></button>
+                    <button class="header-icon-btn" id="script-hub-btn" title="Script Hub"><i class="fas fa-table-list"></i></button>
+                    <button class="header-icon-btn" id="open-project-btn-settings" title="Open Project"><i class="fas fa-folder-open"></i></button>
+                    <button class="header-icon-btn" id="toggle-console-btn" title="Console"><i class="fas fa-terminal"></i></button>
+                    <button class="header-icon-btn" id="settings-btn-main" title="Settings"><i class="fas fa-gear"></i></button>
+                </div>
+                 <div id="header-notification-bar"><i id="notification-icon" class="fas"></i> <span id="notification-text">Notification</span></div>
+            </div>
+            <div class="header-right-section">
+                <div class="user-profile"><div class="avatar-gradient" title="Guest User"></div><span class="username">Guest User</span></div>
+            </div>
+        </header>
+
+        <div id="main-execution-view">
+            <div id="tab-bar">
+                <button class="add-tab-btn-styled" title="New Tab">New Tab <i class="fas fa-plus"></i></button>
+                <div id="tabs-container">
+                    </div>
+            </div>
+
+            <div id="main-content-area">
+                <div id="actual-editor-wrapper">
+                    <div id="editor-container"></div>
+                </div>
+            </div>
+
+            <div id="console-section">
+                <div id="console-output">
+                    </div>
+            </div>
+
+            <footer id="app-footer">
+                <div class="footer-left-group">
+                    <button class="footer-btn" id="execute-btn"><i class="fas fa-play"></i> Execute</button>
+                    <button class="footer-btn" id="duplicate-btn"><i class="fas fa-clone"></i> Duplicate</button>
+                    <button class="footer-btn" id="open-btn"><i class="fas fa-folder-open"></i> Open</button>
+                    <button class="footer-btn" id="save-btn"><i class="fas fa-download"></i> Save</button>
+                    <button class="footer-btn" id="clear-btn"><i class="fas fa-eraser"></i> Clear</button>
+                </div>
+                <div class="footer-right-group">
+                    <div class="port-display">5553</div> <button class="footer-btn attach-btn" id="attach-btn"><i class="fas fa-paperclip"></i> Attach</button>
+                </div>
+            </footer>
+        </div>
+
+        <div id="settings-page-container">
+            <h2 class="settings-section-title">Theme Colors</h2>
+            <div class="settings-color-palette">
+                <div class="color-circle color-circle-1" data-theme-id="oblivion-dark" title="Default Dark"></div>
+                <div class="color-circle color-circle-2" data-theme-id="oblivion-light" title="Light Theme"></div>
+                <div class="color-circle color-circle-3" data-theme-id="github-dark" title="GitHub Dark"></div>
+                <div class="color-circle color-circle-4" data-theme-id="nord" title="Nord"></div>
+                <div class="color-circle color-circle-5" data-theme-id="dracula" title="Dracula"></div>
+            </div>
+
+            <h2 class="settings-section-title">Editor Settings</h2>
+            <div class="settings-list">
+                <div class="setting-item">
+                    <div class="setting-item-label">
+                        <i class="fas fa-clone"></i> <span>Minimap</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-minimap-checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-label">
+                        <i class="fas fa-list-ol"></i> <span>Line Numbers</span>
+                    </div>
+                    <label class="toggle-switch">
+                         <input type="checkbox" id="toggle-linenumbers-checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-label">
+                        <i class="fas fa-text-height"></i>
+                        <span>Font Size</span>
+                    </div>
+                    <input type="number" id="font-size-input" class="font-size-input" value="14" min="8" max="72">
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-label">
+                        <i class="fas fa-music"></i> <span>UI Sounds</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-ui-sounds-checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-label">
+                        <i class="fas fa-keyboard"></i> <span>Editor Typing Sounds</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-typing-sounds-checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="file-opener" accept=".txt,.lua,.js,.html,.css" style="display: none;">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/loader.min.js"></script>
+    <script>
+        let editor;
+        let tabsData = [];
+        let activeTabId = null;
+        let tabCounter = 0;
+        let firstTabId = null;
+        const initialWelcomeMessage = " -- Welcome to Oblivion UI! ";
+        const defaultFontSize = 14;
+        const DEFAULT_THEME = "oblivion-dark";
+        let uiSoundsEnabled = true;
+        let editorTypingSoundsEnabled = true;
+        let currentUsername = "Guest User";
+        const validLicenseKeys = [
+            "OblivionKey_X7QH0K19PWUZD3AV", "OblivionKey_E2ZJRM0Y84XLH5TN",
+            "OblivionKey_9WG1UKFX5D2E3VLM", "OblivionKey_MZK0YJUTBNLW38HR",
+            "OblivionKey_74RAYNEDPXBQMV1J", "OblivionKey_UDN89AY6X0TLPZMH",
+            "OblivionKey_1ZVMYKFT49NCEUJB", "OblivionKey_R5UP1ZBXOGHQEN6K",
+            "OblivionKey_6JH8PX4CQ29MNTRD", "OblivionKey_QKLJXWMB71FUZAD6",
+            "OblivionKey_ZUWD2L3RXQ94P8KM", "OblivionKey_YJATCZPMV7BXQK10",
+            "OblivionKey_K1ELD0HTYBXZ93MW", "OblivionKey_BZWFY3PQMVLK78XD",
+            "OblivionKey_T49U7LCEWJ3YXMZQ", "OblivionKey_GYU3TKMPB7XEL4QN",
+            "OblivionKey_XYZME6JTR19LQB4C", "OblivionKey_D49PZLK73CXUMTYE",
+            "OblivionKey_LM83UPYQVBN6AZXT", "OblivionKey_PWZ3MLUXTV6YAJQ9",
+            "OblivionKey_QW9KXUJM2LZP37HT", "OblivionKey_58LZAXKTD19QUMYW",
+            "OblivionKey_BN4QTXL9ZJYE1UM7", "OblivionKey_MU01KFH3XZQ9WTLA",
+            "OblivionKey_CVY9ZLMKU0WXT47P", "OblivionKey_R83TLKQXZ97MUWAD",
+            "Testing"
+        ];
+
+        const authScreen = document.getElementById('auth-screen');
+        const authUsernameInput = document.getElementById('auth-username');
+        const authLicenseKeyInput = document.getElementById('auth-license-key');
+        const authActivateBtn = document.getElementById('auth-activate-btn');
+        const authErrorMessage = document.getElementById('auth-error-message');
+        const authBtnText = authActivateBtn.querySelector('.btn-text');
+
+        const appContainer = document.getElementById('app-container');
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingStatusText = document.getElementById('loading-status-text');
+        const loadingStatusCheck = document.getElementById('loading-status-check');
+        const loadingProgressFill = document.getElementById('loading-progress-fill');
+
+        let usernameDisplay;
+
+        const mainExecutionView = document.getElementById('main-execution-view');
+        const settingsPageContainer = document.getElementById('settings-page-container');
+        const homeBtn_settings = document.getElementById('home-btn-settings');
+        const scriptHubBtn = document.getElementById('script-hub-btn');
+        const openProjectBtn_settings = document.getElementById('open-project-btn-settings');
+        const settingsBtn_main = document.getElementById('settings-btn-main');
+        const menuBtn = document.querySelector('#app-header .menu-btn');
+        const headerIconButtonsCollapsible = document.getElementById('header-icon-buttons-collapsible');
+        const toggleConsoleBtn = document.getElementById('toggle-console-btn');
+        const consoleSection = document.getElementById('console-section');
+        const consoleOutput = document.getElementById('console-output');
+        const tabsContainer = document.getElementById('tabs-container');
+        const editorContainer = document.getElementById('editor-container');
+        const styledAddTabBtn = document.querySelector('.add-tab-btn-styled');
+        const fileOpener = document.getElementById('file-opener');
+        const headerNotificationBar = document.getElementById('header-notification-bar');
+        const notificationIcon = document.getElementById('notification-icon');
+        const notificationText = document.getElementById('notification-text');
+        let notificationTimeoutIdOriginal = null;
+        const attachBtn = document.getElementById('attach-btn');
+        const clearBtn = document.getElementById('clear-btn');
+
+        const toggleMinimapCheckbox = document.getElementById('toggle-minimap-checkbox');
+        const toggleLineNumbersCheckbox = document.getElementById('toggle-linenumbers-checkbox');
+        const fontSizeInput = document.getElementById('font-size-input');
+        const colorPaletteCircles = document.querySelectorAll('.settings-color-palette .color-circle');
+        const toggleUiSoundsCheckbox = document.getElementById('toggle-ui-sounds-checkbox');
+        const toggleTypingSoundsCheckbox = document.getElementById('toggle-typing-sounds-checkbox');
+
+        let loadCompleteSynth, hoverSynth, clickSynth, errorSynth, typingSynth, hoverFilter;
+
+        function initializeSynths() {
+            try {
+                if (typeof Tone === 'undefined') {
+                    console.warn("Tone.js not loaded, sounds disabled.");
+                    uiSoundsEnabled = false;
+                    editorTypingSoundsEnabled = false;
+                    return;
+                }
+                loadCompleteSynth = new Tone.Synth({
+                    oscillator: { type: "fmtriangle", modulationType: "sine", harmonicity: 0.8, partials: [1, 0.2, 0.1] },
+                    envelope: { attack: 0.01, decay: 0.4, sustain: 0.1, release: 0.3 }
+                }).toDestination();
+                loadCompleteSynth.volume.value = -12;
+
+                hoverSynth = new Tone.NoiseSynth({
+                    noise: { type: 'pink' },
+                    envelope: { attack: 0.005, decay: 0.02, sustain: 0 }
+                });
+                hoverFilter = new Tone.Filter(1200, "bandpass").toDestination();
+                hoverSynth.connect(hoverFilter);
+                hoverSynth.volume.value = -22;
+
+                clickSynth = new Tone.MembraneSynth({
+                    pitchDecay: 0.01, octaves: 2, oscillator: { type: "sine" },
+                    envelope: { attack: 0.001, decay: 0.15, sustain: 0.01, release: 0.2 }
+                }).toDestination();
+                clickSynth.volume.value = -12;
+
+                errorSynth = new Tone.Synth({ oscillator: { type: "square" }, envelope: { attack: 0.01, decay: 0.1, sustain: 0, release: 0.1 } }).toDestination();
+                errorSynth.volume.value = -15;
+
+                typingSynth = new Tone.PluckSynth({
+                    attackNoise: 0.2,
+                    dampening: 6000,
+                    resonance: 0.2
+                }).toDestination();
+                typingSynth.volume.value = -15;
+
+            } catch (e) {
+                console.warn("Tone.js synth initialization failed:", e);
+                uiSoundsEnabled = false;
+                editorTypingSoundsEnabled = false;
+            }
+        }
+
+        function playUISound(type) {
+            if (typeof Tone === 'undefined' || !Tone.context ) {
+                console.warn("Tone.js not loaded or context not available. Sound skipped.");
+                return;
+            }
+            if (Tone.context.state !== 'running') {
+                 console.warn(`Tone.js context not running (state: ${Tone.context.state}). Sound type '${type}' skipped. User interaction might be needed to start audio.`);
+                return;
+            }
+
+            if (type !== 'typing' && !uiSoundsEnabled) return;
+            if (type === 'typing' && (!uiSoundsEnabled || !editorTypingSoundsEnabled)) return;
+
+            try {
+                const now = Tone.now();
+                if (type === 'loadComplete' && loadCompleteSynth) {
+                    loadCompleteSynth.triggerAttackRelease("C5", "8n", now);
+                    if (uiSoundsEnabled && loadCompleteSynth && Tone.context.state === 'running') {
+                        Tone.Transport.scheduleOnce(() => {
+                             if (uiSoundsEnabled && loadCompleteSynth && Tone.context.state === 'running') {
+                                loadCompleteSynth.triggerAttackRelease("G5", "16n", Tone.now());
+                             }
+                        }, now + 0.15);
+                    }
+
+                } else if (type === 'hover' && hoverSynth) {
+                    hoverSynth.triggerAttack(now);
+                } else if (type === 'click' && clickSynth) {
+                    clickSynth.triggerAttackRelease("C3", "32n", now);
+                } else if (type === 'error' && errorSynth) {
+                    errorSynth.triggerAttackRelease("C3", "16n", now);
+                } else if (type === 'typing' && typingSynth) {
+                    typingSynth.triggerAttack(Tone.Midi(Math.random() * 10 + 75).toNote(), now);
+                }
+            } catch (e) {
+                console.warn("Error playing UI sound:", type, e);
+            }
+        }
+
+        if (authActivateBtn) {
+            authActivateBtn.addEventListener('click', () => {
+                if (typeof Tone !== 'undefined' && Tone.context && Tone.context.state !== 'running') {
+                    Tone.start().then(() => {
+                        console.log("Tone.js AudioContext started by auth button click.");
+                        playUISound('click');
+                    }).catch(e => console.warn("Tone.js AudioContext could not be started by auth button click.", e));
+                } else if (typeof Tone !== 'undefined') {
+                    playUISound('click');
+                }
+
+                const username = authUsernameInput.value.trim();
+                const licenseKey = authLicenseKeyInput.value.trim();
+
+                if(authErrorMessage) authErrorMessage.textContent = "";
+                if(authUsernameInput) authUsernameInput.classList.remove('error');
+                if(authLicenseKeyInput) authLicenseKeyInput.classList.remove('error');
+                authActivateBtn.disabled = true;
+
+                const existingSpinner = authActivateBtn.querySelector('.fa-spinner');
+                if(existingSpinner) existingSpinner.remove();
+                const btnTextSpan = authActivateBtn.querySelector('.btn-text');
+                if(btnTextSpan) btnTextSpan.textContent = "Authenticating";
+                const spinner = document.createElement('i');
+                spinner.className = 'fas fa-spinner fa-spin';
+                authActivateBtn.prepend(spinner);
+
+                setTimeout(() => {
+                    spinner.remove();
+                    if (username === "") {
+                        if(authErrorMessage) authErrorMessage.textContent = "Username cannot be empty.";
+                        if(authUsernameInput) authUsernameInput.classList.add('error');
+                        authActivateBtn.disabled = false;
+                        if(btnTextSpan) btnTextSpan.textContent = "Activate License";
+                        playUISound('error');
+                        return;
+                    }
+                    if (validLicenseKeys.includes(licenseKey)) {
+                        currentUsername = username;
+                        if(authScreen) authScreen.classList.add('hidden');
+                        startLoadingProcess();
+                    } else {
+                        if(authErrorMessage) authErrorMessage.textContent = "Invalid License Key.";
+                        if(authLicenseKeyInput) authLicenseKeyInput.classList.add('error');
+                        authActivateBtn.disabled = false;
+                        if(btnTextSpan) btnTextSpan.textContent = "Activate License";
+                        playUISound('error');
+                    }
+                }, 1500);
+            });
+        }
+
+        function startLoadingProcess() {
+            if(loadingScreen) loadingScreen.style.display = 'flex';
+            if(loadingStatusText) loadingStatusText.textContent = 'Loading Oblivion UI';
+            if(loadingProgressFill) loadingProgressFill.style.width = '0%';
+            if(loadingStatusCheck) loadingStatusCheck.style.display = 'none';
+
+            if (typeof Tone !== 'undefined' && Tone.context && Tone.context.state !== 'running') {
+                Tone.start().then(() => console.log("Tone.js AudioContext (re)started for loading sequence."))
+                          .catch(e => console.warn("Tone.js AudioContext could not be (re)started for loading.", e));
+            }
+
+            setTimeout(() => { if(loadingProgressFill) loadingProgressFill.style.width = '30%'; }, 200);
+            setTimeout(() => { if(loadingProgressFill) loadingProgressFill.style.width = '70%'; }, 700);
+            setTimeout(() => {
+                if(loadingProgressFill) loadingProgressFill.style.width = '100%';
+                if(loadingStatusText) loadingStatusText.textContent = 'Done!';
+                if(loadingStatusCheck) loadingStatusCheck.style.display = 'inline-block';
+                playUISound('loadComplete');
+            }, 1200);
+
+            setTimeout(() => {
+                if(loadingScreen) {
+                    loadingScreen.classList.add('hidden');
+                    loadingScreen.addEventListener('transitionend', function handleTransitionEnd() {
+                        if (loadingScreen.classList.contains('hidden')) {
+                            loadingScreen.style.display = 'none';
+                        }
+                        loadingScreen.removeEventListener('transitionend', handleTransitionEnd);
+                    });
+                }
+
+                document.body.style.display = '';
+                document.body.style.alignItems = '';
+                document.body.style.justifyContent = '';
+
+                if(appContainer) appContainer.style.display = 'flex';
+
+                usernameDisplay = document.querySelector('#app-header .user-profile .username');
+                if(usernameDisplay) usernameDisplay.textContent = currentUsername;
+
+                initializeMonacoAndSettings();
+                switchToExecutionView_settings();
+                setupCollapsibleHeader();
+            }, 1700);
+        }
+
+        window.addEventListener('load', () => {
+            initializeSynths();
+
+            const savedUiSounds = localStorage.getItem('uiSoundsEnabled');
+            if (savedUiSounds !== null) {
+                uiSoundsEnabled = JSON.parse(savedUiSounds);
+            }
+            if(toggleUiSoundsCheckbox) toggleUiSoundsCheckbox.checked = uiSoundsEnabled;
+
+            const savedEditorTypingSounds = localStorage.getItem('editorTypingSoundsEnabled');
+            if (savedEditorTypingSounds !== null) {
+                editorTypingSoundsEnabled = JSON.parse(savedEditorTypingSounds);
+            } else {
+                editorTypingSoundsEnabled = true;
+            }
+            if(toggleTypingSoundsCheckbox) toggleTypingSoundsCheckbox.checked = editorTypingSoundsEnabled;
+
+            if (typeof Tone !== 'undefined' && Tone.context && Tone.context.state !== 'running') {
+                console.log("Tone.js context not running on load. Waiting for user interaction.");
+                const startToneOnFirstInteraction = () => {
+                    if (typeof Tone !== 'undefined' && Tone.context && Tone.context.state !== 'running') {
+                        Tone.start().then(() => {
+                            console.log("Tone.js AudioContext started by general page interaction.");
+                        }).catch(err => console.error("Error starting Tone.js after general interaction:", err));
+                    }
+                    document.body.removeEventListener('click', startToneOnFirstInteraction, true);
+                    document.body.removeEventListener('keydown', startToneOnFirstInteraction, true);
+                };
+                document.body.addEventListener('click', startToneOnFirstInteraction, { once: true, capture: true });
+                document.body.addEventListener('keydown', startToneOnFirstInteraction, { once: true, capture: true });
+            } else if (typeof Tone !== 'undefined' && Tone.context) {
+                 console.log(`Tone.js context already running on load (state: ${Tone.context.state}).`);
+            }
+            
+            setTimeout(() => {
+                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.scriptHandler) {
+                    window.webkit.messageHandlers.scriptHandler.postMessage({ type: "requestConnectionAction" });
+                } else {
+                    console.warn("Native bridge not available on load to get initial connection status.");
+                    updateConnectionStatus("Offline", "5553");
+                }
+            }, 2000);
+        });
+
+        function setupCollapsibleHeader() {
+            if (menuBtn && headerIconButtonsCollapsible) {
+                menuBtn.classList.remove('menu-btn-collapsed');
+                menuBtn.addEventListener('click', () => {
+                    playUISound('click');
+                    const isCollapsed = headerIconButtonsCollapsible.classList.toggle('header-icons-collapsed');
+                    menuBtn.classList.toggle('menu-btn-collapsed', isCollapsed);
+                    menuBtn.setAttribute('aria-expanded', !isCollapsed);
+                });
+            }
+        }
+
+        function switchToExecutionView_settings() {
+            if(mainExecutionView) mainExecutionView.classList.remove('hidden-for-settings');
+            if(settingsPageContainer) settingsPageContainer.classList.remove('settings-page-visible');
+            if (editor && typeof editor.layout === 'function') editor.layout();
+        }
+
+        function switchToSettingsView_settings() {
+            if(mainExecutionView) mainExecutionView.classList.add('hidden-for-settings');
+            if(settingsPageContainer) settingsPageContainer.classList.add('settings-page-visible');
+        }
+
+        if (homeBtn_settings) homeBtn_settings.addEventListener('click', () => { playUISound('click'); switchToExecutionView_settings(); });
+        if (settingsBtn_main) settingsBtn_main.addEventListener('click', () => { playUISound('click'); switchToSettingsView_settings(); });
+
+        if (scriptHubBtn) {
+            scriptHubBtn.addEventListener('click', () => {
+                playUISound('click');
+                switchToExecutionView_settings();
+                if(typeof showHeaderNotification === 'function') showHeaderNotification("Script Hub (Coming Soon)", "fa-table-list", 2500);
+            });
+        }
+        if (openProjectBtn_settings) {
+            openProjectBtn_settings.addEventListener('click', () => {
+                playUISound('click');
+                switchToExecutionView_settings();
+                if(typeof showHeaderNotification === 'function') showHeaderNotification("Open project (placeholder)", "fa-folder-open", 2000);
+            });
+        }
+
+        document.querySelectorAll('#app-header .header-icon-btn, #app-header .menu-btn').forEach(button => {
+            if(button) button.addEventListener('mouseenter', () => playUISound('hover'));
+        });
+
+        function initializeMonacoAndSettings() {
+            if (typeof require === 'undefined' || (typeof monaco === 'undefined' && typeof require.config !== 'function') ) {
+                console.error("Monaco loader (require.js) or base (monaco) not found. Editor cannot be initialized.");
+                if(editorContainer) editorContainer.innerHTML = '<p style="color:var(--auth-error-color); padding:20px;">Error: Code editor components could not be loaded.</p>';
+                return;
+            }
+            if (typeof require !== 'undefined' && typeof require.config === 'function') {
+                require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs' }});
+            } else if (typeof monaco === 'undefined') {
+                 console.error("Monaco environment not properly set up.");
+                 if(editorContainer) editorContainer.innerHTML = '<p style="color:var(--auth-error-color); padding:20px;">Error: Code editor environment failure.</p>';
+                return;
+            }
+
+            require(['vs/editor/editor.main'], function() {
+                defineMonacoThemes_settings();
+                try {
+                    if(!editorContainer) {
+                        console.error("Editor container not found in DOM.");
+                        return;
+                    }
+                    editor = monaco.editor.create(editorContainer, {
+                        value: '',
+                        language: 'lua',
+                        theme: 'oblivion-dark-theme',
+                        automaticLayout: true,
+                        minimap: { enabled: false },
+                        lineNumbers: 'on',
+                        fontSize: defaultFontSize,
+                        fontFamily: '"SF Mono", -apple-system-ui-monospace, "Monaco", "Menlo", "Consolas", "Courier New", monospace'
+                    });
+
+                    editor.onKeyDown((e) => {
+                        if (!uiSoundsEnabled || !editorTypingSoundsEnabled || (Tone.context && Tone.context.state !== 'running')) {
+                            return;
+                        }
+
+                        const keyCode = e.keyCode;
+                        const isRelevantKey = (
+                            (keyCode >= monaco.KeyCode.KEY_0 && keyCode <= monaco.KeyCode.KEY_9) ||
+                            (keyCode >= monaco.KeyCode.KEY_A && keyCode <= monaco.KeyCode.KEY_Z) ||
+                            (keyCode >= monaco.KeyCode.Numpad0 && keyCode <= monaco.KeyCode.Numpad9) ||
+                            keyCode === monaco.KeyCode.Space ||
+                            keyCode === monaco.KeyCode.Backspace ||
+                            keyCode === monaco.KeyCode.Delete ||
+                            (keyCode >= monaco.KeyCode.US_SEMICOLON && keyCode <= monaco.KeyCode.US_BACKSLASH)
+                        ) && !e.ctrlKey && !e.altKey && !e.metaKey &&
+                           keyCode !== monaco.KeyCode.Enter &&
+                           keyCode !== monaco.KeyCode.Tab &&
+                           keyCode !== monaco.KeyCode.Escape &&
+                           !(keyCode >= monaco.KeyCode.LeftArrow && keyCode <= monaco.KeyCode.DownArrow) &&
+                           !(keyCode >= monaco.KeyCode.F1 && keyCode <= monaco.KeyCode.F12);
+
+                        if (isRelevantKey) {
+                            playUISound('typing');
+                        }
+                    });
+
+                } catch (e) {
+                    console.error("Error creating Monaco editor instance:", e);
+                     if(editorContainer) editorContainer.innerHTML = '<p style="color:var(--auth-error-color); padding:20px;">Error: Failed to create code editor instance.</p>';
+                     return;
+                }
+
+                setupEditorSettingsListeners_settings();
+                setupThemeSwitcher_settings();
+
+                const savedTheme = localStorage.getItem('selectedAppTheme') || DEFAULT_THEME;
+                applyTheme_settings(savedTheme);
+
+                tabCounter = 0;
+                firstTabId = addTab("Starting Tab 1", initialWelcomeMessage);
+            }, function(err) {
+                console.error("Error loading Monaco editor main module:", err);
+                if(editorContainer) editorContainer.innerHTML = '<p style="color:var(--auth-error-color); padding:20px;">Error: Failed to load code editor module.</p>';
+            });
+        }
+
+        function defineMonacoThemes_settings() {
+            if (typeof monaco === 'undefined' || typeof monaco.editor === 'undefined') return;
+
+            monaco.editor.defineTheme('oblivion-dark-monaco', {
+                base: 'vs-dark', inherit: true,
+                rules: [
+                    { token: 'comment', foreground: '808080' },
+                    { token: 'keyword', foreground: 'C586C0' },
+                    { token: 'number', foreground: 'B5CEA8' },
+                    { token: 'string', foreground: 'CE9178' }
+                ],
+                colors: {
+                    'editor.background': '#181818',
+                    'editor.foreground': '#DCDDDE',
+                    'editorGutter.background': '#181818',
+                    'editorLineNumber.foreground': '#606060',
+                    'editorLineNumber.activeForeground': '#DCDDDE',
+                    'editor.lineHighlightBackground': '#1F1F1F',
+                    'editor.selectionBackground': '#264F78',
+                    'editorCursor.foreground': '#AEAFAD',
+                    'minimap.background': '#181818',
+                }
+            });
+            monaco.editor.defineTheme('oblivion-dark-theme', { base: 'vs-dark', inherit: true, rules: [ { token: 'comment.lua', foreground: '808080' } ], colors: { 'editor.background': '#181818', 'editorGutter.background': '#181818', 'editorLineNumber.foreground': '#606060', 'editorLineNumber.activeForeground': '#DCDDDE', 'editor.lineHighlightBackground': '#1F1F1F', 'editor.selectionBackground': '#264F78', 'editorCursor.foreground': '#AEAFAD', 'scrollbarSlider.background': '#2a2a2a', 'scrollbarSlider.hoverBackground': '#3c3c3c', 'scrollbarSlider.activeBackground': '#505050', } });
+
+
+            monaco.editor.defineTheme('oblivion-light-monaco', {
+                base: 'vs', inherit: true,
+                rules: [
+                    { token: 'comment', foreground: '008000' },
+                    { token: 'keyword', foreground: '0000FF' },
+                    { token: 'number', foreground: '098658' },
+                    { token: 'string', foreground: 'A31515' }
+                ],
+                colors: {
+                    'editor.background': '#F8F9FA',
+                    'editor.foreground': '#202124',
+                    'editorGutter.background': '#F8F9FA',
+                    'editorLineNumber.foreground': '#6e6e6e',
+                    'editorLineNumber.activeForeground': '#202124',
+                    'editor.lineHighlightBackground': '#F0F0F0',
+                    'editor.selectionBackground': '#ADD6FF',
+                    'editorCursor.foreground': '#000000',
+                    'minimap.background': '#F8F9FA',
+                }
+            });
+
+            monaco.editor.defineTheme('github-dark-monaco', {
+                base: 'vs-dark', inherit: true,
+                rules: [
+                    { token: 'comment', foreground: '8B949E' }, { token: 'keyword', foreground: 'FF7B72' },
+                    { token: 'number', foreground: '79C0FF' },  { token: 'string', foreground: 'A5D6FF' },
+                    { token: 'identifier', foreground: 'C9D1D9'}, { token: 'type', foreground: 'FFA657'},
+                    { token: 'operator', foreground: 'FF7B72'}
+                ],
+                colors: {
+                    'editor.background': '#0A0C10', 'editor.foreground': '#C9D1D9',
+                    'editorGutter.background': '#0A0C10', 'editorLineNumber.foreground': '#8B949E',
+                    'editorLineNumber.activeForeground': '#C9D1D9', 'editor.lineHighlightBackground': '#161B22',
+                    'editor.selectionBackground': '#264F78', 'editorCursor.foreground': '#58A6FF',
+                    'minimap.background': '#0A0C10',
+                }
+            });
+
+            monaco.editor.defineTheme('nord-monaco', {
+                base: 'vs-dark', inherit: true,
+                rules: [
+                    { token: 'comment', foreground: '616E88' }, { token: 'keyword', foreground: '81A1C1' },
+                    { token: 'number', foreground: 'B48EAD' },  { token: 'string', foreground: 'A3BE8C' },
+                    { token: 'identifier', foreground: 'D8DEE9'}, { token: 'type', foreground: '88C0D0'},
+                    { token: 'operator', foreground: '81A1C1'}
+                ],
+                colors: {
+                    'editor.background': '#2E3440', 'editor.foreground': '#D8DEE9',
+                    'editorGutter.background': '#2E3440', 'editorLineNumber.foreground': '#4C566A',
+                    'editorLineNumber.activeForeground': '#D8DEE9', 'editor.lineHighlightBackground': '#3B4252',
+                    'editor.selectionBackground': '#434C5E', 'editorCursor.foreground': '#D8DEE9',
+                    'minimap.background': '#2E3440',
+                }
+            });
+
+            monaco.editor.defineTheme('dracula-monaco', {
+                base: 'vs-dark', inherit: true,
+                rules: [
+                    { token: 'comment', foreground: '6272A4' }, { token: 'keyword', foreground: 'FF79C6' },
+                    { token: 'number', foreground: 'BD93F9' },  { token: 'string', foreground: 'F1FA8C' },
+                    { token: 'identifier', foreground: 'F8F8F2'}, { token: 'type', foreground: '8BE9FD'},
+                    { token: 'operator', foreground: 'FF79C6'}
+                ],
+                colors: {
+                    'editor.background': '#242631', 'editor.foreground': '#F8F8F2',
+                    'editorGutter.background': '#242631', 'editorLineNumber.foreground': '#6272A4',
+                    'editorLineNumber.activeForeground': '#F8F8F2', 'editor.lineHighlightBackground': '#44475A',
+                    'editor.selectionBackground': '#44475A', 'editorCursor.foreground': '#F8F8F2',
+                    'minimap.background': '#242631',
+                }
+            });
+        }
+
+        function setupThemeSwitcher_settings() {
+            colorPaletteCircles.forEach(circle => {
+                if(circle) circle.addEventListener('click', () => {
+                    playUISound('click');
+                    const themeId = circle.dataset.themeId;
+                    applyTheme_settings(themeId);
+                });
+                if(circle) circle.addEventListener('mouseenter', () => playUISound('hover'));
+            });
+        }
+
+        function applyTheme_settings(themeId) {
+            if (!themeId ) return;
+            document.body.dataset.theme = themeId;
+            if (typeof monaco !== 'undefined' && monaco.editor && editor) {
+                 monaco.editor.setTheme(themeId + '-monaco');
+            }
+            colorPaletteCircles.forEach(c => {
+                if(c) c.classList.remove('active-theme-circle');
+                if (c && c.dataset.themeId === themeId) {
+                    c.classList.add('active-theme-circle');
+                }
+            });
+            localStorage.setItem('selectedAppTheme', themeId);
+        }
+
+        function setupEditorSettingsListeners_settings() {
+            if (toggleMinimapCheckbox && editor) {
+                toggleMinimapCheckbox.checked = editor.getOption(monaco.editor.EditorOption.minimap).enabled;
+                toggleMinimapCheckbox.addEventListener('change', () => {
+                    playUISound('click');
+                    editor.updateOptions({ minimap: { enabled: toggleMinimapCheckbox.checked } });
+                });
+                toggleMinimapCheckbox.closest('.setting-item')?.addEventListener('mouseenter', () => playUISound('hover'));
+            }
+            if (toggleLineNumbersCheckbox && editor) {
+                const lineNumbersOption = editor.getOption(monaco.editor.EditorOption.lineNumbers).renderType;
+                toggleLineNumbersCheckbox.checked = lineNumbersOption === monaco.editor.RenderLineNumbersType.On || lineNumbersOption === monaco.editor.RenderLineNumbersType.Interval;
+                toggleLineNumbersCheckbox.addEventListener('change', () => {
+                    playUISound('click');
+                    editor.updateOptions({ lineNumbers: toggleLineNumbersCheckbox.checked ? 'on' : 'off' });
+                });
+                toggleLineNumbersCheckbox.closest('.setting-item')?.addEventListener('mouseenter', () => playUISound('hover'));
+            }
+            if (fontSizeInput && editor) {
+                fontSizeInput.value = editor.getOption(monaco.editor.EditorOption.fontSize);
+                fontSizeInput.addEventListener('change', () => {
+                    playUISound('click');
+                    const newSize = parseInt(fontSizeInput.value, 10);
+                    if (!isNaN(newSize) && newSize >= 8 && newSize <= 72) {
+                        editor.updateOptions({ fontSize: newSize });
+                    } else {
+                        fontSizeInput.value = editor.getOption(monaco.editor.EditorOption.fontSize);
+                        showHeaderNotification("Invalid font size (8-72px)", "fa-triangle-exclamation", 2000);
+                    }
+                });
+                fontSizeInput.addEventListener('input', () => {
+                    const newSize = parseInt(fontSizeInput.value, 10);
+                    if (!isNaN(newSize) && newSize >= 8 && newSize <= 72) {
+                        editor.updateOptions({ fontSize: newSize });
+                    }
+                });
+                fontSizeInput.addEventListener('mouseenter', () => playUISound('hover'));
+            }
+            if (toggleUiSoundsCheckbox) {
+                toggleUiSoundsCheckbox.addEventListener('change', () => {
+                    uiSoundsEnabled = toggleUiSoundsCheckbox.checked;
+                    localStorage.setItem('uiSoundsEnabled', JSON.stringify(uiSoundsEnabled));
+                    playUISound('click');
+                });
+                toggleUiSoundsCheckbox.closest('.setting-item')?.addEventListener('mouseenter', () => playUISound('hover'));
+            }
+            if (toggleTypingSoundsCheckbox) {
+                toggleTypingSoundsCheckbox.addEventListener('change', () => {
+                    editorTypingSoundsEnabled = toggleTypingSoundsCheckbox.checked;
+                    localStorage.setItem('editorTypingSoundsEnabled', JSON.stringify(editorTypingSoundsEnabled));
+                    playUISound('click');
+                });
+                toggleTypingSoundsCheckbox.closest('.setting-item')?.addEventListener('mouseenter', () => playUISound('hover'));
+            }
+        }
+
+        function showHeaderNotification(message, iconClass, duration = 2500) {
+            if (!headerNotificationBar || !notificationText || !notificationIcon) return;
+
+            if (notificationTimeoutIdOriginal) { clearTimeout(notificationTimeoutIdOriginal); }
+
+            notificationText.textContent = message;
+            notificationIcon.className = `fas ${iconClass}`;
+
+            if(headerIconButtonsCollapsible && !headerIconButtonsCollapsible.classList.contains('header-icons-collapsed')) {
+                headerIconButtonsCollapsible.classList.add('hidden-by-notification');
+            }
+
+            headerNotificationBar.classList.add('visible');
+
+            notificationTimeoutIdOriginal = setTimeout(() => {
+                headerNotificationBar.classList.remove('visible');
+                 if(headerIconButtonsCollapsible) {
+                    headerIconButtonsCollapsible.classList.remove('hidden-by-notification');
+                }
+            }, duration);
+        }
+
+        if(toggleConsoleBtn) {
+            toggleConsoleBtn.addEventListener('click', () => {
+                playUISound('click');
+                if (settingsPageContainer && settingsPageContainer.classList.contains('settings-page-visible')) {
+                    switchToExecutionView_settings();
+                }
+                setTimeout(() => {
+                    if(consoleSection) consoleSection.classList.toggle('console-visible');
+                    if (editor && typeof editor.layout === 'function') editor.layout();
+                }, (settingsPageContainer && settingsPageContainer.classList.contains('settings-page-visible')) ? 300 : 0);
+            });
+        }
+
+        function logToConsole(message) {
+            if (!consoleOutput) return;
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const logEntry = document.createElement('div');
+            logEntry.textContent = `[${time}] ${message}`;
+            consoleOutput.appendChild(logEntry);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        function generateTabId() { return `tab-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`; }
+
+        function createTabElement(tabData) {
+            const tabElement = document.createElement('div');
+            tabElement.className = 'tab';
+            tabElement.dataset.tabId = tabData.id;
+
+            const iconElement = document.createElement('i');
+            iconElement.className = 'fas fa-file-lines tab-icon';
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'tab-name';
+            nameSpan.textContent = tabData.name;
+
+            const closeBtn = document.createElement('i');
+            closeBtn.className = 'fas fa-times close-tab';
+            closeBtn.title = 'Close Tab';
+
+            tabElement.appendChild(iconElement);
+            tabElement.appendChild(nameSpan);
+            tabElement.appendChild(closeBtn);
+            return tabElement;
+        }
+
+        function renderTabs() {
+            if (!tabsContainer) return;
+
+            const currentActiveElement = document.activeElement;
+            const isEditingTabName = currentActiveElement && currentActiveElement.classList.contains('tab-name') && currentActiveElement.isContentEditable;
+            let editingTabId = null;
+            let selectionStart, selectionEnd;
+            let originalNameForEditRender = '';
+
+            if (isEditingTabName) {
+                editingTabId = currentActiveElement.closest('.tab')?.dataset.tabId;
+                originalNameForEditRender = currentActiveElement.dataset.originalName || currentActiveElement.textContent;
+                if (typeof currentActiveElement.selectionStart === 'number') {
+                    selectionStart = currentActiveElement.selectionStart;
+                    selectionEnd = currentActiveElement.selectionEnd;
+                }
+            }
+
+            tabsContainer.innerHTML = '';
+            tabsData.forEach((tabData) => {
+                const tabElement = createTabElement(tabData);
+                const nameSpan = tabElement.querySelector('.tab-name');
+                const closeBtn = tabElement.querySelector('.close-tab');
+
+                if (tabData.id === activeTabId) tabElement.classList.add('active');
+
+                tabElement.onclick = () => { playUISound('click'); switchToTab(tabData.id); };
+
+                if(nameSpan) {
+                    nameSpan.ondblclick = (e) => {
+                        e.stopPropagation();
+                        if (tabElement.classList.contains('active')) {
+                            playUISound('click');
+                            nameSpan.contentEditable = 'true';
+                            nameSpan.dataset.originalName = nameSpan.textContent;
+                            nameSpan.focus();
+                            document.execCommand('selectAll',false,null);
+                        }
+                    };
+                    nameSpan.onblur = (e) => {
+                        nameSpan.contentEditable = 'false';
+                        const newName = nameSpan.textContent.trim();
+                        const originalNameFromDataset = nameSpan.dataset.originalName || tabData.name;
+                        if (newName === "" || newName === originalNameFromDataset) {
+                            nameSpan.textContent = originalNameFromDataset;
+                        } else {
+                            renameTab(tabData.id, newName);
+                        }
+                        delete nameSpan.dataset.originalName;
+                    };
+                    nameSpan.onkeydown = (e) => {
+                        if (e.key === 'Enter') { e.preventDefault(); nameSpan.blur(); }
+                        else if (e.key === 'Escape') { e.preventDefault(); nameSpan.textContent = nameSpan.dataset.originalName || tabData.name; nameSpan.blur(); }
+                    };
+                }
+                if(closeBtn) closeBtn.onclick = (e) => { e.stopPropagation(); playUISound('click'); closeTab(tabData.id); };
+
+                tabElement.addEventListener('mouseenter', () => playUISound('hover'));
+                tabsContainer.appendChild(tabElement);
+            });
+
+            if (isEditingTabName && editingTabId) {
+                const newSpanToFocus = tabsContainer.querySelector(`.tab[data-tab-id="${editingTabId}"] .tab-name`);
+                if (newSpanToFocus) {
+                    newSpanToFocus.contentEditable = 'true';
+                    newSpanToFocus.dataset.originalName = originalNameForEditRender;
+                    newSpanToFocus.focus();
+                    if (typeof selectionStart === 'number' && typeof newSpanToFocus.setSelectionRange === 'function') {
+                        newSpanToFocus.setSelectionRange(selectionStart, selectionEnd);
+                    }
+                }
+            }
+            const activeTabElement = tabsContainer.querySelector('.tab.active');
+            if (activeTabElement && typeof activeTabElement.scrollIntoView === 'function') {
+                activeTabElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+            }
+        }
+
+        function addTab(name, content) {
+            const isFirstEverTabCall = tabsData.length === 0 && tabCounter === 0;
+            let actualName;
+
+            if (name !== undefined) {
+                actualName = name;
+            } else if (isFirstEverTabCall) {
+                actualName = "Starting Tab 1";
+            } else {
+                actualName = `Script ${++tabCounter}`;
+            }
+
+            const actualContent = content !== undefined ? content : initialWelcomeMessage;
+            if (isFirstEverTabCall) { tabCounter = 1; }
+
+            const tabId = generateTabId();
+            const newTab = { id: tabId, name: actualName, content: actualContent, state: null };
+            tabsData.push(newTab);
+            switchToTab(tabId);
+
+            setTimeout(() => {
+                const newTabElement = tabsContainer?.querySelector(`.tab[data-tab-id="${tabId}"]`);
+                if (newTabElement) {
+                    newTabElement.classList.add('tab-adding');
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            newTabElement.classList.remove('tab-adding');
+                            newTabElement.style.maxHeight = ''; newTabElement.style.paddingTop = ''; newTabElement.style.paddingBottom = ''; newTabElement.style.marginRight = '';
+                        });
+                    });
+                }
+            }, 0);
+
+            if (isFirstEverTabCall) { firstTabId = tabId; }
+            return tabId;
+        }
+
+        function closeTab(tabIdToClose) {
+            const tabElement = tabsContainer?.querySelector(`.tab[data-tab-id="${tabIdToClose}"]`);
+            if (tabElement) {
+                tabElement.classList.add('tab-removing');
+                tabElement.addEventListener('transitionend', function handler(event) {
+                    if (event.propertyName === 'opacity' || event.propertyName === 'max-height') {
+                        performCloseTabLogic(tabIdToClose);
+                    }
+                }, {once: true});
+
+                setTimeout(() => {
+                    if (tabsData.find(t => t.id === tabIdToClose)) {
+                        performCloseTabLogic(tabIdToClose);
+                    }
+                }, 300);
+            } else {
+                performCloseTabLogic(tabIdToClose);
+            }
+        }
+        function performCloseTabLogic(tabIdToClose){
+            const currentTabIndex = tabsData.findIndex(t => t.id === tabIdToClose);
+            if (currentTabIndex === -1) return;
+
+            tabsData.splice(currentTabIndex, 1);
+
+            if (activeTabId === tabIdToClose) {
+                activeTabId = null;
+                if (tabsData.length > 0) {
+                    const newActiveIndex = Math.max(0, currentTabIndex -1);
+                    switchToTab(tabsData[newActiveIndex] ? tabsData[newActiveIndex].id : (tabsData[0] ? tabsData[0].id : null));
+                } else {
+                    if(editor && typeof editor.setValue === 'function') editor.setValue("");
+                    activeTabId = null; renderTabs();
+                }
+            } else {
+                renderTabs();
+            }
+            if (tabsData.length === 0 && editor) {
+                firstTabId = addTab("Starting Tab 1", initialWelcomeMessage);
+            }
+        }
+
+
+        function renameTab(tabId, newName) {
+            const tab = tabsData.find(t => t.id === tabId);
+            if (tab && newName.trim() !== "") {
+                tab.name = newName.trim();
+            }
+            renderTabs();
+        }
+
+        function switchToTab(tabIdToSwitch) {
+            if (!editor || typeof editor.setValue !== 'function' || typeof editor.getValue !== 'function') return;
+
+            if (!tabIdToSwitch && tabsData.length > 0) {
+                tabIdToSwitch = tabsData[0].id;
+            } else if (!tabIdToSwitch && tabsData.length === 0) {
+                editor.setValue("");
+                activeTabId = null;
+                renderTabs();
+                return;
+            }
+
+            if (activeTabId === tabIdToSwitch && document.querySelector(`.tab[data-tab-id="${tabIdToSwitch}"].active`)) {
+                if(typeof editor.hasTextFocus === 'function' && !editor.hasTextFocus() && typeof editor.focus === 'function') editor.focus();
+                return;
+            }
+
+            if (activeTabId) {
+                const currentTab = tabsData.find(t => t.id === activeTabId);
+                if (currentTab) {
+                    currentTab.content = editor.getValue();
+                    if (typeof editor.saveViewState === 'function') currentTab.state = editor.saveViewState();
+                }
+            }
+
+            activeTabId = tabIdToSwitch;
+            const newActiveTab = tabsData.find(t => t.id === activeTabId);
+
+            if (newActiveTab) {
+                editor.setValue(newActiveTab.content);
+                if (newActiveTab.state && typeof editor.restoreViewState === 'function') {
+                    editor.restoreViewState(newActiveTab.state);
+                }
+                if(typeof editor.focus === 'function') editor.focus();
+            } else {
+                editor.setValue("");
+            }
+            renderTabs();
+        }
+
+        if(styledAddTabBtn) {
+           styledAddTabBtn.onclick = () => { playUISound('click'); addTab(); };
+           styledAddTabBtn.addEventListener('mouseenter', () => playUISound('hover'));
+        }
+
+        const executeBtn = document.getElementById('execute-btn');
+        if(executeBtn) {
+            executeBtn.addEventListener('click', () => {
+                playUISound('click');
+                const currentEditorValue = (editor && typeof editor.getValue === 'function') ? editor.getValue().trim() : "";
+                const activeTabData = tabsData.find(t => t.id === activeTabId);
+                const tabName = activeTabData ? activeTabData.name : "Unknown Tab";
+
+                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.scriptHandler) {
+                    logToConsole(`JS: Sending script from tab: ${tabName} to MacSploit...`);
+                    window.webkit.messageHandlers.scriptHandler.postMessage({
+                        type: "executeScript",
+                        script: currentEditorValue,
+                        tabName: tabName
+                    });
+                } else {
+                    logToConsole("JS Error: Execution bridge to native app not found.");
+                    showHeaderNotification("Error: Cannot connect to executor", "fa-triangle-exclamation", 3000);
+                }
+            });
+            executeBtn.addEventListener('mouseenter', () => playUISound('hover'));
+        }
+        
+        function updateConnectionStatus(status, port) {
+            const attachBtn = document.getElementById('attach-btn');
+            const portDisplay = document.querySelector('#app-footer .port-display');
+
+            if (portDisplay) {
+                portDisplay.textContent = port;
+            }
+
+            if (attachBtn) {
+                const icon = attachBtn.querySelector('i.fas');
+                attachBtn.classList.remove('status-online', 'status-offline', 'status-waiting');
+                
+                let textNode = icon ? icon.nextSibling : null;
+                if (!textNode || textNode.nodeType !== Node.TEXT_NODE) {
+                    textNode = document.createTextNode("");
+                    if (icon && icon.parentNode) icon.parentNode.insertBefore(textNode, icon.nextSibling);
+                }
+
+
+                if (status === "Online") {
+                    attachBtn.classList.add('status-online');
+                    if (icon) icon.className = 'fas fa-link';
+                    if (textNode) textNode.textContent = " Online";
+                    attachBtn.title = `Attached to port ${port}`;
+                } else if (status === "Offline") {
+                    attachBtn.classList.add('status-offline');
+                    if (icon) icon.className = 'fas fa-unlink';
+                    if (textNode) textNode.textContent = " Offline";
+                    attachBtn.title = `Offline - Attempting to connect to port ${port}`;
+                } else { 
+                    attachBtn.classList.add('status-waiting');
+                    if (icon) icon.className = 'fas fa-hourglass-half';
+                    if (textNode) textNode.textContent = ` ${status}`;
+                    attachBtn.title = `${status} port ${port}...`;
+                }
+            }
+        }
+
+
+        if (attachBtn) {
+            attachBtn.addEventListener('click', () => {
+                playUISound('click');
+                logToConsole("JS: Attach button clicked. Requesting connection action (e.g., ping/reconnect).");
+                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.scriptHandler) {
+                     window.webkit.messageHandlers.scriptHandler.postMessage({ type: "requestConnectionAction" });
+                } else {
+                    logToConsole("JS Error: Bridge to native app not found for attach button.");
+                    showHeaderNotification("Error: Cannot connect to native actions", "fa-triangle-exclamation", 3000);
+                }
+            });
+            attachBtn.addEventListener('mouseenter', () => playUISound('hover'));
+        }
+
+        const duplicateBtn = document.getElementById('duplicate-btn');
+        if(duplicateBtn) {
+            duplicateBtn.addEventListener('click',() => {
+                playUISound('click');
+                if (activeTabId && editor && typeof editor.getValue === 'function' && typeof editor.saveViewState === 'function') {
+                    const currentTab = tabsData.find(t => t.id === activeTabId);
+                    if (currentTab) {
+                        const newTabId = addTab(`${currentTab.name} (copy)`, editor.getValue());
+                        const newTab = tabsData.find(t => t.id === newTabId);
+                        if (newTab) { const currentState = editor.saveViewState(); if(currentState) newTab.state = currentState; }
+                    }
+                }
+            });
+            duplicateBtn.addEventListener('mouseenter', () => playUISound('hover'));
+        }
+
+        const openBtn = document.getElementById('open-btn');
+        if(openBtn) {
+            openBtn.addEventListener('click', () => { playUISound('click'); if(fileOpener) fileOpener.click(); });
+            openBtn.addEventListener('mouseenter', () => playUISound('hover'));
+        }
+
+        if(fileOpener) {
+            fileOpener.onchange = (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const content = e.target.result;
+                        let newTabName = file.name;
+                        if (newTabName.length > 20) { newTabName = newTabName.substring(0, 17) + "..."; }
+                        addTab(newTabName, content);
+                    };
+                    reader.readAsText(file);
+                    fileOpener.value = "";
+                }
+            };
+        }
+
+        const saveBtn = document.getElementById('save-btn');
+        if(saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                playUISound('click');
+                if (activeTabId && editor && typeof editor.getValue === 'function') {
+                    const currentTab = tabsData.find(t => t.id === activeTabId);
+                    if (currentTab) {
+                        const content = editor.getValue();
+                        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+                        const a = document.createElement('a');
+                        a.href = URL.createObjectURL(blob);
+                        let fileName = currentTab.name.includes('.') ? currentTab.name : `${currentTab.name}.txt`;
+                        fileName = fileName.replace(/[^a-zA-Z0-9._\-\s()]/g, '_');
+                        a.download = fileName;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(a.href);
+                        if(typeof showHeaderNotification === 'function') showHeaderNotification(`Saved ${fileName}`, "fa-check-circle", 2000);
+                    }
+                }
+            });
+            saveBtn.addEventListener('mouseenter', () => playUISound('hover'));
+        }
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                playUISound('click');
+                if (editor && typeof editor.setValue === 'function' && activeTabId) {
+                    editor.setValue("");
+                    const currentTab = tabsData.find(t => t.id === activeTabId);
+                    if (currentTab) currentTab.content = "";
+                    if(typeof showHeaderNotification === 'function') showHeaderNotification("Editor Cleared", "fa-eraser", 2000);
+                    if(typeof editor.focus === 'function') editor.focus();
+                }
+            });
+            clearBtn.addEventListener('mouseenter', () => playUISound('hover'));
+        }
+
+        window.addEventListener('resize', () => {
+            if (editor && typeof editor.layout === 'function') {
+                editor.layout();
+            }
+        });
+
+    </script>
+</body>
+</html>
