@@ -1,14 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oblivion UI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/editor/editor.main.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Oblivion UI</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+<link data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/editor/editor.main.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+<style>
         html, body {
             height: 100%;
             margin: 0;
@@ -775,151 +776,141 @@
     </style>
 </head>
 <body>
-    <div id="auth-screen">
-        <div class="auth-logo">O</div>
-        <h2 class="auth-title">Oblivion UI Access</h2>
-        <div class="auth-input-group">
-            <input type="text" id="auth-username" class="auth-input" placeholder="Username">
-        </div>
-        <div class="auth-input-group">
-            <input type="password" id="auth-license-key" class="auth-input" placeholder="License Key">
-        </div>
-        <button id="auth-activate-btn">
-            <span class="btn-text">Activate License</span>
-        </button>
-        <div id="auth-error-message" class="auth-error-message"></div>
-    </div>
-
-    <div id="loading-screen" style="display: none;">
-        <div class="loading-content-box">
-            <div class="loading-main-logo">O</div>
-            <div class="loading-text-message">
-                <span id="loading-status-text">Loading Oblivion UI</span>
-                <i id="loading-status-check" class="fas fa-check-circle" style="display: none;"></i>
-            </div>
-            <div class="loading-progress-bar-container">
-                <div class="loading-progress-bar" id="loading-progress-fill"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="app-container" style="display: none;">
-        <header id="app-header">
-            <div class="header-left-section">
-                <button class="menu-btn" title="Menu">
-                    <i class="fas fa-bars"></i> <i class="fas fa-times"></i> </button>
-                <span class="app-title-text">Oblivion UI</span>
-            </div>
-            <div class="header-center-section">
-                <div class="header-icon-buttons" id="header-icon-buttons-collapsible">
-                    <button class="header-icon-btn" id="home-btn-settings" title="Home"><i class="fas fa-house"></i></button>
-                    <button class="header-icon-btn" id="script-hub-btn" title="Script Hub"><i class="fas fa-table-list"></i></button>
-                    <button class="header-icon-btn" id="open-project-btn-settings" title="Open Project"><i class="fas fa-folder-open"></i></button>
-                    <button class="header-icon-btn" id="toggle-console-btn" title="Console"><i class="fas fa-terminal"></i></button>
-                    <button class="header-icon-btn" id="settings-btn-main" title="Settings"><i class="fas fa-gear"></i></button>
-                </div>
-                 <div id="header-notification-bar"><i id="notification-icon" class="fas"></i> <span id="notification-text">Notification</span></div>
-            </div>
-            <div class="header-right-section">
-                <div class="user-profile"><div class="avatar-gradient" title="Guest User"></div><span class="username">Guest User</span></div>
-            </div>
-        </header>
-
-        <div id="main-execution-view">
-            <div id="tab-bar">
-                <button class="add-tab-btn-styled" title="New Tab">New Tab <i class="fas fa-plus"></i></button>
-                <div id="tabs-container">
-                    </div>
-            </div>
-
-            <div id="main-content-area">
-                <div id="actual-editor-wrapper">
-                    <div id="editor-container"></div>
-                </div>
-            </div>
-
-            <div id="console-section">
-                <div id="console-output">
-                    </div>
-            </div>
-
-            <footer id="app-footer">
-                <div class="footer-left-group">
-                    <button class="footer-btn" id="execute-btn"><i class="fas fa-play"></i> Execute</button>
-                    <button class="footer-btn" id="duplicate-btn"><i class="fas fa-clone"></i> Duplicate</button>
-                    <button class="footer-btn" id="open-btn"><i class="fas fa-folder-open"></i> Open</button>
-                    <button class="footer-btn" id="save-btn"><i class="fas fa-download"></i> Save</button>
-                    <button class="footer-btn" id="clear-btn"><i class="fas fa-eraser"></i> Clear</button>
-                </div>
-                <div class="footer-right-group">
-                    <div class="port-display">5553</div> <button class="footer-btn attach-btn" id="attach-btn"><i class="fas fa-paperclip"></i> Attach</button>
-                </div>
-            </footer>
-        </div>
-
-        <div id="settings-page-container">
-            <h2 class="settings-section-title">Theme Colors</h2>
-            <div class="settings-color-palette">
-                <div class="color-circle color-circle-1" data-theme-id="oblivion-dark" title="Default Dark"></div>
-                <div class="color-circle color-circle-2" data-theme-id="oblivion-light" title="Light Theme"></div>
-                <div class="color-circle color-circle-3" data-theme-id="github-dark" title="GitHub Dark"></div>
-                <div class="color-circle color-circle-4" data-theme-id="nord" title="Nord"></div>
-                <div class="color-circle color-circle-5" data-theme-id="dracula" title="Dracula"></div>
-            </div>
-
-            <h2 class="settings-section-title">Editor Settings</h2>
-            <div class="settings-list">
-                <div class="setting-item">
-                    <div class="setting-item-label">
-                        <i class="fas fa-clone"></i> <span>Minimap</span>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="toggle-minimap-checkbox">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="setting-item">
-                    <div class="setting-item-label">
-                        <i class="fas fa-list-ol"></i> <span>Line Numbers</span>
-                    </div>
-                    <label class="toggle-switch">
-                         <input type="checkbox" id="toggle-linenumbers-checkbox">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="setting-item">
-                    <div class="setting-item-label">
-                        <i class="fas fa-text-height"></i>
-                        <span>Font Size</span>
-                    </div>
-                    <input type="number" id="font-size-input" class="font-size-input" value="14" min="8" max="72">
-                </div>
-                <div class="setting-item">
-                    <div class="setting-item-label">
-                        <i class="fas fa-music"></i> <span>UI Sounds</span>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="toggle-ui-sounds-checkbox" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="setting-item">
-                    <div class="setting-item-label">
-                        <i class="fas fa-keyboard"></i> <span>Editor Typing Sounds</span>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="toggle-typing-sounds-checkbox">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <input type="file" id="file-opener" accept=".txt,.lua,.js,.html,.css" style="display: none;">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/loader.min.js"></script>
-    <script>
+<div id="auth-screen">
+<div class="auth-logo">O</div>
+<h2 class="auth-title">Oblivion UI Access</h2>
+<div class="auth-input-group">
+<input class="auth-input" id="auth-username" placeholder="Username" type="text"/>
+</div>
+<div class="auth-input-group">
+<input class="auth-input" id="auth-license-key" placeholder="License Key" type="password"/>
+</div>
+<button id="auth-activate-btn">
+<span class="btn-text">Activate License</span>
+</button>
+<div class="auth-error-message" id="auth-error-message"></div>
+</div>
+<div id="loading-screen" style="display: none;">
+<div class="loading-content-box">
+<div class="loading-main-logo">O</div>
+<div class="loading-text-message">
+<span id="loading-status-text">Loading Oblivion UI</span>
+<i class="fas fa-check-circle" id="loading-status-check" style="display: none;"></i>
+</div>
+<div class="loading-progress-bar-container">
+<div class="loading-progress-bar" id="loading-progress-fill"></div>
+</div>
+</div>
+</div>
+<div id="app-container" style="display: none;">
+<header id="app-header">
+<div class="header-left-section">
+<button class="menu-btn" title="Menu">
+<i class="fas fa-bars"></i> <i class="fas fa-times"></i> </button>
+<span class="app-title-text">Oblivion UI</span>
+</div>
+<div class="header-center-section">
+<div class="header-icon-buttons" id="header-icon-buttons-collapsible">
+<button class="header-icon-btn" id="home-btn-settings" title="Home"><i class="fas fa-house"></i></button>
+<button class="header-icon-btn" id="script-hub-btn" title="Script Hub"><i class="fas fa-table-list"></i></button>
+<button class="header-icon-btn" id="open-project-btn-settings" title="Open Project"><i class="fas fa-folder-open"></i></button>
+<button class="header-icon-btn" id="toggle-console-btn" title="Console"><i class="fas fa-terminal"></i></button>
+<button class="header-icon-btn" id="settings-btn-main" title="Settings"><i class="fas fa-gear"></i></button>
+</div>
+<div id="header-notification-bar"><i class="fas" id="notification-icon"></i> <span id="notification-text">Notification</span></div>
+</div>
+<div class="header-right-section">
+<div class="user-profile"><div class="avatar-gradient" title="Guest User"></div><span class="username">Guest User</span></div>
+</div>
+</header>
+<div id="main-execution-view">
+<div id="tab-bar">
+<button class="add-tab-btn-styled" title="New Tab">New Tab <i class="fas fa-plus"></i></button>
+<div id="tabs-container">
+</div>
+</div>
+<div id="main-content-area">
+<div id="actual-editor-wrapper">
+<div id="editor-container"></div>
+</div>
+</div>
+<div id="console-section">
+<div id="console-output">
+</div>
+</div>
+<footer id="app-footer">
+<div class="footer-left-group">
+<button class="footer-btn" id="execute-btn"><i class="fas fa-play"></i> Execute</button>
+<button class="footer-btn" id="duplicate-btn"><i class="fas fa-clone"></i> Duplicate</button>
+<button class="footer-btn" id="open-btn"><i class="fas fa-folder-open"></i> Open</button>
+<button class="footer-btn" id="save-btn"><i class="fas fa-download"></i> Save</button>
+<button class="footer-btn" id="clear-btn"><i class="fas fa-eraser"></i> Clear</button>
+</div>
+<div class="footer-right-group">
+<div class="port-display">5553</div> <button class="footer-btn attach-btn" id="attach-btn"><i class="fas fa-paperclip"></i> Attach</button>
+</div>
+</footer>
+</div>
+<div id="settings-page-container">
+<h2 class="settings-section-title">Theme Colors</h2>
+<div class="settings-color-palette">
+<div class="color-circle color-circle-1" data-theme-id="oblivion-dark" title="Default Dark"></div>
+<div class="color-circle color-circle-2" data-theme-id="oblivion-light" title="Light Theme"></div>
+<div class="color-circle color-circle-3" data-theme-id="github-dark" title="GitHub Dark"></div>
+<div class="color-circle color-circle-4" data-theme-id="nord" title="Nord"></div>
+<div class="color-circle color-circle-5" data-theme-id="dracula" title="Dracula"></div>
+</div>
+<h2 class="settings-section-title">Editor Settings</h2>
+<div class="settings-list">
+<div class="setting-item">
+<div class="setting-item-label">
+<i class="fas fa-clone"></i> <span>Minimap</span>
+</div>
+<label class="toggle-switch">
+<input id="toggle-minimap-checkbox" type="checkbox"/>
+<span class="toggle-slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-item-label">
+<i class="fas fa-list-ol"></i> <span>Line Numbers</span>
+</div>
+<label class="toggle-switch">
+<input id="toggle-linenumbers-checkbox" type="checkbox"/>
+<span class="toggle-slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-item-label">
+<i class="fas fa-text-height"></i>
+<span>Font Size</span>
+</div>
+<input class="font-size-input" id="font-size-input" max="72" min="8" type="number" value="14"/>
+</div>
+<div class="setting-item">
+<div class="setting-item-label">
+<i class="fas fa-music"></i> <span>UI Sounds</span>
+</div>
+<label class="toggle-switch">
+<input checked="" id="toggle-ui-sounds-checkbox" type="checkbox"/>
+<span class="toggle-slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-item-label">
+<i class="fas fa-keyboard"></i> <span>Editor Typing Sounds</span>
+</div>
+<label class="toggle-switch">
+<input id="toggle-typing-sounds-checkbox" type="checkbox"/>
+<span class="toggle-slider"></span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<input accept=".txt,.lua,.js,.html,.css" id="file-opener" style="display: none;" type="file"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/loader.min.js"></script>
+<script>
         let editor;
         let tabsData = [];
         let activeTabId = null;
@@ -932,20 +923,36 @@
         let editorTypingSoundsEnabled = true;
         let currentUsername = "Guest User";
         const validLicenseKeys = [
-            "OblivionKey_X7QH0K19PWUZD3AV", "OblivionKey_E2ZJRM0Y84XLH5TN",
-            "OblivionKey_9WG1UKFX5D2E3VLM", "OblivionKey_MZK0YJUTBNLW38HR",
-            "OblivionKey_74RAYNEDPXBQMV1J", "OblivionKey_UDN89AY6X0TLPZMH",
-            "OblivionKey_1ZVMYKFT49NCEUJB", "OblivionKey_R5UP1ZBXOGHQEN6K",
-            "OblivionKey_6JH8PX4CQ29MNTRD", "OblivionKey_QKLJXWMB71FUZAD6",
-            "OblivionKey_ZUWD2L3RXQ94P8KM", "OblivionKey_YJATCZPMV7BXQK10",
-            "OblivionKey_K1ELD0HTYBXZ93MW", "OblivionKey_BZWFY3PQMVLK78XD",
-            "OblivionKey_T49U7LCEWJ3YXMZQ", "OblivionKey_GYU3TKMPB7XEL4QN",
-            "OblivionKey_XYZME6JTR19LQB4C", "OblivionKey_D49PZLK73CXUMTYE",
-            "OblivionKey_LM83UPYQVBN6AZXT", "OblivionKey_PWZ3MLUXTV6YAJQ9",
-            "OblivionKey_QW9KXUJM2LZP37HT", "OblivionKey_58LZAXKTD19QUMYW",
-            "OblivionKey_BN4QTXL9ZJYE1UM7", "OblivionKey_MU01KFH3XZQ9WTLA",
-            "OblivionKey_CVY9ZLMKU0WXT47P", "OblivionKey_R83TLKQXZ97MUWAD",
-            "Testing"
+            
+        "OblivionKey_5Q12SCDY9OYIWAD9",
+        "OblivionKey_X7QH0K19PWUZD3AV",
+        "OblivionKey_E2ZJRM0Y84XLH5TN",
+        "OblivionKey_9WG1UKFX5D2E3VLM",
+        "OblivionKey_MZK0YJUTBNLW38HR",
+        "OblivionKey_74RAYNEDPXBQMV1J",
+        "OblivionKey_UDN89AY6X0TLPZMH",
+        "OblivionKey_1ZVMYKFT49NCEUJB",
+        "OblivionKey_R5UP1ZBXOGHQEN6K",
+        "OblivionKey_6JH8PX4CQ29MNTRD",
+        "OblivionKey_QKLJXWMB71FUZAD6",
+        "OblivionKey_ZUWD2L3RXQ94P8KM",
+        "OblivionKey_YJATCZPMV7BXQK10",
+        "OblivionKey_K1ELD0HTYBXZ93MW",
+        "OblivionKey_BZWFY3PQMVLK78XD",
+        "OblivionKey_T49U7LCEWJ3YXMZQ",
+        "OblivionKey_GYU3TKMPB7XEL4QN",
+        "OblivionKey_XYZME6JTR19LQB4C",
+        "OblivionKey_D49PZLK73CXUMTYE",
+        "OblivionKey_LM83UPYQVBN6AZXT",
+        "OblivionKey_PWZ3MLUXTV6YAJQ9",
+        "OblivionKey_QW9KXUJM2LZP37HT",
+        "OblivionKey_58LZAXKTD19QUMYW",
+        "OblivionKey_BN4QTXL9ZJYE1UM7",
+        "OblivionKey_MU01KFH3XZQ9WTLA",
+        "OblivionKey_CVY9ZLMKU0WXT47P",
+        "OblivionKey_R83TLKQXZ97MUWAD",
+        "Testing"
+    
         ];
 
         const authScreen = document.getElementById('auth-screen');
