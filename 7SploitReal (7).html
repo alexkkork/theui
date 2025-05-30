@@ -633,7 +633,7 @@ body {
                     </div>
                 <div id="editor-container"></div>
                 <div class="status-bar">
-                    <div class="status-bar-item">Ln 1, Col 1</div>
+                    <div class="status-bar-item" id="editorLineCol">Ln 1, Col 1</div>
                     <div class="status-bar-item">Spaces: 4</div>
                     <div class="status-bar-item">UTF-8</div>
                     <div class="status-bar-item clickable" id="executorStatus">Idle</div>
@@ -671,6 +671,7 @@ body {
         let scriptExplorerCounter = 1; 
         let activeScriptExplorerItem = null; 
         let executionTimeout = null; 
+        let executorStatusElement; // Reference to the executor status element
 
         const themes = {
             "7sploit-dark": { 
@@ -1238,7 +1239,7 @@ body {
                         { token: 'comment', foreground: 'A08C6E' }, { token: 'keyword', foreground: '#FFBF00' }, 
                         { token: 'number', foreground: '#DAA520' }, 
                         { token: 'string', foreground: '#F4A460' }, 
-                        { token: 'identifier', foreground: '#F0E68C' }, { token: 'type.identifier', foreground: '#FFC40C' },
+                        { token: 'identifier', foreground: '#F0E68C' }, { token: 'type.identifier', foreground: '#FFC40C' }, 
                         { token: 'operator', foreground: '#FFD700' }, { token: 'delimiter', foreground: '#F0E68C' }
                     ],
                     colors: {
@@ -1502,26 +1503,34 @@ body {
             if (activeTab && editor) {
                 const content = editor.getValue();
                 const tabTextElement = activeTab.querySelector('.tab-text');
-                const filename = tabTextElement ? tabTextElement.textContent.replace(/[^a-z0-9_.-]/gi, '_') + ".lua" : "7sploit_script.lua";
-                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(link.href);
+                let filename = tabTextElement ? tabTextElement.textContent.replace(/[^a-z0-9_.-]/gi, '_') : "7sploit_script";
+                // Ensure a .lua extension or similar if desired, or let native handle it
+                if (!filename.endsWith('.lua') && !filename.endsWith('.txt')) {
+                    filename += '.lua'; // Default to .lua if no extension
+                }
+                
+                // Send save request to native app
+                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.scriptHandler) {
+                    window.webkit.messageHandlers.scriptHandler.postMessage({
+                        type: "saveScriptAsTextFile",
+                        scriptContent: content,
+                        suggestedFileName: filename
+                    });
+                    showNotification("Save request sent to native app!", "success");
+                } else {
+                    // Fallback to browser download if native bridge not available
+                    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(link.href);
+                    showNotification(`File saved: ${filename}`, "success");
+                }
             } else {
-                const notification = document.createElement('div');
-                notification.textContent = "No active tab to save!";
-                notification.style.position = 'fixed'; notification.style.bottom = '20px';
-                notification.style.left = '50%'; notification.style.transform = 'translateX(-50%)';
-                notification.style.backgroundColor = 'var(--error-color, #FF5F57)'; 
-                notification.style.color = 'white';
-                notification.style.padding = '10px 20px'; notification.style.borderRadius = '5px';
-                notification.style.zIndex = '2000';
-                document.body.appendChild(notification);
-                setTimeout(() => { notification.remove(); }, 3000);
+                showNotification("No active tab to save!", "error");
             }
         });
 
@@ -1536,7 +1545,7 @@ body {
                 executeButton.classList.remove('pulsing');
                 executeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>Execute`;
                 executorStatus.textContent = 'Finished';
-                executorStatus.style.color = 'var(--success-color, #6a9955)'; 
+                executorStatus.style.color = 'var(--success-color)'; 
             } else { 
                 executeButton.classList.remove('pulsing');
                 executeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>Execute`;
@@ -1545,19 +1554,30 @@ body {
             }
         }
         executeButton.addEventListener('click', () => {
-            if (executionTimeout) { 
-                clearTimeout(executionTimeout);
-                executionTimeout = null;
-                setExecuteButtonState('idle');
-            } else {
+            const currentScriptContent = editor.getValue();
+            const activeTab = document.querySelector('.tab-item.active');
+            const tabName = activeTab ? activeTab.querySelector('.tab-text').textContent : "Untitled Script";
+
+            // Send script to native app for execution
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.scriptHandler) {
+                window.webkit.messageHandlers.scriptHandler.postMessage({
+                    type: "executeScript",
+                    script: currentScriptContent,
+                    tabName: tabName
+                });
+                showNotification(`Executing script: ${tabName}`, "success");
                 setExecuteButtonState('executing');
+                // Simulate execution completion (in real app, native would send back a message)
                 executionTimeout = setTimeout(() => {
                     setExecuteButtonState('finished');
-                    executionTimeout = setTimeout(() => { 
+                    setTimeout(() => {
                         setExecuteButtonState('idle');
                         executionTimeout = null;
                     }, 2000);
-                }, 3000); 
+                }, 3000);
+            } else {
+                showNotification("Native bridge not found. Cannot execute script.", "error");
+                setExecuteButtonState('idle');
             }
         });
 
@@ -1568,6 +1588,7 @@ body {
                 toggleButtonText.textContent = isCollapsed ? 'Expand' : 'Collapse';
             }
             sidebarToggle.title = isCollapsed ? "Expand Sidebar" : "Collapse Sidebar";
+            if (editor) editor.layout(); // Relayout editor after sidebar collapse/expand
         });
 
         function createScriptExplorerItem(id, name) {
@@ -1591,7 +1612,7 @@ body {
                 if (existingTab) {
                     activateTab(existingTab);
                 } else {
-                    addNewTab(scriptName, `-- Script: ${scriptName}\n`);
+                    addNewTab(scriptName, tabData.get(id) || `-- Script: ${scriptName}\n`); // Use content from tabData map
                 }
             });
 
@@ -1624,6 +1645,13 @@ body {
                 if (input.parentElement === textSpanElement) { 
                     textSpanElement.removeChild(input);
                 }
+                // Update tab name if it exists
+                const scriptId = textSpanElement.closest('.script-item').dataset.scriptId;
+                const tabItem = Array.from(tabContainer.querySelectorAll('.tab-item')).find(t => t.querySelector('.tab-text').textContent === oldName);
+                if (tabItem) {
+                    tabItem.querySelector('.tab-text').textContent = textSpanElement.textContent;
+                }
+
                 input.removeEventListener('blur', saveName);
                 input.removeEventListener('keydown', handleInputKey);
             }
@@ -1646,6 +1674,8 @@ body {
             const scriptName = `New Script ${scriptExplorerCounter++}`;
             const newItem = createScriptExplorerItem(scriptId, scriptName);
             scriptList.appendChild(newItem);
+            // Also create a new tab for it and activate
+            addNewTab(scriptName, `-- Script: ${scriptName}\n`);
         });
 
         document.addEventListener('click', (e) => {
@@ -1659,6 +1689,7 @@ body {
             if (actionItem && activeScriptExplorerItem) {
                 const action = actionItem.dataset.action;
                 const scriptTextSpan = activeScriptExplorerItem.querySelector('.script-item-text');
+                const scriptIdToDelete = activeScriptExplorerItem.dataset.scriptId;
 
                 if (action === 'rename' && scriptTextSpan) {
                     makeScriptItemEditable(scriptTextSpan);
@@ -1676,7 +1707,8 @@ body {
                              if(closeIcon) closeIcon.click(); 
                         }
                     }
-                    
+                    tabData.delete(scriptIdToDelete); // Remove from map
+
                     if(wasActive && scriptList.children.length > 0) {
                         const firstScriptItem = scriptList.children[0];
                         firstScriptItem.classList.add('active');
@@ -1684,7 +1716,7 @@ body {
                         if(newActiveScriptText) {
                              let existingTab = Array.from(tabContainer.querySelectorAll('.tab-item')).find(t => t.querySelector('.tab-text').textContent === newActiveScriptText.textContent);
                             if (existingTab) activateTab(existingTab);
-                            else addNewTab(newActiveScriptText.textContent, `-- Script: ${newActiveScriptText.textContent}\n`);
+                            else addNewTab(newActiveScriptText.textContent, tabData.get(firstScriptItem.dataset.scriptId) || `-- Script: ${newActiveScriptText.textContent}\n`);
                         }
                     } else if (scriptList.children.length === 0 && tabContainer.querySelectorAll('.tab-item').length === 0) {
                         addNewTab();
@@ -1703,7 +1735,10 @@ body {
             const tabText = document.createElement('span');
             tabText.classList.add('tab-text');
             tabText.textContent = tabName;
-            tabText.addEventListener('dblclick', () => makeTabEditable(tabText, tabItem)); 
+            tabText.addEventListener('dblclick', (e) => {
+                e.stopPropagation(); // Prevent tab activation on dblclick
+                makeTabEditable(tabText, tabItem);
+            }); 
 
             const closeIcon = document.createElement('span');
             closeIcon.classList.add('tab-close-icon');
@@ -1734,6 +1769,11 @@ body {
                 if (input.parentElement === tabTextElement) tabTextElement.removeChild(input);
                 input.removeEventListener('blur', saveTabName);
                 input.removeEventListener('keydown', handleInputKeydown);
+                // Update script explorer item name if it exists and matches
+                const scriptItem = Array.from(scriptList.querySelectorAll('.script-item')).find(item => item.querySelector('.script-item-text').textContent === oldName);
+                if (scriptItem) {
+                    scriptItem.querySelector('.script-item-text').textContent = tabTextElement.textContent;
+                }
             }
 
             function handleInputKeydown(e) {
@@ -1759,6 +1799,8 @@ body {
             const newTabElement = createTabElement(tabId, tabName, initialContent);
             tabContainer.insertBefore(newTabElement, addTabButton); 
             activateTab(newTabElement);
+            // Scroll to the new tab if it's not visible
+            newTabElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         }
 
         function activateTab(tabElement) {
@@ -1769,6 +1811,7 @@ body {
 
             const tabId = tabElement.dataset.tabId;
             editor.setValue(tabData.get(tabId) || ""); 
+            editor.focus(); // Focus the editor when tab is activated
         }
 
         addTabButton.addEventListener('click', () => addNewTab());
@@ -1830,7 +1873,7 @@ body {
         }
         populateThemeSelector();
 
-
+        // Initial setup for the default MainScript.lua item
         const initialScriptItem = document.querySelector('#scriptList .script-item[data-script-id="default-mainscript"]');
         if(initialScriptItem) {
             const textSpan = initialScriptItem.querySelector('.script-item-text');
@@ -1852,10 +1895,76 @@ body {
                 if (existingTab) {
                     activateTab(existingTab);
                 } else {
-                    addNewTab(scriptName, tabData.get("default-mainscript") || tabData.get("MainScript.lua") || `-- Script: ${scriptName}\n`);
+                    // Use the content stored in tabData for 'default-mainscript'
+                    addNewTab(scriptName, tabData.get("default-mainscript") || `-- Script: ${scriptName}\n`);
                 }
             });
         }
+
+        // --- Native Bridge Communication Functions (Global for Swift to call) ---
+
+        // Function to update the executor status from native Swift code
+        window.updateConnectionStatus = function(status, port) {
+            if (executorStatusElement) {
+                executorStatusElement.textContent = status;
+                if (status === "Online") {
+                    executorStatusElement.style.color = 'var(--success-color)';
+                    executorStatusElement.classList.remove('pulsing'); // Remove pulsing if it was waiting
+                } else if (status === "Waiting") {
+                    executorStatusElement.style.color = 'var(--accent-primary)';
+                    executorStatusElement.classList.add('pulsing');
+                } else { // Offline, etc.
+                    executorStatusElement.style.color = 'var(--error-color)';
+                    executorStatusElement.classList.remove('pulsing');
+                }
+            }
+            // You might also want to log this to a console if you add one to 7Sploit
+            console.log(`Native Connection Status: ${status} on port ${port}`);
+        };
+
+        // Function to log messages from native Swift code to a JS console (if implemented)
+        window.logToConsole = function(message) {
+            // In 7SploitReal (7).html, there isn't a dedicated console output area.
+            // For now, we'll just log to the browser console.
+            // If you add a console div to 7Sploit, you'd append messages there.
+            console.log(`[Native Log] ${message}`);
+            // Example if you add a console div:
+            // const consoleOutputDiv = document.getElementById('consoleOutput');
+            // if (consoleOutputDiv) {
+            //     const logEntry = document.createElement('div');
+            //     logEntry.textContent = message;
+            //     consoleOutputDiv.appendChild(logEntry);
+            //     consoleOutputDiv.scrollTop = consoleOutputDiv.scrollHeight;
+            // }
+        };
+
+        // Function to show notifications from native Swift code
+        window.showHeaderNotification = function(message, iconClass, duration) {
+            // 7SploitReal (7).html does not have a header notification bar.
+            // For now, we'll use a simple alert or console log.
+            // If you add a notification bar, you'd implement it here.
+            console.log(`[Native Notification] ${message} (Icon: ${iconClass})`);
+            // Example if you add a notification bar:
+            // const notificationBar = document.getElementById('notificationBar');
+            // if (notificationBar) {
+            //     notificationBar.textContent = message;
+            //     notificationBar.className = `notification-bar visible ${iconClass}`; // Add appropriate classes
+            //     setTimeout(() => notificationBar.classList.remove('visible'), duration);
+            // }
+        };
+
+        // Initial request for connection status from native app on load
+        window.addEventListener('load', () => {
+            executorStatusElement = document.getElementById('executorStatus'); // Get reference on load
+
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.scriptHandler) {
+                // Request current connection status from native app
+                window.webkit.messageHandlers.scriptHandler.postMessage({ type: "requestConnectionAction" });
+            } else {
+                console.warn("Native bridge not available. Connection status will not be updated.");
+                window.updateConnectionStatus("Offline", "N/A"); // Set initial status if no bridge
+            }
+        });
 
     </script>
     <script>
