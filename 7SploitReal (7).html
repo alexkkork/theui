@@ -1509,10 +1509,8 @@ body {
                 const content = editor.getValue();
                 const tabTextElement = activeTab.querySelector('.tab-text');
                 let filename = tabTextElement ? tabTextElement.textContent.replace(/[^a-z0-9_.-]/gi, '_') : "7sploit_script";
-                // Ensure a .lua extension or similar if desired, or let native handle it
-                if (!filename.endsWith('.lua') && !filename.endsWith('.txt')) {
-                    filename += '.lua'; // Default to .lua if no extension
-                }
+                // Force .txt extension for this request
+                filename = filename.split('.')[0] + '.txt'; 
                 
                 // Send save request to native app
                 if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.scriptHandler) {
@@ -1654,7 +1652,7 @@ body {
                 const scriptId = textSpanElement.closest('.script-item').dataset.scriptId;
                 const tabItem = Array.from(tabContainer.querySelectorAll('.tab-item')).find(t => t.querySelector('.tab-text').textContent === oldName);
                 if (tabItem) {
-                    tabItem.querySelector('.tab-text').textContent = textSpanElement.textContent;
+                    tabItem.querySelector('.tab-item-text').textContent = textSpanElement.textContent; // Corrected to .script-item-text
                 }
 
                 input.removeEventListener('blur', saveName);
@@ -1723,7 +1721,9 @@ body {
                             if (existingTab) activateTab(existingTab);
                             else addNewTab(newActiveScriptText.textContent, tabData.get(firstScriptItem.dataset.scriptId) || `-- Script: ${newActiveScriptText.textContent}\n`);
                         }
-                    } else if (scriptList.children.length === 0 && tabContainer.querySelectorAll('.tab-item').length === 0) {
+                    }
+                    // If no scripts left in explorer, and no tabs, add a new default tab
+                    else if (scriptList.children.length === 0 && tabContainer.querySelectorAll('.tab-item').length === 0) {
                         addNewTab();
                     }
                 }
