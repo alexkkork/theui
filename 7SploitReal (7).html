@@ -1466,23 +1466,25 @@ body {
         const themeSelectorContainer = document.getElementById('themeSelectorContainer');
 
 
-        openFileButton.addEventListener('click', () => fileOpenerInput.click());
+        openFileButton.addEventListener('click', () => {
+            // Send message to native Swift code to open file dialog
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.scriptHandler) {
+                window.webkit.messageHandlers.scriptHandler.postMessage({ type: "openTextFile" });
+                showNotification("Opening file dialog...", "success");
+            } else {
+                // Fallback for browser environment (if not running in WKWebView)
+                fileOpenerInput.click(); // This will open the browser's file dialog
+                showNotification("Using browser file dialog.", "info");
+            }
+        });
+        // The fileOpenerInput change listener remains for the browser fallback
         fileOpenerInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const content = e.target.result;
-                    const activeTab = document.querySelector('.tab-item.active');
-                    if (activeTab) {
-                        const tabId = activeTab.dataset.tabId;
-                        tabData.set(tabId, content);
-                        if (editor) editor.setValue(content); 
-                        const tabTextElement = activeTab.querySelector('.tab-text');
-                        if (tabTextElement) tabTextElement.textContent = file.name;
-                    } else {
-                        addNewTab(file.name, content);
-                    }
+                    addNewTab(file.name, content);
                 };
                 reader.readAsText(file);
                 event.target.value = null; 
@@ -1495,6 +1497,9 @@ body {
                 const tabId = activeTab.dataset.tabId;
                 tabData.set(tabId, ""); 
                 editor.setValue("");
+                showNotification("Editor cleared!", "success");
+            } else {
+                showNotification("No active tab to clear!", "error");
             }
         });
 
@@ -1939,19 +1944,46 @@ body {
         };
 
         // Function to show notifications from native Swift code
-        window.showHeaderNotification = function(message, iconClass, duration) {
+        window.showNotification = function(message, type, duration = 3000) {
             // 7SploitReal (7).html does not have a header notification bar.
-            // For now, we'll use a simple alert or console log.
-            // If you add a notification bar, you'd implement it here.
-            console.log(`[Native Notification] ${message} (Icon: ${iconClass})`);
-            // Example if you add a notification bar:
-            // const notificationBar = document.getElementById('notificationBar');
-            // if (notificationBar) {
-            //     notificationBar.textContent = message;
-            //     notificationBar.className = `notification-bar visible ${iconClass}`; // Add appropriate classes
-            //     setTimeout(() => notificationBar.classList.remove('visible'), duration);
-            // }
+            // For now, we'll use a simple temporary div at the bottom of the screen.
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.left = '50%';
+            notification.style.transform = 'translateX(-50%)';
+            notification.style.backgroundColor = type === 'success' ? 'var(--success-color)' : 'var(--error-color)';
+            notification.style.color = 'white';
+            notification.style.padding = '10px 20px';
+            notification.style.borderRadius = '5px';
+            notification.style.zIndex = '2000';
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.3s ease-in-out';
+            
+            document.body.appendChild(notification);
+
+            // Fade in
+            setTimeout(() => { notification.style.opacity = '1'; }, 10);
+
+            // Fade out and remove
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.addEventListener('transitionend', () => notification.remove());
+            }, duration);
         };
+
+        // NEW: Function to receive file content from native Swift code
+        window.receiveFileContent = function(fileName, content) {
+            if (editor) {
+                // Create a new tab with the file content
+                addNewTab(fileName, content);
+                showNotification(`Opened file: ${fileName}`, "success");
+            } else {
+                showNotification(`Error: Editor not ready to open ${fileName}.`, "error");
+            }
+        };
+
 
         // Initial request for connection status from native app on load
         window.addEventListener('load', () => {
