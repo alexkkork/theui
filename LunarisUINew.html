@@ -2407,6 +2407,45 @@
 
     });
 </script>
+<script>
+    
+    function sendThemeToNativeApp(themeName) {
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.scriptHandler) {
+            window.webkit.messageHandlers.scriptHandler.postMessage({ type: 'updateNativeTheme', themeName: themeName });
+            console.log(`[JS -> Native] Sent theme update: ${themeName}`);
+        } else {
+            console.warn(`[JS -> Native] Native bridge not available. Cannot send theme: ${themeName}`);
+            logToConsole('WARN', `Native bridge not available. Theme not sent: ${themeName}.`);
+        }
+    }
+
+    function applyTheme(themeName) {
+        document.body.dataset.theme = themeName;
+        localStorage.setItem('lunarisTheme', themeName);
+        logToConsole('THEME_EVENT', `Theme changed to: ${themeName}`);
+        
+        sendThemeToNativeApp(themeName);
+
+        const currentAccent = localStorage.getItem('lunarisAccentColor') || '#7C3AED';
+        defineMonacoThemes(currentAccent, themeName); 
+        if (editor && typeof monaco !== 'undefined' && monaco.editor) {
+            monaco.editor.setTheme(themeName === 'light' ? 'lunaris-light' : 'lunaris-dark');
+        }
+
+        
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        
+
+        const initialTheme = document.body.dataset.theme || 'dark';
+        sendThemeToNativeApp(initialTheme);
+        
+        
+    });
+
+    
+</script>
 
 
 <div class="context-view" aria-hidden="true" style="display: none;"></div><div class="monaco-aria-container"><div class="monaco-alert" role="alert" aria-atomic="true"></div><div class="monaco-alert" role="alert" aria-atomic="true"></div><div class="monaco-status" aria-live="polite" aria-atomic="true"></div><div class="monaco-status" aria-live="polite" aria-atomic="true"></div></div></body></html>
