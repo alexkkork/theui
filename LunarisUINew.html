@@ -2535,4 +2535,86 @@
     });
 </script>
 
+<script>
+    // --- IMPORTANT: Define these functions if they are meant to be JavaScript functions ---
+    // If these functions are supposed to communicate with Swift, you'll need to
+    // modify them to use `window.webkit.messageHandlers.YOUR_SWIFT_HANDLER.postMessage()`
+    // and ensure the corresponding handlers are set up in Swift.
+    // Based on your console logs, your HTML was calling these without them being defined.
+    function updateConnectionStatus(status, port) {
+        // console.log(`[JS] Connection Status: ${status} on port ${port}`);
+        // Add your UI update logic here, e.g.:
+        // const statusElement = document.getElementById('connectionStatusDisplay');
+        // if (statusElement) {
+        //     statusElement.innerText = `Status: ${status} (Port: ${port})`;
+        // }
+    }
+
+    function updateConnectionColor(color) {
+        // console.log(`[JS] Connection Color: ${color}`);
+        // Add your UI update logic here, e.g.:
+        // const headerElement = document.querySelector('h1'); // Or any element you want to color
+        // if (headerElement) {
+        //     headerElement.style.color = color;
+        // }
+    }
+    // --- END OF PLACEHOLDER FUNCTIONS ---
+
+
+    // Get references to your buttons and editor textarea
+    const openFileButton = document.getElementById('open-file-btn');
+    const saveFileButton = document.getElementById('save-file-btn');
+    const editorContent = document.getElementById('editorContent'); // Assuming your textarea has this ID
+
+    // Add event listener for the "Open File" button
+    if (openFileButton) {
+        openFileButton.addEventListener('click', () => {
+            // Check if the webkit message handlers are available (i.e., running inside WKWebView)
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.openFileHandler) {
+                // Send an empty message to the Swift handler named "openFileHandler"
+                // This will cause Swift to open the native Finder-like "Open" dialog.
+                window.webkit.messageHandlers.openFileHandler.postMessage("");
+            } else {
+                console.warn("webkit.messageHandlers.openFileHandler is not available. This feature is only supported in the native macOS application.");
+                alert("File opening is only supported when running the native macOS application.");
+            }
+        });
+    } else {
+        console.error("Open File button with ID 'open-file-btn' not found.");
+    }
+
+
+    // Add event listener for the "Save File" button
+    if (saveFileButton) {
+        saveFileButton.addEventListener('click', () => {
+            // Check if the webkit message handlers are available
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.saveFileHandler) {
+                // Send an empty message to the Swift handler named "saveFileHandler".
+                // Swift will then 'ask' JavaScript for the editor content via evaluateJavaScript,
+                // and then open the native Finder-like "Save" dialog.
+                window.webkit.messageHandlers.saveFileHandler.postMessage("");
+            } else {
+                console.warn("webkit.messageHandlers.saveFileHandler is not available. This feature is only supported in the native macOS application.");
+                alert("File saving is only supported when running the native macOS application.");
+            }
+        });
+    } else {
+        console.error("Save File button with ID 'save-file-btn' not found.");
+    }
+
+
+    // Optional: Auto-focus the editor when the page loads
+    window.addEventListener('load', () => {
+        if (editorContent) {
+            editorContent.focus();
+        }
+        // Your initial calls from your console log, now that functions are defined:
+        // These might be related to your "MacSploit client" or "OblivionUI"
+        // Ensure the sourceURL `https://raw.githubusercontent.com/alexkkork/theui/main/`
+        // is correct and points to a valid JS file if you're loading an external script.
+        // For local development, it's often better to copy external scripts into your project bundle.
+        updateConnectionStatus('Waiting', '5553');
+        updateConnectionColor('#FF9FBA'); // Using the color from your console log
+    });
+</script>
 <div class="context-view" aria-hidden="true" style="display: none;"></div><div class="monaco-aria-container"><div class="monaco-alert" role="alert" aria-atomic="true"></div><div class="monaco-alert" role="alert" aria-atomic="true"></div><div class="monaco-status" aria-live="polite" aria-atomic="true"></div><div class="monaco-status" aria-live="polite" aria-atomic="true"></div></div></body></html>
