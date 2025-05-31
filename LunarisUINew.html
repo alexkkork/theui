@@ -2496,6 +2496,43 @@
     // (contentController.add(self, name: "updateConnectionColor"))
     // and handle it in the userContentController(_:didReceive:) method.
 </script>
+<script>
+    // Get references to your buttons and editor textarea
+    const openFileButton = document.getElementById('open-file-btn');
+    const saveFileButton = document.getElementById('save-file-btn');
+    const editorContent = document.getElementById('editorContent'); // Assuming your textarea has this ID
 
+    // Add event listener for the "Open File" button
+    openFileButton.addEventListener('click', () => {
+        // Check if the webkit message handlers are available (i.e., running inside WKWebView)
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.openFileHandler) {
+            // Send an empty message to the Swift handler named "openFileHandler"
+            window.webkit.messageHandlers.openFileHandler.postMessage("");
+        } else {
+            console.warn("webkit.messageHandlers.openFileHandler is not available. This feature is only supported in the native macOS application.");
+            alert("File opening is only supported when running the native macOS application.");
+        }
+    });
+
+    // Add event listener for the "Save File" button
+    saveFileButton.addEventListener('click', () => {
+        // Check if the webkit message handlers are available
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.saveFileHandler) {
+            // Send an empty message to the Swift handler named "saveFileHandler".
+            // Swift will then 'ask' JavaScript for the editor content via evaluateJavaScript.
+            window.webkit.messageHandlers.saveFileHandler.postMessage("");
+        } else {
+            console.warn("webkit.messageHandlers.saveFileHandler is not available. This feature is only supported in the native macOS application.");
+            alert("File saving is only supported when running the native macOS application.");
+        }
+    });
+
+    // Optional: Auto-focus the editor when the page loads
+    window.addEventListener('load', () => {
+        if (editorContent) {
+            editorContent.focus();
+        }
+    });
+</script>
 
 <div class="context-view" aria-hidden="true" style="display: none;"></div><div class="monaco-aria-container"><div class="monaco-alert" role="alert" aria-atomic="true"></div><div class="monaco-alert" role="alert" aria-atomic="true"></div><div class="monaco-status" aria-live="polite" aria-atomic="true"></div><div class="monaco-status" aria-live="polite" aria-atomic="true"></div></div></body></html>
