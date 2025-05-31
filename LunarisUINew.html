@@ -1,9 +1,11 @@
-<html lang="en" style="--accent-color: #4F46E5; --accent-color-hover: #4338CA; --accent-gradient-end: #312e81;"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lunaris UI</title>
-    <script src="https://cdn.tailwindcss.com"></script><style type="text/css" id="operaUserStyle"></style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/editor/editor.main.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
     <style>
@@ -60,9 +62,12 @@
             color: var(--text-primary);
             transition: background-color 0.3s ease, color 0.3s ease;
             margin: 0; 
+            padding: 0;
+            -webkit-app-region: drag; /* Makes the entire window draggable by default */
         }
         html, body {
             height: 100%; 
+            width: 100%;
             overflow: hidden; 
         }
         .custom-scrollbar::-webkit-scrollbar {
@@ -281,1121 +286,79 @@
         body[data-theme="light"] input:checked + .toggle-slider-new:before { transform: translateX(20px); background-color: white;}
         body[data-theme="light"] .toggle-slider-new:before { background-color: #4A5568; }
     </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.visible{visibility:visible}.invisible{visibility:hidden}.absolute{position:absolute}.relative{position:relative}.bottom-0{bottom:0px}.left-0{left:0px}.left-4{left:1rem}.right-0{right:0px}.right-2{right:0.5rem}.top-0{top:0px}.top-1\/2{top:50%}.top-2{top:0.5rem}.mx-3{margin-left:0.75rem;margin-right:0.75rem}.my-3{margin-top:0.75rem;margin-bottom:0.75rem}.mb-1{margin-bottom:0.25rem}.mb-1\.5{margin-bottom:0.375rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mr-1\.5{margin-right:0.375rem}.mt-2{margin-top:0.5rem}.mt-6{margin-top:1.5rem}.mt-auto{margin-top:auto}.ml-2{margin-left:0.5rem}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-2\.5{height:0.625rem}.h-28{height:7rem}.h-full{height:100%}.h-screen{height:100vh}.min-h-screen{min-height:100vh}.min-h-\[calc\(100\%-2rem\)\]{min-height:calc(100% - 2rem)}.w-1\/2{width:50%}.w-2\.5{width:0.625rem}.w-3\/4{width:75%}.w-5\/6{width:83.333333%}.w-full{width:100%}.min-w-\[150px\]{min-width:150px}.flex-shrink-0{flex-shrink:0}.flex-grow{flex-grow:1}.-translate-y-1\/2{--tw-translate-y:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.select-none{-webkit-user-select:none;user-select:none}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.space-x-1\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.375rem * var(--tw-space-x-reverse));margin-left:calc(0.375rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-2 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.5rem * var(--tw-space-x-reverse));margin-left:calc(0.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-2\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.625rem * var(--tw-space-x-reverse));margin-left:calc(0.625rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-1\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.375rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded-sm{border-radius:0.125rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-\[\#181A1F\]{--tw-border-opacity:1;border-color:rgb(24 26 31 / var(--tw-border-opacity, 1))}.border-\[\#CBD5E0\]{--tw-border-opacity:1;border-color:rgb(203 213 224 / var(--tw-border-opacity, 1))}.border-\[var\(--btn-border-color\)\]{border-color:var(--btn-border-color)}.border-white\/30{border-color:rgb(255 255 255 / 0.3)}.bg-\[var\(--page-bg-color\)\]{background-color:var(--page-bg-color)}.bg-\[\#08090d\]{--tw-bg-opacity:1;background-color:rgb(8 9 13 / var(--tw-bg-opacity, 1))}.bg-\[\#181A1F\]{--tw-bg-opacity:1;background-color:rgb(24 26 31 / var(--tw-bg-opacity, 1))}.bg-\[\#CBD5E0\]{--tw-bg-opacity:1;background-color:rgb(203 213 224 / var(--tw-bg-opacity, 1))}.bg-\[\#E2E8F0\]{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.bg-\[var\(--content-bg\)\]{background-color:var(--content-bg)}.bg-\[var\(--main-ui-bg\)\]{background-color:var(--main-ui-bg)}.bg-green-400{--tw-bg-opacity:1;background-color:rgb(74 222 128 / var(--tw-bg-opacity, 1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94 / var(--tw-bg-opacity, 1))}.bg-red-400{--tw-bg-opacity:1;background-color:rgb(248 113 113 / var(--tw-bg-opacity, 1))}.bg-red-500{--tw-bg-opacity:1;background-color:rgb(239 68 68 / var(--tw-bg-opacity, 1))}.bg-transparent{background-color:transparent}.bg-white\/20{background-color:rgb(255 255 255 / 0.2)}.bg-yellow-400{--tw-bg-opacity:1;background-color:rgb(250 204 21 / var(--tw-bg-opacity, 1))}.bg-yellow-500{--tw-bg-opacity:1;background-color:rgb(234 179 8 / var(--tw-bg-opacity, 1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.from-\[var\(--accent-color\)\]{--tw-gradient-from:var(--accent-color) var(--tw-gradient-from-position);--tw-gradient-to:rgb(255 255 255 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-\[var\(--accent-gradient-end\)\]{--tw-gradient-to:var(--accent-gradient-end) var(--tw-gradient-to-position)}.p-2{padding:0.5rem}.p-2\.5{padding:0.625rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.pb-3{padding-bottom:0.75rem}.text-left{text-align:left}.text-center{text-align:center}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-6xl{font-size:3.75rem;line-height:1}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.text-\[var\(--text-primary\)\]{color:var(--text-primary)}.text-\[var\(--text-secondary\)\]{color:var(--text-secondary)}.text-neutral-100{--tw-text-opacity:1;color:rgb(245 245 245 / var(--tw-text-opacity, 1))}.text-neutral-200{--tw-text-opacity:1;color:rgb(229 229 229 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-\[var\(--text-muted\)\]{color:var(--text-muted)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.ring-neutral-500{--tw-ring-opacity:1;--tw-ring-color:rgb(115 115 115 / var(--tw-ring-opacity, 1))}.ring-\[var\(--accent-color\)\]{--tw-ring-color:var(--accent-color)}.drop-shadow-lg{--tw-drop-shadow:drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.drop-shadow-md{--tw-drop-shadow:drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.drop-shadow-sm{--tw-drop-shadow:drop-shadow(0 1px 1px rgb(0 0 0 / 0.05));filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.duration-200{transition-duration:200ms}.ease-in-out{transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1)}.hover\:-translate-y-0\.5:hover{--tw-translate-y:-0.125rem;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.hover\:bg-\[var\(--content-bg\)\]:hover{background-color:var(--content-bg)}.hover\:text-\[var\(--text-primary\)\]:hover{color:var(--text-primary)}.hover\:brightness-110:hover{--tw-brightness:brightness(1.1);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-1:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}@media (min-width: 640px){.sm\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}}@media (min-width: 768px){.md\:col-span-1{grid-column:span 1 / span 1}.md\:col-span-2{grid-column:span 2 / span 2}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:gap-6{gap:1.5rem}.md\:gap-8{gap:2rem}.md\:space-y-8 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem * var(--tw-space-y-reverse))}.md\:p-8{padding:2rem}}</style><script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/editor/editor.main.js"></script><script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/editor/editor.main.nls.js"></script><style type="text/css" media="screen" class="monaco-colors">.codicon-add:before { content: '\ea60'; }
-.codicon-plus:before { content: '\ea60'; }
-.codicon-gist-new:before { content: '\ea60'; }
-.codicon-repo-create:before { content: '\ea60'; }
-.codicon-lightbulb:before { content: '\ea61'; }
-.codicon-light-bulb:before { content: '\ea61'; }
-.codicon-repo:before { content: '\ea62'; }
-.codicon-repo-delete:before { content: '\ea62'; }
-.codicon-gist-fork:before { content: '\ea63'; }
-.codicon-repo-forked:before { content: '\ea63'; }
-.codicon-git-pull-request:before { content: '\ea64'; }
-.codicon-git-pull-request-abandoned:before { content: '\ea64'; }
-.codicon-record-keys:before { content: '\ea65'; }
-.codicon-keyboard:before { content: '\ea65'; }
-.codicon-tag:before { content: '\ea66'; }
-.codicon-tag-add:before { content: '\ea66'; }
-.codicon-tag-remove:before { content: '\ea66'; }
-.codicon-git-pull-request-label:before { content: '\ea66'; }
-.codicon-person:before { content: '\ea67'; }
-.codicon-person-follow:before { content: '\ea67'; }
-.codicon-person-outline:before { content: '\ea67'; }
-.codicon-person-filled:before { content: '\ea67'; }
-.codicon-git-branch:before { content: '\ea68'; }
-.codicon-git-branch-create:before { content: '\ea68'; }
-.codicon-git-branch-delete:before { content: '\ea68'; }
-.codicon-source-control:before { content: '\ea68'; }
-.codicon-mirror:before { content: '\ea69'; }
-.codicon-mirror-public:before { content: '\ea69'; }
-.codicon-star:before { content: '\ea6a'; }
-.codicon-star-add:before { content: '\ea6a'; }
-.codicon-star-delete:before { content: '\ea6a'; }
-.codicon-star-empty:before { content: '\ea6a'; }
-.codicon-comment:before { content: '\ea6b'; }
-.codicon-comment-add:before { content: '\ea6b'; }
-.codicon-alert:before { content: '\ea6c'; }
-.codicon-warning:before { content: '\ea6c'; }
-.codicon-search:before { content: '\ea6d'; }
-.codicon-search-save:before { content: '\ea6d'; }
-.codicon-log-out:before { content: '\ea6e'; }
-.codicon-sign-out:before { content: '\ea6e'; }
-.codicon-log-in:before { content: '\ea6f'; }
-.codicon-sign-in:before { content: '\ea6f'; }
-.codicon-eye:before { content: '\ea70'; }
-.codicon-eye-unwatch:before { content: '\ea70'; }
-.codicon-eye-watch:before { content: '\ea70'; }
-.codicon-circle-filled:before { content: '\ea71'; }
-.codicon-primitive-dot:before { content: '\ea71'; }
-.codicon-close-dirty:before { content: '\ea71'; }
-.codicon-debug-breakpoint:before { content: '\ea71'; }
-.codicon-debug-breakpoint-disabled:before { content: '\ea71'; }
-.codicon-debug-breakpoint-pending:before { content: '\ebd9'; }
-.codicon-debug-hint:before { content: '\ea71'; }
-.codicon-primitive-square:before { content: '\ea72'; }
-.codicon-edit:before { content: '\ea73'; }
-.codicon-pencil:before { content: '\ea73'; }
-.codicon-info:before { content: '\ea74'; }
-.codicon-issue-opened:before { content: '\ea74'; }
-.codicon-gist-private:before { content: '\ea75'; }
-.codicon-git-fork-private:before { content: '\ea75'; }
-.codicon-lock:before { content: '\ea75'; }
-.codicon-mirror-private:before { content: '\ea75'; }
-.codicon-close:before { content: '\ea76'; }
-.codicon-remove-close:before { content: '\ea76'; }
-.codicon-x:before { content: '\ea76'; }
-.codicon-repo-sync:before { content: '\ea77'; }
-.codicon-sync:before { content: '\ea77'; }
-.codicon-clone:before { content: '\ea78'; }
-.codicon-desktop-download:before { content: '\ea78'; }
-.codicon-beaker:before { content: '\ea79'; }
-.codicon-microscope:before { content: '\ea79'; }
-.codicon-vm:before { content: '\ea7a'; }
-.codicon-device-desktop:before { content: '\ea7a'; }
-.codicon-file:before { content: '\ea7b'; }
-.codicon-file-text:before { content: '\ea7b'; }
-.codicon-more:before { content: '\ea7c'; }
-.codicon-ellipsis:before { content: '\ea7c'; }
-.codicon-kebab-horizontal:before { content: '\ea7c'; }
-.codicon-mail-reply:before { content: '\ea7d'; }
-.codicon-reply:before { content: '\ea7d'; }
-.codicon-organization:before { content: '\ea7e'; }
-.codicon-organization-filled:before { content: '\ea7e'; }
-.codicon-organization-outline:before { content: '\ea7e'; }
-.codicon-new-file:before { content: '\ea7f'; }
-.codicon-file-add:before { content: '\ea7f'; }
-.codicon-new-folder:before { content: '\ea80'; }
-.codicon-file-directory-create:before { content: '\ea80'; }
-.codicon-trash:before { content: '\ea81'; }
-.codicon-trashcan:before { content: '\ea81'; }
-.codicon-history:before { content: '\ea82'; }
-.codicon-clock:before { content: '\ea82'; }
-.codicon-folder:before { content: '\ea83'; }
-.codicon-file-directory:before { content: '\ea83'; }
-.codicon-symbol-folder:before { content: '\ea83'; }
-.codicon-logo-github:before { content: '\ea84'; }
-.codicon-mark-github:before { content: '\ea84'; }
-.codicon-github:before { content: '\ea84'; }
-.codicon-terminal:before { content: '\ea85'; }
-.codicon-console:before { content: '\ea85'; }
-.codicon-repl:before { content: '\ea85'; }
-.codicon-zap:before { content: '\ea86'; }
-.codicon-symbol-event:before { content: '\ea86'; }
-.codicon-error:before { content: '\ea87'; }
-.codicon-stop:before { content: '\ea87'; }
-.codicon-variable:before { content: '\ea88'; }
-.codicon-symbol-variable:before { content: '\ea88'; }
-.codicon-array:before { content: '\ea8a'; }
-.codicon-symbol-array:before { content: '\ea8a'; }
-.codicon-symbol-module:before { content: '\ea8b'; }
-.codicon-symbol-package:before { content: '\ea8b'; }
-.codicon-symbol-namespace:before { content: '\ea8b'; }
-.codicon-symbol-object:before { content: '\ea8b'; }
-.codicon-symbol-method:before { content: '\ea8c'; }
-.codicon-symbol-function:before { content: '\ea8c'; }
-.codicon-symbol-constructor:before { content: '\ea8c'; }
-.codicon-symbol-boolean:before { content: '\ea8f'; }
-.codicon-symbol-null:before { content: '\ea8f'; }
-.codicon-symbol-numeric:before { content: '\ea90'; }
-.codicon-symbol-number:before { content: '\ea90'; }
-.codicon-symbol-structure:before { content: '\ea91'; }
-.codicon-symbol-struct:before { content: '\ea91'; }
-.codicon-symbol-parameter:before { content: '\ea92'; }
-.codicon-symbol-type-parameter:before { content: '\ea92'; }
-.codicon-symbol-key:before { content: '\ea93'; }
-.codicon-symbol-text:before { content: '\ea93'; }
-.codicon-symbol-reference:before { content: '\ea94'; }
-.codicon-go-to-file:before { content: '\ea94'; }
-.codicon-symbol-enum:before { content: '\ea95'; }
-.codicon-symbol-value:before { content: '\ea95'; }
-.codicon-symbol-ruler:before { content: '\ea96'; }
-.codicon-symbol-unit:before { content: '\ea96'; }
-.codicon-activate-breakpoints:before { content: '\ea97'; }
-.codicon-archive:before { content: '\ea98'; }
-.codicon-arrow-both:before { content: '\ea99'; }
-.codicon-arrow-down:before { content: '\ea9a'; }
-.codicon-arrow-left:before { content: '\ea9b'; }
-.codicon-arrow-right:before { content: '\ea9c'; }
-.codicon-arrow-small-down:before { content: '\ea9d'; }
-.codicon-arrow-small-left:before { content: '\ea9e'; }
-.codicon-arrow-small-right:before { content: '\ea9f'; }
-.codicon-arrow-small-up:before { content: '\eaa0'; }
-.codicon-arrow-up:before { content: '\eaa1'; }
-.codicon-bell:before { content: '\eaa2'; }
-.codicon-bold:before { content: '\eaa3'; }
-.codicon-book:before { content: '\eaa4'; }
-.codicon-bookmark:before { content: '\eaa5'; }
-.codicon-debug-breakpoint-conditional-unverified:before { content: '\eaa6'; }
-.codicon-debug-breakpoint-conditional:before { content: '\eaa7'; }
-.codicon-debug-breakpoint-conditional-disabled:before { content: '\eaa7'; }
-.codicon-debug-breakpoint-data-unverified:before { content: '\eaa8'; }
-.codicon-debug-breakpoint-data:before { content: '\eaa9'; }
-.codicon-debug-breakpoint-data-disabled:before { content: '\eaa9'; }
-.codicon-debug-breakpoint-log-unverified:before { content: '\eaaa'; }
-.codicon-debug-breakpoint-log:before { content: '\eaab'; }
-.codicon-debug-breakpoint-log-disabled:before { content: '\eaab'; }
-.codicon-briefcase:before { content: '\eaac'; }
-.codicon-broadcast:before { content: '\eaad'; }
-.codicon-browser:before { content: '\eaae'; }
-.codicon-bug:before { content: '\eaaf'; }
-.codicon-calendar:before { content: '\eab0'; }
-.codicon-case-sensitive:before { content: '\eab1'; }
-.codicon-check:before { content: '\eab2'; }
-.codicon-checklist:before { content: '\eab3'; }
-.codicon-chevron-down:before { content: '\eab4'; }
-.codicon-drop-down-button:before { content: '\eab4'; }
-.codicon-chevron-left:before { content: '\eab5'; }
-.codicon-chevron-right:before { content: '\eab6'; }
-.codicon-chevron-up:before { content: '\eab7'; }
-.codicon-chrome-close:before { content: '\eab8'; }
-.codicon-chrome-maximize:before { content: '\eab9'; }
-.codicon-chrome-minimize:before { content: '\eaba'; }
-.codicon-chrome-restore:before { content: '\eabb'; }
-.codicon-circle:before { content: '\eabc'; }
-.codicon-circle-outline:before { content: '\eabc'; }
-.codicon-debug-breakpoint-unverified:before { content: '\eabc'; }
-.codicon-circle-slash:before { content: '\eabd'; }
-.codicon-circuit-board:before { content: '\eabe'; }
-.codicon-clear-all:before { content: '\eabf'; }
-.codicon-clippy:before { content: '\eac0'; }
-.codicon-close-all:before { content: '\eac1'; }
-.codicon-cloud-download:before { content: '\eac2'; }
-.codicon-cloud-upload:before { content: '\eac3'; }
-.codicon-code:before { content: '\eac4'; }
-.codicon-collapse-all:before { content: '\eac5'; }
-.codicon-color-mode:before { content: '\eac6'; }
-.codicon-comment-discussion:before { content: '\eac7'; }
-.codicon-compare-changes:before { content: '\eafd'; }
-.codicon-credit-card:before { content: '\eac9'; }
-.codicon-dash:before { content: '\eacc'; }
-.codicon-dashboard:before { content: '\eacd'; }
-.codicon-database:before { content: '\eace'; }
-.codicon-debug-continue:before { content: '\eacf'; }
-.codicon-debug-disconnect:before { content: '\ead0'; }
-.codicon-debug-pause:before { content: '\ead1'; }
-.codicon-debug-restart:before { content: '\ead2'; }
-.codicon-debug-start:before { content: '\ead3'; }
-.codicon-debug-step-into:before { content: '\ead4'; }
-.codicon-debug-step-out:before { content: '\ead5'; }
-.codicon-debug-step-over:before { content: '\ead6'; }
-.codicon-debug-stop:before { content: '\ead7'; }
-.codicon-debug:before { content: '\ead8'; }
-.codicon-device-camera-video:before { content: '\ead9'; }
-.codicon-device-camera:before { content: '\eada'; }
-.codicon-device-mobile:before { content: '\eadb'; }
-.codicon-diff-added:before { content: '\eadc'; }
-.codicon-diff-ignored:before { content: '\eadd'; }
-.codicon-diff-modified:before { content: '\eade'; }
-.codicon-diff-removed:before { content: '\eadf'; }
-.codicon-diff-renamed:before { content: '\eae0'; }
-.codicon-diff:before { content: '\eae1'; }
-.codicon-discard:before { content: '\eae2'; }
-.codicon-editor-layout:before { content: '\eae3'; }
-.codicon-empty-window:before { content: '\eae4'; }
-.codicon-exclude:before { content: '\eae5'; }
-.codicon-extensions:before { content: '\eae6'; }
-.codicon-eye-closed:before { content: '\eae7'; }
-.codicon-file-binary:before { content: '\eae8'; }
-.codicon-file-code:before { content: '\eae9'; }
-.codicon-file-media:before { content: '\eaea'; }
-.codicon-file-pdf:before { content: '\eaeb'; }
-.codicon-file-submodule:before { content: '\eaec'; }
-.codicon-file-symlink-directory:before { content: '\eaed'; }
-.codicon-file-symlink-file:before { content: '\eaee'; }
-.codicon-file-zip:before { content: '\eaef'; }
-.codicon-files:before { content: '\eaf0'; }
-.codicon-filter:before { content: '\eaf1'; }
-.codicon-flame:before { content: '\eaf2'; }
-.codicon-fold-down:before { content: '\eaf3'; }
-.codicon-fold-up:before { content: '\eaf4'; }
-.codicon-fold:before { content: '\eaf5'; }
-.codicon-folder-active:before { content: '\eaf6'; }
-.codicon-folder-opened:before { content: '\eaf7'; }
-.codicon-gear:before { content: '\eaf8'; }
-.codicon-gift:before { content: '\eaf9'; }
-.codicon-gist-secret:before { content: '\eafa'; }
-.codicon-gist:before { content: '\eafb'; }
-.codicon-git-commit:before { content: '\eafc'; }
-.codicon-git-compare:before { content: '\eafd'; }
-.codicon-git-merge:before { content: '\eafe'; }
-.codicon-github-action:before { content: '\eaff'; }
-.codicon-github-alt:before { content: '\eb00'; }
-.codicon-globe:before { content: '\eb01'; }
-.codicon-grabber:before { content: '\eb02'; }
-.codicon-graph:before { content: '\eb03'; }
-.codicon-gripper:before { content: '\eb04'; }
-.codicon-heart:before { content: '\eb05'; }
-.codicon-home:before { content: '\eb06'; }
-.codicon-horizontal-rule:before { content: '\eb07'; }
-.codicon-hubot:before { content: '\eb08'; }
-.codicon-inbox:before { content: '\eb09'; }
-.codicon-issue-closed:before { content: '\eba4'; }
-.codicon-issue-reopened:before { content: '\eb0b'; }
-.codicon-issues:before { content: '\eb0c'; }
-.codicon-italic:before { content: '\eb0d'; }
-.codicon-jersey:before { content: '\eb0e'; }
-.codicon-json:before { content: '\eb0f'; }
-.codicon-bracket:before { content: '\eb0f'; }
-.codicon-kebab-vertical:before { content: '\eb10'; }
-.codicon-key:before { content: '\eb11'; }
-.codicon-law:before { content: '\eb12'; }
-.codicon-lightbulb-autofix:before { content: '\eb13'; }
-.codicon-link-external:before { content: '\eb14'; }
-.codicon-link:before { content: '\eb15'; }
-.codicon-list-ordered:before { content: '\eb16'; }
-.codicon-list-unordered:before { content: '\eb17'; }
-.codicon-live-share:before { content: '\eb18'; }
-.codicon-loading:before { content: '\eb19'; }
-.codicon-location:before { content: '\eb1a'; }
-.codicon-mail-read:before { content: '\eb1b'; }
-.codicon-mail:before { content: '\eb1c'; }
-.codicon-markdown:before { content: '\eb1d'; }
-.codicon-megaphone:before { content: '\eb1e'; }
-.codicon-mention:before { content: '\eb1f'; }
-.codicon-milestone:before { content: '\eb20'; }
-.codicon-git-pull-request-milestone:before { content: '\eb20'; }
-.codicon-mortar-board:before { content: '\eb21'; }
-.codicon-move:before { content: '\eb22'; }
-.codicon-multiple-windows:before { content: '\eb23'; }
-.codicon-mute:before { content: '\eb24'; }
-.codicon-no-newline:before { content: '\eb25'; }
-.codicon-note:before { content: '\eb26'; }
-.codicon-octoface:before { content: '\eb27'; }
-.codicon-open-preview:before { content: '\eb28'; }
-.codicon-package:before { content: '\eb29'; }
-.codicon-paintcan:before { content: '\eb2a'; }
-.codicon-pin:before { content: '\eb2b'; }
-.codicon-play:before { content: '\eb2c'; }
-.codicon-run:before { content: '\eb2c'; }
-.codicon-plug:before { content: '\eb2d'; }
-.codicon-preserve-case:before { content: '\eb2e'; }
-.codicon-preview:before { content: '\eb2f'; }
-.codicon-project:before { content: '\eb30'; }
-.codicon-pulse:before { content: '\eb31'; }
-.codicon-question:before { content: '\eb32'; }
-.codicon-quote:before { content: '\eb33'; }
-.codicon-radio-tower:before { content: '\eb34'; }
-.codicon-reactions:before { content: '\eb35'; }
-.codicon-references:before { content: '\eb36'; }
-.codicon-refresh:before { content: '\eb37'; }
-.codicon-regex:before { content: '\eb38'; }
-.codicon-remote-explorer:before { content: '\eb39'; }
-.codicon-remote:before { content: '\eb3a'; }
-.codicon-remove:before { content: '\eb3b'; }
-.codicon-replace-all:before { content: '\eb3c'; }
-.codicon-replace:before { content: '\eb3d'; }
-.codicon-repo-clone:before { content: '\eb3e'; }
-.codicon-repo-force-push:before { content: '\eb3f'; }
-.codicon-repo-pull:before { content: '\eb40'; }
-.codicon-repo-push:before { content: '\eb41'; }
-.codicon-report:before { content: '\eb42'; }
-.codicon-request-changes:before { content: '\eb43'; }
-.codicon-rocket:before { content: '\eb44'; }
-.codicon-root-folder-opened:before { content: '\eb45'; }
-.codicon-root-folder:before { content: '\eb46'; }
-.codicon-rss:before { content: '\eb47'; }
-.codicon-ruby:before { content: '\eb48'; }
-.codicon-save-all:before { content: '\eb49'; }
-.codicon-save-as:before { content: '\eb4a'; }
-.codicon-save:before { content: '\eb4b'; }
-.codicon-screen-full:before { content: '\eb4c'; }
-.codicon-screen-normal:before { content: '\eb4d'; }
-.codicon-search-stop:before { content: '\eb4e'; }
-.codicon-server:before { content: '\eb50'; }
-.codicon-settings-gear:before { content: '\eb51'; }
-.codicon-settings:before { content: '\eb52'; }
-.codicon-shield:before { content: '\eb53'; }
-.codicon-smiley:before { content: '\eb54'; }
-.codicon-sort-precedence:before { content: '\eb55'; }
-.codicon-split-horizontal:before { content: '\eb56'; }
-.codicon-split-vertical:before { content: '\eb57'; }
-.codicon-squirrel:before { content: '\eb58'; }
-.codicon-star-full:before { content: '\eb59'; }
-.codicon-star-half:before { content: '\eb5a'; }
-.codicon-symbol-class:before { content: '\eb5b'; }
-.codicon-symbol-color:before { content: '\eb5c'; }
-.codicon-symbol-customcolor:before { content: '\eb5c'; }
-.codicon-symbol-constant:before { content: '\eb5d'; }
-.codicon-symbol-enum-member:before { content: '\eb5e'; }
-.codicon-symbol-field:before { content: '\eb5f'; }
-.codicon-symbol-file:before { content: '\eb60'; }
-.codicon-symbol-interface:before { content: '\eb61'; }
-.codicon-symbol-keyword:before { content: '\eb62'; }
-.codicon-symbol-misc:before { content: '\eb63'; }
-.codicon-symbol-operator:before { content: '\eb64'; }
-.codicon-symbol-property:before { content: '\eb65'; }
-.codicon-wrench:before { content: '\eb65'; }
-.codicon-wrench-subaction:before { content: '\eb65'; }
-.codicon-symbol-snippet:before { content: '\eb66'; }
-.codicon-tasklist:before { content: '\eb67'; }
-.codicon-telescope:before { content: '\eb68'; }
-.codicon-text-size:before { content: '\eb69'; }
-.codicon-three-bars:before { content: '\eb6a'; }
-.codicon-thumbsdown:before { content: '\eb6b'; }
-.codicon-thumbsup:before { content: '\eb6c'; }
-.codicon-tools:before { content: '\eb6d'; }
-.codicon-triangle-down:before { content: '\eb6e'; }
-.codicon-triangle-left:before { content: '\eb6f'; }
-.codicon-triangle-right:before { content: '\eb70'; }
-.codicon-triangle-up:before { content: '\eb71'; }
-.codicon-twitter:before { content: '\eb72'; }
-.codicon-unfold:before { content: '\eb73'; }
-.codicon-unlock:before { content: '\eb74'; }
-.codicon-unmute:before { content: '\eb75'; }
-.codicon-unverified:before { content: '\eb76'; }
-.codicon-verified:before { content: '\eb77'; }
-.codicon-versions:before { content: '\eb78'; }
-.codicon-vm-active:before { content: '\eb79'; }
-.codicon-vm-outline:before { content: '\eb7a'; }
-.codicon-vm-running:before { content: '\eb7b'; }
-.codicon-watch:before { content: '\eb7c'; }
-.codicon-whitespace:before { content: '\eb7d'; }
-.codicon-whole-word:before { content: '\eb7e'; }
-.codicon-window:before { content: '\eb7f'; }
-.codicon-word-wrap:before { content: '\eb80'; }
-.codicon-zoom-in:before { content: '\eb81'; }
-.codicon-zoom-out:before { content: '\eb82'; }
-.codicon-list-filter:before { content: '\eb83'; }
-.codicon-list-flat:before { content: '\eb84'; }
-.codicon-list-selection:before { content: '\eb85'; }
-.codicon-selection:before { content: '\eb85'; }
-.codicon-list-tree:before { content: '\eb86'; }
-.codicon-debug-breakpoint-function-unverified:before { content: '\eb87'; }
-.codicon-debug-breakpoint-function:before { content: '\eb88'; }
-.codicon-debug-breakpoint-function-disabled:before { content: '\eb88'; }
-.codicon-debug-stackframe-active:before { content: '\eb89'; }
-.codicon-circle-small-filled:before { content: '\eb8a'; }
-.codicon-debug-stackframe-dot:before { content: '\eb8a'; }
-.codicon-debug-stackframe:before { content: '\eb8b'; }
-.codicon-debug-stackframe-focused:before { content: '\eb8b'; }
-.codicon-debug-breakpoint-unsupported:before { content: '\eb8c'; }
-.codicon-symbol-string:before { content: '\eb8d'; }
-.codicon-debug-reverse-continue:before { content: '\eb8e'; }
-.codicon-debug-step-back:before { content: '\eb8f'; }
-.codicon-debug-restart-frame:before { content: '\eb90'; }
-.codicon-call-incoming:before { content: '\eb92'; }
-.codicon-call-outgoing:before { content: '\eb93'; }
-.codicon-menu:before { content: '\eb94'; }
-.codicon-expand-all:before { content: '\eb95'; }
-.codicon-feedback:before { content: '\eb96'; }
-.codicon-git-pull-request-reviewer:before { content: '\eb96'; }
-.codicon-group-by-ref-type:before { content: '\eb97'; }
-.codicon-ungroup-by-ref-type:before { content: '\eb98'; }
-.codicon-account:before { content: '\eb99'; }
-.codicon-git-pull-request-assignee:before { content: '\eb99'; }
-.codicon-bell-dot:before { content: '\eb9a'; }
-.codicon-debug-console:before { content: '\eb9b'; }
-.codicon-library:before { content: '\eb9c'; }
-.codicon-output:before { content: '\eb9d'; }
-.codicon-run-all:before { content: '\eb9e'; }
-.codicon-sync-ignored:before { content: '\eb9f'; }
-.codicon-pinned:before { content: '\eba0'; }
-.codicon-github-inverted:before { content: '\eba1'; }
-.codicon-debug-alt:before { content: '\eb91'; }
-.codicon-server-process:before { content: '\eba2'; }
-.codicon-server-environment:before { content: '\eba3'; }
-.codicon-pass:before { content: '\eba4'; }
-.codicon-stop-circle:before { content: '\eba5'; }
-.codicon-play-circle:before { content: '\eba6'; }
-.codicon-record:before { content: '\eba7'; }
-.codicon-debug-alt-small:before { content: '\eba8'; }
-.codicon-vm-connect:before { content: '\eba9'; }
-.codicon-cloud:before { content: '\ebaa'; }
-.codicon-merge:before { content: '\ebab'; }
-.codicon-export:before { content: '\ebac'; }
-.codicon-graph-left:before { content: '\ebad'; }
-.codicon-magnet:before { content: '\ebae'; }
-.codicon-notebook:before { content: '\ebaf'; }
-.codicon-redo:before { content: '\ebb0'; }
-.codicon-check-all:before { content: '\ebb1'; }
-.codicon-pinned-dirty:before { content: '\ebb2'; }
-.codicon-pass-filled:before { content: '\ebb3'; }
-.codicon-circle-large-filled:before { content: '\ebb4'; }
-.codicon-circle-large:before { content: '\ebb5'; }
-.codicon-circle-large-outline:before { content: '\ebb5'; }
-.codicon-combine:before { content: '\ebb6'; }
-.codicon-gather:before { content: '\ebb6'; }
-.codicon-table:before { content: '\ebb7'; }
-.codicon-variable-group:before { content: '\ebb8'; }
-.codicon-type-hierarchy:before { content: '\ebb9'; }
-.codicon-type-hierarchy-sub:before { content: '\ebba'; }
-.codicon-type-hierarchy-super:before { content: '\ebbb'; }
-.codicon-git-pull-request-create:before { content: '\ebbc'; }
-.codicon-run-above:before { content: '\ebbd'; }
-.codicon-run-below:before { content: '\ebbe'; }
-.codicon-notebook-template:before { content: '\ebbf'; }
-.codicon-debug-rerun:before { content: '\ebc0'; }
-.codicon-workspace-trusted:before { content: '\ebc1'; }
-.codicon-workspace-untrusted:before { content: '\ebc2'; }
-.codicon-workspace-unspecified:before { content: '\ebc3'; }
-.codicon-terminal-cmd:before { content: '\ebc4'; }
-.codicon-terminal-debian:before { content: '\ebc5'; }
-.codicon-terminal-linux:before { content: '\ebc6'; }
-.codicon-terminal-powershell:before { content: '\ebc7'; }
-.codicon-terminal-tmux:before { content: '\ebc8'; }
-.codicon-terminal-ubuntu:before { content: '\ebc9'; }
-.codicon-terminal-bash:before { content: '\ebca'; }
-.codicon-arrow-swap:before { content: '\ebcb'; }
-.codicon-copy:before { content: '\ebcc'; }
-.codicon-person-add:before { content: '\ebcd'; }
-.codicon-filter-filled:before { content: '\ebce'; }
-.codicon-wand:before { content: '\ebcf'; }
-.codicon-debug-line-by-line:before { content: '\ebd0'; }
-.codicon-inspect:before { content: '\ebd1'; }
-.codicon-layers:before { content: '\ebd2'; }
-.codicon-layers-dot:before { content: '\ebd3'; }
-.codicon-layers-active:before { content: '\ebd4'; }
-.codicon-compass:before { content: '\ebd5'; }
-.codicon-compass-dot:before { content: '\ebd6'; }
-.codicon-compass-active:before { content: '\ebd7'; }
-.codicon-azure:before { content: '\ebd8'; }
-.codicon-issue-draft:before { content: '\ebd9'; }
-.codicon-git-pull-request-closed:before { content: '\ebda'; }
-.codicon-git-pull-request-draft:before { content: '\ebdb'; }
-.codicon-debug-all:before { content: '\ebdc'; }
-.codicon-debug-coverage:before { content: '\ebdd'; }
-.codicon-run-errors:before { content: '\ebde'; }
-.codicon-folder-library:before { content: '\ebdf'; }
-.codicon-debug-continue-small:before { content: '\ebe0'; }
-.codicon-beaker-stop:before { content: '\ebe1'; }
-.codicon-graph-line:before { content: '\ebe2'; }
-.codicon-graph-scatter:before { content: '\ebe3'; }
-.codicon-pie-chart:before { content: '\ebe4'; }
-.codicon-bracket-dot:before { content: '\ebe5'; }
-.codicon-bracket-error:before { content: '\ebe6'; }
-.codicon-lock-small:before { content: '\ebe7'; }
-.codicon-azure-devops:before { content: '\ebe8'; }
-.codicon-verified-filled:before { content: '\ebe9'; }
-.codicon-newline:before { content: '\ebea'; }
-.codicon-layout:before { content: '\ebeb'; }
-.codicon-layout-activitybar-left:before { content: '\ebec'; }
-.codicon-layout-activitybar-right:before { content: '\ebed'; }
-.codicon-layout-panel-left:before { content: '\ebee'; }
-.codicon-layout-panel-center:before { content: '\ebef'; }
-.codicon-layout-panel-justify:before { content: '\ebf0'; }
-.codicon-layout-panel-right:before { content: '\ebf1'; }
-.codicon-layout-panel:before { content: '\ebf2'; }
-.codicon-layout-sidebar-left:before { content: '\ebf3'; }
-.codicon-layout-sidebar-right:before { content: '\ebf4'; }
-.codicon-layout-statusbar:before { content: '\ebf5'; }
-.codicon-layout-menubar:before { content: '\ebf6'; }
-.codicon-layout-centered:before { content: '\ebf7'; }
-.codicon-layout-sidebar-right-off:before { content: '\ec00'; }
-.codicon-layout-panel-off:before { content: '\ec01'; }
-.codicon-layout-sidebar-left-off:before { content: '\ec02'; }
-.codicon-target:before { content: '\ebf8'; }
-.codicon-indent:before { content: '\ebf9'; }
-.codicon-record-small:before { content: '\ebfa'; }
-.codicon-error-small:before { content: '\ebfb'; }
-.codicon-arrow-circle-down:before { content: '\ebfc'; }
-.codicon-arrow-circle-left:before { content: '\ebfd'; }
-.codicon-arrow-circle-right:before { content: '\ebfe'; }
-.codicon-arrow-circle-up:before { content: '\ebff'; }
-.codicon-heart-filled:before { content: '\ec04'; }
-.codicon-map:before { content: '\ec05'; }
-.codicon-map-filled:before { content: '\ec06'; }
-.codicon-circle-small:before { content: '\ec07'; }
-.codicon-bell-slash:before { content: '\ec08'; }
-.codicon-bell-slash-dot:before { content: '\ec09'; }
-.codicon-comment-unresolved:before { content: '\ec0a'; }
-.codicon-git-pull-request-go-to-changes:before { content: '\ec0b'; }
-.codicon-git-pull-request-new-changes:before { content: '\ec0c'; }
-.codicon-search-fuzzy:before { content: '\ec0d'; }
-.codicon-comment-draft:before { content: '\ec0e'; }
-.codicon-send:before { content: '\ec0f'; }
-.codicon-sparkle:before { content: '\ec10'; }
-.codicon-insert:before { content: '\ec11'; }
-.codicon-mic:before { content: '\ec12'; }
-.codicon-thumbsdown-filled:before { content: '\ec13'; }
-.codicon-thumbsup-filled:before { content: '\ec14'; }
-.codicon-coffee:before { content: '\ec15'; }
-.codicon-snake:before { content: '\ec16'; }
-.codicon-game:before { content: '\ec17'; }
-.codicon-vr:before { content: '\ec18'; }
-.codicon-chip:before { content: '\ec19'; }
-.codicon-piano:before { content: '\ec1a'; }
-.codicon-music:before { content: '\ec1b'; }
-.codicon-mic-filled:before { content: '\ec1c'; }
-.codicon-git-fetch:before { content: '\ec1d'; }
-.codicon-copilot:before { content: '\ec1e'; }
-.codicon-lightbulb-sparkle:before { content: '\ec1f'; }
-.codicon-lightbulb-sparkle-autofix:before { content: '\ec1f'; }
-.codicon-robot:before { content: '\ec20'; }
-.codicon-sparkle-filled:before { content: '\ec21'; }
-.codicon-diff-single:before { content: '\ec22'; }
-.codicon-diff-multiple:before { content: '\ec23'; }
-.codicon-surround-with:before { content: '\ec24'; }
-.codicon-git-stash:before { content: '\ec26'; }
-.codicon-git-stash-apply:before { content: '\ec27'; }
-.codicon-git-stash-pop:before { content: '\ec28'; }
-.codicon-run-all-coverage:before { content: '\ec2c'; }
-.codicon-coverage:before { content: '\ec2e'; }
-.codicon-github-project:before { content: '\ec2f'; }
-.codicon-dialog-error:before { content: '\ea87'; }
-.codicon-dialog-warning:before { content: '\ea6c'; }
-.codicon-dialog-info:before { content: '\ea74'; }
-.codicon-dialog-close:before { content: '\ea76'; }
-.codicon-tree-item-expanded:before { content: '\eab4'; }
-.codicon-tree-filter-on-type-on:before { content: '\eb83'; }
-.codicon-tree-filter-on-type-off:before { content: '\eb85'; }
-.codicon-tree-filter-clear:before { content: '\ea76'; }
-.codicon-tree-item-loading:before { content: '\eb19'; }
-.codicon-menu-selection:before { content: '\eab2'; }
-.codicon-menu-submenu:before { content: '\eab6'; }
-.codicon-menubar-more:before { content: '\ea7c'; }
-.codicon-scrollbar-button-left:before { content: '\eb6f'; }
-.codicon-scrollbar-button-right:before { content: '\eb70'; }
-.codicon-scrollbar-button-up:before { content: '\eb71'; }
-.codicon-scrollbar-button-down:before { content: '\eb6e'; }
-.codicon-toolbar-more:before { content: '\ea7c'; }
-.codicon-quick-input-back:before { content: '\ea9b'; }
-.codicon-widget-close:before { content: '\ea76'; }
-.codicon-goto-previous-location:before { content: '\eaa1'; }
-.codicon-goto-next-location:before { content: '\ea9a'; }
-.codicon-diff-review-insert:before { content: '\ea60'; }
-.codicon-diff-review-remove:before { content: '\eb3b'; }
-.codicon-diff-review-close:before { content: '\ea76'; }
-.codicon-parameter-hints-next:before { content: '\eab4'; }
-.codicon-parameter-hints-previous:before { content: '\eab7'; }
-.codicon-suggest-more-info:before { content: '\eab6'; }
-.codicon-inline-suggestion-hints-next:before { content: '\eab6'; }
-.codicon-inline-suggestion-hints-previous:before { content: '\eab5'; }
-.codicon-diff-insert:before { content: '\ea60'; }
-.codicon-diff-remove:before { content: '\eb3b'; }
-.codicon-find-selection:before { content: '\eb85'; }
-.codicon-find-collapsed:before { content: '\eab6'; }
-.codicon-find-expanded:before { content: '\eab4'; }
-.codicon-find-replace:before { content: '\eb3d'; }
-.codicon-find-replace-all:before { content: '\eb3c'; }
-.codicon-find-previous-match:before { content: '\eaa1'; }
-.codicon-find-next-match:before { content: '\ea9a'; }
-.codicon-folding-expanded:before { content: '\eab4'; }
-.codicon-folding-collapsed:before { content: '\eab6'; }
-.codicon-folding-manual-collapsed:before { content: '\eab6'; }
-.codicon-folding-manual-expanded:before { content: '\eab4'; }
-.codicon-marker-navigation-next:before { content: '\ea9a'; }
-.codicon-marker-navigation-previous:before { content: '\eaa1'; }
-.codicon-extensions-warning-message:before { content: '\ea6c'; }
-.monaco-workbench .workbench-hover .hover-row:not(:first-child):not(:empty) { border-top: 1px solid rgba(69, 69, 69, 0.5); }
-.monaco-workbench .workbench-hover hr { border-top: 1px solid rgba(69, 69, 69, 0.5); }
-.monaco-editor .inputarea.ime-input { background-color: #08090d; }
-.monaco-editor .view-overlays .current-line { background-color: #08090d; }
-.monaco-editor .margin-view-overlays .current-line-margin { background-color: #08090d; border: none; }
-.monaco-editor .bracket-indent-guide.lvl-0 { --guide-color: rgba(255, 215, 0, 0.3); --guide-color-active: #ffd700; }
-.monaco-editor .bracket-indent-guide.lvl-1 { --guide-color: rgba(218, 112, 214, 0.3); --guide-color-active: #da70d6; }
-.monaco-editor .bracket-indent-guide.lvl-2 { --guide-color: rgba(23, 159, 255, 0.3); --guide-color-active: #179fff; }
-.monaco-editor .bracket-indent-guide.lvl-3 { --guide-color: rgba(255, 215, 0, 0.3); --guide-color-active: #ffd700; }
-.monaco-editor .bracket-indent-guide.lvl-4 { --guide-color: rgba(218, 112, 214, 0.3); --guide-color-active: #da70d6; }
-.monaco-editor .bracket-indent-guide.lvl-5 { --guide-color: rgba(23, 159, 255, 0.3); --guide-color-active: #179fff; }
-.monaco-editor .bracket-indent-guide.lvl-6 { --guide-color: rgba(255, 215, 0, 0.3); --guide-color-active: #ffd700; }
-.monaco-editor .bracket-indent-guide.lvl-7 { --guide-color: rgba(218, 112, 214, 0.3); --guide-color-active: #da70d6; }
-.monaco-editor .bracket-indent-guide.lvl-8 { --guide-color: rgba(23, 159, 255, 0.3); --guide-color-active: #179fff; }
-.monaco-editor .bracket-indent-guide.lvl-9 { --guide-color: rgba(255, 215, 0, 0.3); --guide-color-active: #ffd700; }
-.monaco-editor .bracket-indent-guide.lvl-10 { --guide-color: rgba(218, 112, 214, 0.3); --guide-color-active: #da70d6; }
-.monaco-editor .bracket-indent-guide.lvl-11 { --guide-color: rgba(23, 159, 255, 0.3); --guide-color-active: #179fff; }
-.monaco-editor .bracket-indent-guide.lvl-12 { --guide-color: rgba(255, 215, 0, 0.3); --guide-color-active: #ffd700; }
-.monaco-editor .bracket-indent-guide.lvl-13 { --guide-color: rgba(218, 112, 214, 0.3); --guide-color-active: #da70d6; }
-.monaco-editor .bracket-indent-guide.lvl-14 { --guide-color: rgba(23, 159, 255, 0.3); --guide-color-active: #179fff; }
-.monaco-editor .bracket-indent-guide.lvl-15 { --guide-color: rgba(255, 215, 0, 0.3); --guide-color-active: #ffd700; }
-.monaco-editor .bracket-indent-guide.lvl-16 { --guide-color: rgba(218, 112, 214, 0.3); --guide-color-active: #da70d6; }
-.monaco-editor .bracket-indent-guide.lvl-17 { --guide-color: rgba(23, 159, 255, 0.3); --guide-color-active: #179fff; }
-.monaco-editor .bracket-indent-guide.lvl-18 { --guide-color: rgba(255, 215, 0, 0.3); --guide-color-active: #ffd700; }
-.monaco-editor .bracket-indent-guide.lvl-19 { --guide-color: rgba(218, 112, 214, 0.3); --guide-color-active: #da70d6; }
-.monaco-editor .bracket-indent-guide.lvl-20 { --guide-color: rgba(23, 159, 255, 0.3); --guide-color-active: #179fff; }
-.monaco-editor .bracket-indent-guide.lvl-21 { --guide-color: rgba(255, 215, 0, 0.3); --guide-color-active: #ffd700; }
-.monaco-editor .bracket-indent-guide.lvl-22 { --guide-color: rgba(218, 112, 214, 0.3); --guide-color-active: #da70d6; }
-.monaco-editor .bracket-indent-guide.lvl-23 { --guide-color: rgba(23, 159, 255, 0.3); --guide-color-active: #179fff; }
-.monaco-editor .bracket-indent-guide.lvl-24 { --guide-color: rgba(255, 215, 0, 0.3); --guide-color-active: #ffd700; }
-.monaco-editor .bracket-indent-guide.lvl-25 { --guide-color: rgba(218, 112, 214, 0.3); --guide-color-active: #da70d6; }
-.monaco-editor .bracket-indent-guide.lvl-26 { --guide-color: rgba(23, 159, 255, 0.3); --guide-color-active: #179fff; }
-.monaco-editor .bracket-indent-guide.lvl-27 { --guide-color: rgba(255, 215, 0, 0.3); --guide-color-active: #ffd700; }
-.monaco-editor .bracket-indent-guide.lvl-28 { --guide-color: rgba(218, 112, 214, 0.3); --guide-color-active: #da70d6; }
-.monaco-editor .bracket-indent-guide.lvl-29 { --guide-color: rgba(23, 159, 255, 0.3); --guide-color-active: #179fff; }
-.monaco-editor .vertical { box-shadow: 1px 0 0 0 var(--guide-color) inset; }
-.monaco-editor .horizontal-top { border-top: 1px solid var(--guide-color); }
-.monaco-editor .horizontal-bottom { border-bottom: 1px solid var(--guide-color); }
-.monaco-editor .vertical.indent-active { box-shadow: 1px 0 0 0 var(--guide-color-active) inset; }
-.monaco-editor .horizontal-top.indent-active { border-top: 1px solid var(--guide-color-active); }
-.monaco-editor .horizontal-bottom.indent-active { border-bottom: 1px solid var(--guide-color-active); }
-.monaco-editor .lines-content .core-guide-indent.lvl-0 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-1 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-2 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-3 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-4 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-5 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-6 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-7 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-8 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-9 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-10 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-11 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-12 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-13 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-14 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-15 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-16 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-17 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-18 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-19 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-20 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-21 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-22 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-23 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-24 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-25 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-26 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-27 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-28 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent.lvl-29 { --indent-color: #404040; --indent-color-active: #707070; }
-.monaco-editor .lines-content .core-guide-indent { box-shadow: 1px 0 0 0 var(--indent-color) inset; }
-.monaco-editor .lines-content .core-guide-indent.indent-active { box-shadow: 1px 0 0 0 var(--indent-color-active) inset; }
-.monaco-editor .line-numbers.dimmed-line-number { color: rgba(107, 114, 128, 0.4); }
-.monaco-editor .cursors-layer .cursor { background-color: #9ca3af; border-color: #9ca3af; color: #635c50; }
-.monaco-editor .unexpected-closing-bracket { color: rgba(255, 18, 18, 0.8); }
-.monaco-editor .bracket-highlighting-0 { color: #ffd700; }
-.monaco-editor .bracket-highlighting-1 { color: #da70d6; }
-.monaco-editor .bracket-highlighting-2 { color: #179fff; }
-.monaco-editor .bracket-highlighting-3 { color: #ffd700; }
-.monaco-editor .bracket-highlighting-4 { color: #da70d6; }
-.monaco-editor .bracket-highlighting-5 { color: #179fff; }
-.monaco-editor .bracket-highlighting-6 { color: #ffd700; }
-.monaco-editor .bracket-highlighting-7 { color: #da70d6; }
-.monaco-editor .bracket-highlighting-8 { color: #179fff; }
-.monaco-editor .bracket-highlighting-9 { color: #ffd700; }
-.monaco-editor .bracket-highlighting-10 { color: #da70d6; }
-.monaco-editor .bracket-highlighting-11 { color: #179fff; }
-.monaco-editor .bracket-highlighting-12 { color: #ffd700; }
-.monaco-editor .bracket-highlighting-13 { color: #da70d6; }
-.monaco-editor .bracket-highlighting-14 { color: #179fff; }
-.monaco-editor .bracket-highlighting-15 { color: #ffd700; }
-.monaco-editor .bracket-highlighting-16 { color: #da70d6; }
-.monaco-editor .bracket-highlighting-17 { color: #179fff; }
-.monaco-editor .bracket-highlighting-18 { color: #ffd700; }
-.monaco-editor .bracket-highlighting-19 { color: #da70d6; }
-.monaco-editor .bracket-highlighting-20 { color: #179fff; }
-.monaco-editor .bracket-highlighting-21 { color: #ffd700; }
-.monaco-editor .bracket-highlighting-22 { color: #da70d6; }
-.monaco-editor .bracket-highlighting-23 { color: #179fff; }
-.monaco-editor .bracket-highlighting-24 { color: #ffd700; }
-.monaco-editor .bracket-highlighting-25 { color: #da70d6; }
-.monaco-editor .bracket-highlighting-26 { color: #179fff; }
-.monaco-editor .bracket-highlighting-27 { color: #ffd700; }
-.monaco-editor .bracket-highlighting-28 { color: #da70d6; }
-.monaco-editor .bracket-highlighting-29 { color: #179fff; }
-.monaco-editor .squiggly-error { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23f14c4c'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") repeat-x bottom left; }
-.monaco-editor .squiggly-warning { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23cca700'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") repeat-x bottom left; }
-.monaco-editor .squiggly-info { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%233794ff'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") repeat-x bottom left; }
-.monaco-editor .squiggly-hint { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%223%22%20width%3D%2212%22%3E%3Cg%20fill%3D%22rgba(238%2C%20238%2C%20238%2C%200.7)%22%3E%3Ccircle%20cx%3D%221%22%20cy%3D%221%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%225%22%20cy%3D%221%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%229%22%20cy%3D%221%22%20r%3D%221%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat bottom left; }
-.monaco-editor.showUnused .squiggly-inline-unnecessary { opacity: 0.667; }
-.monaco-editor .quickfix-edit-highlight { background-color: rgba(234, 92, 0, 0.33); }
-.monaco-editor .selectionHighlight { background-color: rgba(173, 214, 255, 0.07); }
-.monaco-editor .monaco-hover .hover-row:not(:first-child):not(:empty) { border-top: 1px solid rgba(69, 69, 69, 0.5); }
-.monaco-editor .monaco-hover hr { border-top: 1px solid rgba(69, 69, 69, 0.5); }
-.monaco-editor .monaco-hover hr { border-bottom: 0px solid rgba(69, 69, 69, 0.5); }
-.monaco-editor, .monaco-diff-editor, .monaco-component { --vscode-foreground: #cccccc;
---vscode-disabledForeground: rgba(204, 204, 204, 0.5);
---vscode-errorForeground: #f48771;
---vscode-descriptionForeground: rgba(204, 204, 204, 0.7);
---vscode-icon-foreground: #c5c5c5;
---vscode-focusBorder: #007fd4;
---vscode-textSeparator-foreground: rgba(255, 255, 255, 0.18);
---vscode-textLink-foreground: #3794ff;
---vscode-textLink-activeForeground: #3794ff;
---vscode-textPreformat-foreground: #d7ba7d;
---vscode-textPreformat-background: rgba(255, 255, 255, 0.1);
---vscode-textBlockQuote-background: #222222;
---vscode-textBlockQuote-border: rgba(0, 122, 204, 0.5);
---vscode-textCodeBlock-background: rgba(10, 10, 10, 0.4);
---vscode-widget-shadow: rgba(0, 0, 0, 0.36);
---vscode-input-background: #3c3c3c;
---vscode-input-foreground: #cccccc;
---vscode-inputOption-activeBorder: #007acc;
---vscode-inputOption-hoverBackground: rgba(90, 93, 94, 0.5);
---vscode-inputOption-activeBackground: rgba(0, 127, 212, 0.4);
---vscode-inputOption-activeForeground: #ffffff;
---vscode-input-placeholderForeground: rgba(204, 204, 204, 0.5);
---vscode-inputValidation-infoBackground: #063b49;
---vscode-inputValidation-infoBorder: #007acc;
---vscode-inputValidation-warningBackground: #352a05;
---vscode-inputValidation-warningBorder: #b89500;
---vscode-inputValidation-errorBackground: #5a1d1d;
---vscode-inputValidation-errorBorder: #be1100;
---vscode-dropdown-background: #3c3c3c;
---vscode-dropdown-foreground: #f0f0f0;
---vscode-dropdown-border: #3c3c3c;
---vscode-button-foreground: #ffffff;
---vscode-button-separator: rgba(255, 255, 255, 0.4);
---vscode-button-background: #0e639c;
---vscode-button-hoverBackground: #1177bb;
---vscode-button-secondaryForeground: #ffffff;
---vscode-button-secondaryBackground: #3a3d41;
---vscode-button-secondaryHoverBackground: #45494e;
---vscode-badge-background: #4d4d4d;
---vscode-badge-foreground: #ffffff;
---vscode-scrollbar-shadow: #000000;
---vscode-scrollbarSlider-background: #181a1f;
---vscode-scrollbarSlider-hoverBackground: #202125;
---vscode-scrollbarSlider-activeBackground: #28292d;
---vscode-progressBar-background: #0e70c0;
---vscode-editorError-foreground: #f14c4c;
---vscode-editorWarning-foreground: #cca700;
---vscode-editorInfo-foreground: #3794ff;
---vscode-editorHint-foreground: rgba(238, 238, 238, 0.7);
---vscode-sash-hoverBorder: #007fd4;
---vscode-editor-background: #050609;
---vscode-editor-foreground: #e5e7eb;
---vscode-editorStickyScroll-background: #050609;
---vscode-editorStickyScrollHover-background: #2a2d2e;
---vscode-editorStickyScroll-shadow: #000000;
---vscode-editorWidget-background: #252526;
---vscode-editorWidget-foreground: #cccccc;
---vscode-editorWidget-border: #454545;
---vscode-quickInput-background: #252526;
---vscode-quickInput-foreground: #cccccc;
---vscode-quickInputTitle-background: rgba(255, 255, 255, 0.1);
---vscode-pickerGroup-foreground: #3794ff;
---vscode-pickerGroup-border: #3f3f46;
---vscode-keybindingLabel-background: rgba(128, 128, 128, 0.17);
---vscode-keybindingLabel-foreground: #cccccc;
---vscode-keybindingLabel-border: rgba(51, 51, 51, 0.6);
---vscode-keybindingLabel-bottomBorder: rgba(68, 68, 68, 0.6);
---vscode-editor-selectionBackground: #264f78;
---vscode-editor-inactiveSelectionBackground: #3a3d41;
---vscode-editor-selectionHighlightBackground: rgba(173, 214, 255, 0.15);
---vscode-editor-findMatchBackground: #515c6a;
---vscode-editor-findMatchHighlightBackground: rgba(234, 92, 0, 0.33);
---vscode-editor-findRangeHighlightBackground: rgba(58, 61, 65, 0.4);
---vscode-searchEditor-findMatchBackground: rgba(234, 92, 0, 0.22);
---vscode-search-resultsInfoForeground: rgba(204, 204, 204, 0.65);
---vscode-editor-hoverHighlightBackground: rgba(38, 79, 120, 0.25);
---vscode-editorHoverWidget-background: #252526;
---vscode-editorHoverWidget-foreground: #cccccc;
---vscode-editorHoverWidget-border: #454545;
---vscode-editorHoverWidget-statusBarBackground: #2c2c2d;
---vscode-editorLink-activeForeground: #4e94ce;
---vscode-editorInlayHint-foreground: #969696;
---vscode-editorInlayHint-background: rgba(77, 77, 77, 0.1);
---vscode-editorInlayHint-typeForeground: #969696;
---vscode-editorInlayHint-typeBackground: rgba(77, 77, 77, 0.1);
---vscode-editorInlayHint-parameterForeground: #969696;
---vscode-editorInlayHint-parameterBackground: rgba(77, 77, 77, 0.1);
---vscode-editorLightBulb-foreground: #ffcc00;
---vscode-editorLightBulbAutoFix-foreground: #75beff;
---vscode-editorLightBulbAi-foreground: #ffcc00;
---vscode-diffEditor-insertedTextBackground: rgba(156, 204, 44, 0.2);
---vscode-diffEditor-removedTextBackground: rgba(255, 0, 0, 0.2);
---vscode-diffEditor-insertedLineBackground: rgba(155, 185, 85, 0.2);
---vscode-diffEditor-removedLineBackground: rgba(255, 0, 0, 0.2);
---vscode-diffEditor-diagonalFill: rgba(204, 204, 204, 0.2);
---vscode-diffEditor-unchangedRegionForeground: #cccccc;
---vscode-diffEditor-unchangedCodeBackground: rgba(116, 116, 116, 0.16);
---vscode-list-focusOutline: #007fd4;
---vscode-list-activeSelectionBackground: #04395e;
---vscode-list-activeSelectionForeground: #ffffff;
---vscode-list-inactiveSelectionBackground: #37373d;
---vscode-list-hoverBackground: #2a2d2e;
---vscode-list-dropBackground: #062f4a;
---vscode-list-dropBetweenBackground: #c5c5c5;
---vscode-list-highlightForeground: #2aaaff;
---vscode-list-focusHighlightForeground: #2aaaff;
---vscode-list-invalidItemForeground: #b89500;
---vscode-list-errorForeground: #f88070;
---vscode-list-warningForeground: #cca700;
---vscode-listFilterWidget-background: #252526;
---vscode-listFilterWidget-outline: rgba(0, 0, 0, 0);
---vscode-listFilterWidget-noMatchesOutline: #be1100;
---vscode-listFilterWidget-shadow: rgba(0, 0, 0, 0.36);
---vscode-list-filterMatchBackground: rgba(234, 92, 0, 0.33);
---vscode-tree-indentGuidesStroke: #585858;
---vscode-tree-inactiveIndentGuidesStroke: rgba(88, 88, 88, 0.4);
---vscode-tree-tableColumnsBorder: rgba(204, 204, 204, 0.13);
---vscode-tree-tableOddRowsBackground: rgba(204, 204, 204, 0.04);
---vscode-list-deemphasizedForeground: #8c8c8c;
---vscode-checkbox-background: #3c3c3c;
---vscode-checkbox-selectBackground: #252526;
---vscode-checkbox-foreground: #f0f0f0;
---vscode-checkbox-border: #3c3c3c;
---vscode-checkbox-selectBorder: #c5c5c5;
---vscode-quickInputList-focusForeground: #ffffff;
---vscode-quickInputList-focusBackground: #04395e;
---vscode-menu-foreground: #f0f0f0;
---vscode-menu-background: #3c3c3c;
---vscode-menu-selectionForeground: #ffffff;
---vscode-menu-selectionBackground: #04395e;
---vscode-menu-separatorBackground: #606060;
---vscode-toolbar-hoverBackground: rgba(90, 93, 94, 0.31);
---vscode-toolbar-activeBackground: rgba(99, 102, 103, 0.31);
---vscode-editor-snippetTabstopHighlightBackground: rgba(124, 124, 124, 0.3);
---vscode-editor-snippetFinalTabstopHighlightBorder: #525252;
---vscode-breadcrumb-foreground: rgba(204, 204, 204, 0.8);
---vscode-breadcrumb-background: #050609;
---vscode-breadcrumb-focusForeground: #e0e0e0;
---vscode-breadcrumb-activeSelectionForeground: #e0e0e0;
---vscode-breadcrumbPicker-background: #252526;
---vscode-merge-currentHeaderBackground: rgba(64, 200, 174, 0.5);
---vscode-merge-currentContentBackground: rgba(64, 200, 174, 0.2);
---vscode-merge-incomingHeaderBackground: rgba(64, 166, 255, 0.5);
---vscode-merge-incomingContentBackground: rgba(64, 166, 255, 0.2);
---vscode-merge-commonHeaderBackground: rgba(96, 96, 96, 0.4);
---vscode-merge-commonContentBackground: rgba(96, 96, 96, 0.16);
---vscode-editorOverviewRuler-currentContentForeground: rgba(64, 200, 174, 0.5);
---vscode-editorOverviewRuler-incomingContentForeground: rgba(64, 166, 255, 0.5);
---vscode-editorOverviewRuler-commonContentForeground: rgba(96, 96, 96, 0.4);
---vscode-editorOverviewRuler-findMatchForeground: rgba(209, 134, 22, 0.49);
---vscode-editorOverviewRuler-selectionHighlightForeground: rgba(160, 160, 160, 0.8);
---vscode-minimap-findMatchHighlight: #d18616;
---vscode-minimap-selectionOccurrenceHighlight: #676767;
---vscode-minimap-selectionHighlight: #264f78;
---vscode-minimap-infoHighlight: #3794ff;
---vscode-minimap-warningHighlight: #cca700;
---vscode-minimap-errorHighlight: rgba(255, 18, 18, 0.7);
---vscode-minimap-foregroundOpacity: #000000;
---vscode-minimapSlider-background: rgba(24, 26, 31, 0.5);
---vscode-minimapSlider-hoverBackground: rgba(32, 33, 37, 0.5);
---vscode-minimapSlider-activeBackground: rgba(40, 41, 45, 0.5);
---vscode-problemsErrorIcon-foreground: #f14c4c;
---vscode-problemsWarningIcon-foreground: #cca700;
---vscode-problemsInfoIcon-foreground: #3794ff;
---vscode-charts-foreground: #cccccc;
---vscode-charts-lines: rgba(204, 204, 204, 0.5);
---vscode-charts-red: #f14c4c;
---vscode-charts-blue: #3794ff;
---vscode-charts-yellow: #cca700;
---vscode-charts-orange: #d18616;
---vscode-charts-green: #89d185;
---vscode-charts-purple: #b180d7;
---vscode-multiDiffEditor-headerBackground: #262626;
---vscode-symbolIcon-arrayForeground: #cccccc;
---vscode-symbolIcon-booleanForeground: #cccccc;
---vscode-symbolIcon-classForeground: #ee9d28;
---vscode-symbolIcon-colorForeground: #cccccc;
---vscode-symbolIcon-constantForeground: #cccccc;
---vscode-symbolIcon-constructorForeground: #b180d7;
---vscode-symbolIcon-enumeratorForeground: #ee9d28;
---vscode-symbolIcon-enumeratorMemberForeground: #75beff;
---vscode-symbolIcon-eventForeground: #ee9d28;
---vscode-symbolIcon-fieldForeground: #75beff;
---vscode-symbolIcon-fileForeground: #cccccc;
---vscode-symbolIcon-folderForeground: #cccccc;
---vscode-symbolIcon-functionForeground: #b180d7;
---vscode-symbolIcon-interfaceForeground: #75beff;
---vscode-symbolIcon-keyForeground: #cccccc;
---vscode-symbolIcon-keywordForeground: #cccccc;
---vscode-symbolIcon-methodForeground: #b180d7;
---vscode-symbolIcon-moduleForeground: #cccccc;
---vscode-symbolIcon-namespaceForeground: #cccccc;
---vscode-symbolIcon-nullForeground: #cccccc;
---vscode-symbolIcon-numberForeground: #cccccc;
---vscode-symbolIcon-objectForeground: #cccccc;
---vscode-symbolIcon-operatorForeground: #cccccc;
---vscode-symbolIcon-packageForeground: #cccccc;
---vscode-symbolIcon-propertyForeground: #cccccc;
---vscode-symbolIcon-referenceForeground: #cccccc;
---vscode-symbolIcon-snippetForeground: #cccccc;
---vscode-symbolIcon-stringForeground: #cccccc;
---vscode-symbolIcon-structForeground: #cccccc;
---vscode-symbolIcon-textForeground: #cccccc;
---vscode-symbolIcon-typeParameterForeground: #cccccc;
---vscode-symbolIcon-unitForeground: #cccccc;
---vscode-symbolIcon-variableForeground: #75beff;
---vscode-actionBar-toggledBackground: rgba(0, 127, 212, 0.4);
---vscode-editor-lineHighlightBackground: #08090d;
---vscode-editor-lineHighlightBorder: #282828;
---vscode-editor-rangeHighlightBackground: rgba(255, 255, 255, 0.04);
---vscode-editor-symbolHighlightBackground: rgba(234, 92, 0, 0.33);
---vscode-editorCursor-foreground: #9ca3af;
---vscode-editorWhitespace-foreground: rgba(227, 228, 226, 0.16);
---vscode-editorLineNumber-foreground: #6b7280;
---vscode-editorIndentGuide-background: rgba(227, 228, 226, 0.16);
---vscode-editorIndentGuide-activeBackground: rgba(227, 228, 226, 0.16);
---vscode-editorIndentGuide-background1: #404040;
---vscode-editorIndentGuide-background2: rgba(0, 0, 0, 0);
---vscode-editorIndentGuide-background3: rgba(0, 0, 0, 0);
---vscode-editorIndentGuide-background4: rgba(0, 0, 0, 0);
---vscode-editorIndentGuide-background5: rgba(0, 0, 0, 0);
---vscode-editorIndentGuide-background6: rgba(0, 0, 0, 0);
---vscode-editorIndentGuide-activeBackground1: #707070;
---vscode-editorIndentGuide-activeBackground2: rgba(0, 0, 0, 0);
---vscode-editorIndentGuide-activeBackground3: rgba(0, 0, 0, 0);
---vscode-editorIndentGuide-activeBackground4: rgba(0, 0, 0, 0);
---vscode-editorIndentGuide-activeBackground5: rgba(0, 0, 0, 0);
---vscode-editorIndentGuide-activeBackground6: rgba(0, 0, 0, 0);
---vscode-editorActiveLineNumber-foreground: #c6c6c6;
---vscode-editorLineNumber-activeForeground: #c6c6c6;
---vscode-editorRuler-foreground: #5a5a5a;
---vscode-editorCodeLens-foreground: #999999;
---vscode-editorBracketMatch-background: rgba(0, 100, 0, 0.1);
---vscode-editorBracketMatch-border: #888888;
---vscode-editorOverviewRuler-border: rgba(127, 127, 127, 0.3);
---vscode-editorGutter-background: #050609;
---vscode-editorUnnecessaryCode-opacity: rgba(0, 0, 0, 0.67);
---vscode-editorGhostText-foreground: rgba(255, 255, 255, 0.34);
---vscode-editorOverviewRuler-rangeHighlightForeground: rgba(0, 122, 204, 0.6);
---vscode-editorOverviewRuler-errorForeground: rgba(255, 18, 18, 0.7);
---vscode-editorOverviewRuler-warningForeground: #cca700;
---vscode-editorOverviewRuler-infoForeground: #3794ff;
---vscode-editorBracketHighlight-foreground1: #ffd700;
---vscode-editorBracketHighlight-foreground2: #da70d6;
---vscode-editorBracketHighlight-foreground3: #179fff;
---vscode-editorBracketHighlight-foreground4: rgba(0, 0, 0, 0);
---vscode-editorBracketHighlight-foreground5: rgba(0, 0, 0, 0);
---vscode-editorBracketHighlight-foreground6: rgba(0, 0, 0, 0);
---vscode-editorBracketHighlight-unexpectedBracket-foreground: rgba(255, 18, 18, 0.8);
---vscode-editorBracketPairGuide-background1: rgba(0, 0, 0, 0);
---vscode-editorBracketPairGuide-background2: rgba(0, 0, 0, 0);
---vscode-editorBracketPairGuide-background3: rgba(0, 0, 0, 0);
---vscode-editorBracketPairGuide-background4: rgba(0, 0, 0, 0);
---vscode-editorBracketPairGuide-background5: rgba(0, 0, 0, 0);
---vscode-editorBracketPairGuide-background6: rgba(0, 0, 0, 0);
---vscode-editorBracketPairGuide-activeBackground1: rgba(0, 0, 0, 0);
---vscode-editorBracketPairGuide-activeBackground2: rgba(0, 0, 0, 0);
---vscode-editorBracketPairGuide-activeBackground3: rgba(0, 0, 0, 0);
---vscode-editorBracketPairGuide-activeBackground4: rgba(0, 0, 0, 0);
---vscode-editorBracketPairGuide-activeBackground5: rgba(0, 0, 0, 0);
---vscode-editorBracketPairGuide-activeBackground6: rgba(0, 0, 0, 0);
---vscode-editorUnicodeHighlight-border: #cca700;
---vscode-editorOverviewRuler-bracketMatchForeground: #a0a0a0;
---vscode-editor-linkedEditingBackground: rgba(255, 0, 0, 0.3);
---vscode-editor-wordHighlightBackground: rgba(87, 87, 87, 0.72);
---vscode-editor-wordHighlightStrongBackground: rgba(0, 73, 114, 0.72);
---vscode-editor-wordHighlightTextBackground: rgba(87, 87, 87, 0.72);
---vscode-editorOverviewRuler-wordHighlightForeground: rgba(160, 160, 160, 0.8);
---vscode-editorOverviewRuler-wordHighlightStrongForeground: rgba(192, 160, 192, 0.8);
---vscode-editorOverviewRuler-wordHighlightTextForeground: rgba(160, 160, 160, 0.8);
---vscode-peekViewTitle-background: #252526;
---vscode-peekViewTitleLabel-foreground: #ffffff;
---vscode-peekViewTitleDescription-foreground: rgba(204, 204, 204, 0.7);
---vscode-peekView-border: #3794ff;
---vscode-peekViewResult-background: #252526;
---vscode-peekViewResult-lineForeground: #bbbbbb;
---vscode-peekViewResult-fileForeground: #ffffff;
---vscode-peekViewResult-selectionBackground: rgba(51, 153, 255, 0.2);
---vscode-peekViewResult-selectionForeground: #ffffff;
---vscode-peekViewEditor-background: #001f33;
---vscode-peekViewEditorGutter-background: #001f33;
---vscode-peekViewEditorStickyScroll-background: #001f33;
---vscode-peekViewResult-matchHighlightBackground: rgba(234, 92, 0, 0.3);
---vscode-peekViewEditor-matchHighlightBackground: rgba(255, 143, 0, 0.6);
---vscode-editorMarkerNavigationError-background: #f14c4c;
---vscode-editorMarkerNavigationError-headerBackground: rgba(241, 76, 76, 0.1);
---vscode-editorMarkerNavigationWarning-background: #cca700;
---vscode-editorMarkerNavigationWarning-headerBackground: rgba(204, 167, 0, 0.1);
---vscode-editorMarkerNavigationInfo-background: #3794ff;
---vscode-editorMarkerNavigationInfo-headerBackground: rgba(55, 148, 255, 0.1);
---vscode-editorMarkerNavigation-background: #050609;
---vscode-editorHoverWidget-highlightForeground: #2aaaff;
---vscode-editorSuggestWidget-background: #252526;
---vscode-editorSuggestWidget-border: #454545;
---vscode-editorSuggestWidget-foreground: #e5e7eb;
---vscode-editorSuggestWidget-selectedForeground: #ffffff;
---vscode-editorSuggestWidget-selectedBackground: #04395e;
---vscode-editorSuggestWidget-highlightForeground: #2aaaff;
---vscode-editorSuggestWidget-focusHighlightForeground: #2aaaff;
---vscode-editorSuggestWidgetStatus-foreground: rgba(229, 231, 235, 0.5);
---vscode-diffEditor-move-border: rgba(139, 139, 139, 0.61);
---vscode-diffEditor-moveActive-border: #ffa500;
---vscode-diffEditor-unchangedRegionShadow: #000000;
---vscode-editor-foldBackground: rgba(38, 79, 120, 0.3);
---vscode-editorGutter-foldingControlForeground: #c5c5c5; }
-
-.mtk1 { color: #e5e7eb; }
-.mtk2 { color: #050609; }
-.mtk3 { color: #cc6666; }
-.mtk4 { color: #9cdcfe; }
-.mtk5 { color: #ce9178; }
-.mtk6 { color: #d4d4d4; }
-.mtk7 { color: #b5cea8; }
-.mtk8 { color: #608b4e; }
-.mtk9 { color: #4f46e5; }
-.mtk10 { color: #569cd6; }
-.mtk11 { color: #dcdcdc; }
-.mtk12 { color: #808080; }
-.mtk13 { color: #f44747; }
-.mtk14 { color: #c586c0; }
-.mtk15 { color: #a79873; }
-.mtk16 { color: #dd6a6f; }
-.mtk17 { color: #5bb498; }
-.mtk18 { color: #909090; }
-.mtk19 { color: #778899; }
-.mtk20 { color: #ff00ff; }
-.mtk21 { color: #b46695; }
-.mtk22 { color: #ff0000; }
-.mtk23 { color: #4f76ac; }
-.mtk24 { color: #3dc9b0; }
-.mtk25 { color: #74b0df; }
-.mtk26 { color: #4864aa; }
-.mtki { font-style: italic; }
-.mtkb { font-weight: bold; }
-.mtku { text-decoration: underline; text-underline-position: under; }
-.mtks { text-decoration: line-through; }
-.mtks.mtku { text-decoration: underline line-through; text-underline-position: under; }</style><script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/basic-languages/lua/lua.js"></script></head>
-<body data-theme="dark" class="min-h-screen bg-[var(--page-bg-color)] text-[var(--text-primary)] transition-colors duration-300 ease-in-out enable-motion"> 
+</head>
+<body data-theme="dark" class="min-h-screen bg-[var(--page-bg-color)] text-[var(--text-primary)] transition-colors duration-300 ease-in-out"> 
     <div class="w-full h-screen bg-[var(--main-ui-bg)] shadow-2xl overflow-hidden flex flex-col">
-        <div class="bg-[var(--main-ui-bg)] px-4 py-2.5 flex items-center justify-center flex-shrink-0 relative">
-            <div class="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
+        <div class="top-bar">
+            <div class="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-2" style="-webkit-app-region: no-drag;">
                 <h1 class="text-xl font-bold text-[var(--text-primary)]">Lunaris Interface</h1>
-                <svg id="lunaris-logo-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="var(--accent-color)" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon transition-colors duration-300"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                <svg id="lunaris-logo-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="var(--accent-color)" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon transition-colors duration-300"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
             </div>
 
             <nav id="top-navigation" class="flex space-x-1.5"> 
-                <a href="#" data-view="overview-section" class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--content-bg)] px-2.5 py-1 rounded-md text-xs font-medium btn-base nav-link-active">Overview</a>
+                <a href="#" data-view="overview-section" class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--content-bg)] px-2.5 py-1 rounded-md text-xs font-medium btn-base">Overview</a>
                 <a href="#" data-view="code-editor-view" class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--content-bg)] px-2.5 py-1 rounded-md text-xs font-medium btn-base">Code Editor</a>
                 <a href="#" data-view="console-section-view" class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--content-bg)] px-2.5 py-1 rounded-md text-xs font-medium btn-base">Console</a>
             </nav>
 
+            <div class="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-2" style="-webkit-app-region: no-drag;">
+                <div id="close-button" class="window-control-button red"></div>
+                <div id="minimize-button" class="window-control-button yellow"></div>
+                <div id="maximize-button" class="window-control-button green"></div>
             </div>
+        </div>
         
         <div id="code-editor-view" class="hidden flex-col flex-grow overflow-hidden">
             <div class="bg-[var(--main-ui-bg)] px-3 py-2 flex items-center space-x-2">
-                <div id="tabs-container" class="flex items-center space-x-2 overflow-x-auto custom-scrollbar flex-grow"><button data-tab-id="tab-1748667454432-1" class="tab-base px-3 py-1.5 rounded-lg text-sm flex items-center justify-between space-x-2 focus:outline-none shadow-md min-w-[150px] btn-base focus:ring-2 ring-[var(--accent-color)] bg-[var(--content-bg)] hover:brightness-110"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-code-2 mr-1.5 text-accent"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"></path><path d="M14 2v6h6"></path><path d="m10 13-2 2 2 2"></path><path d="m14 17 2-2-2-2"></path></svg><span class="flex-grow text-left text-accent font-semibold" data-original-name="Script 1">Script 1</span><button class="ml-2 flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--text-muted)] hover:text-[var(--text-primary)] lucide lucide-x transition-colors duration-200"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></button></div>
-                <button id="add-tab-button" class="text-neutral-100 px-3 py-1.5 rounded-lg text-sm font-medium flex items-center justify-center space-x-2 focus:outline-none transform hover:-translate-y-0.5 transition-all duration-200 ease-in-out flex-shrink-0 btn-accent-styled">
+                <div id="tabs-container" class="flex items-center space-x-2 overflow-x-auto custom-scrollbar flex-grow">
+                    </div>
+                <button id="add-tab-button" class="text-neutral-100 px-3 py-1.5 rounded-lg text-sm font-medium flex items-center justify-center space-x-2 focus:outline-none btn-accent-styled transform hover:-translate-y-0.5 transition-all duration-200 ease-in-out flex-shrink-0">
                     <span>Add Tab</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
-                        <path d="M5 12h14"></path><path d="M12 5v14"></path>
+                        <path d="M5 12h14"/><path d="M12 5v14"/>
                     </svg>
                 </button>
             </div>
 
             <div class="flex-grow bg-[var(--main-ui-bg)] custom-scrollbar overflow-hidden editor-wrapper-stroke rounded-lg mx-3 my-3 relative">
-                <div id="editor-container" class="absolute top-0 left-0 right-0 bottom-0" data-keybinding-context="1" data-mode-id="lua" style="--vscode-editorCodeLens-lineHeight: 15px; --vscode-editorCodeLens-fontSize: 10px; --vscode-editorCodeLens-fontFeatureSettings: &quot;liga&quot; off, &quot;calt&quot; off;"><div class="monaco-editor no-user-select mac  showUnused showDeprecated vs-dark" role="code" data-uri="inmemory://model/1" style="width: 5px; height: 5px;"><div data-mprt="3" class="overflow-guard" style="width: 5px; height: 5px;"><div class="margin" role="presentation" aria-hidden="true" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; top: 0px; height: 18px; width: 62px;"><div class="glyph-margin" style="left: 0px; width: 0px; height: 18px;"></div><div class="margin-view-zones" role="presentation" aria-hidden="true" style="position: absolute;"></div><div class="margin-view-overlays" role="presentation" aria-hidden="true" style="position: absolute; font-family: Menlo, Monaco, &quot;Courier New&quot;, monospace; font-weight: normal; font-size: 12px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; font-variation-settings: normal; line-height: 18px; letter-spacing: 0px; width: 62px; height: 18px;"><div style="position:absolute;top:0px;width:100%;height:18px;"><div class="current-line current-line-margin-both" style="width:62px; height:18px;"></div><div class="line-numbers active-line-number" style="left:0px;width:36px;">1</div></div></div><div class="glyph-margin-widgets" style="position: absolute; top: 0px;"></div></div><div class="monaco-scrollable-element editor-scrollable vs-dark mac" role="presentation" data-mprt="6" style="position: absolute; overflow: hidden; left: 62px; height: 5px;"><div class="lines-content monaco-editor-background" style="position: absolute; overflow: hidden; width: 1e+06px; height: 1e+06px; transform: translate3d(0px, 0px, 0px); contain: strict; top: 0px; left: 0px;"><div class="view-overlays" role="presentation" aria-hidden="true" style="position: absolute; font-family: Menlo, Monaco, &quot;Courier New&quot;, monospace; font-weight: normal; font-size: 12px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; font-variation-settings: normal; line-height: 18px; letter-spacing: 0px; height: 0px; width: 43px;"><div style="position:absolute;top:0px;width:100%;height:18px;"><div class="current-line current-line-exact" style="width:43px; height:18px;"></div></div></div><div role="presentation" aria-hidden="true" class="view-rulers"></div><div class="view-zones" role="presentation" aria-hidden="true" style="position: absolute;"></div><div class="view-lines monaco-mouse-cursor-text" role="presentation" aria-hidden="true" data-mprt="8" style="position: absolute; font-family: Menlo, Monaco, &quot;Courier New&quot;, monospace; font-weight: normal; font-size: 12px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; font-variation-settings: normal; line-height: 18px; letter-spacing: 0px; width: 43px; height: 18px;"><div style="top:0px;height:18px;" class="view-line"><span><span></span></span></div></div><div data-mprt="1" class="contentWidgets" style="position: absolute; top: 0px;"></div><div role="presentation" aria-hidden="true" class="cursors-layer cursor-line-style cursor-solid cursor-smooth-caret-animation"><div class="cursor monaco-mouse-cursor-text " style="height: 18px; top: 0px; left: 0px; font-family: Menlo, Monaco, &quot;Courier New&quot;, monospace; font-weight: normal; font-size: 12px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; font-variation-settings: normal; line-height: 18px; letter-spacing: 0px; display: block; visibility: hidden; padding-left: 0px; width: 2px;"></div></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal fade" style="position: absolute; width: 0px; height: 12px; left: 0px; bottom: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 12px; transform: translate3d(0px, 0px, 0px); contain: strict; width: 20px;"></div></div><canvas class="decorationsOverviewRuler" aria-hidden="true" width="28" height="10" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; top: 0px; right: 0px; width: 14px; height: 5px; display: block;"></canvas><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical fade" style="position: absolute; width: 14px; height: 5px; right: 0px; top: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 14px; transform: translate3d(0px, 0px, 0px); contain: strict; height: 20px;"></div></div></div><div role="presentation" aria-hidden="true"></div><textarea data-mprt="7" class="inputarea monaco-mouse-cursor-text" wrap="off" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" aria-label="Editor content;Press Alt+F1 for Accessibility Options." aria-required="false" tabindex="0" role="textbox" aria-roledescription="editor" aria-multiline="true" aria-autocomplete="both" style="tab-size: 28.9062px; font-family: Menlo, Monaco, &quot;Courier New&quot;, monospace; font-weight: normal; font-size: 12px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; font-variation-settings: normal; line-height: 18px; letter-spacing: 0px; top: 0px; left: 0px; width: 1px; height: 1px;"></textarea><div class="monaco-editor-background textAreaCover line-numbers" style="position: absolute; top: 0px; left: 0px; width: 1px; height: 1px;"></div><div data-mprt="4" class="overlayWidgets" style="width: 5px;"><div class="sticky-widget" widgetid="editor.contrib.stickyScrollWidget" style="position: absolute; display: none;"><div class="sticky-widget-line-numbers" role="none" style="width: 62px;"></div><div class="sticky-widget-lines-scrollable" style="--vscode-editorStickyScroll-scrollableWidth: 29px;"><div class="sticky-widget-lines" role="list" style="left: 0px;"></div></div></div></div><div data-mprt="9" class="minimap slider-mouseover" role="presentation" aria-hidden="true" style="position: absolute; left: -17px; width: 8px; height: 5px;"><div class="minimap-shadow-visible" style="height: 5px;"></div><canvas width="16" height="10" style="position: absolute; left: 0px; width: 8px; height: 5px;"></canvas><canvas class="minimap-decorations-layer" width="16" height="10" style="position: absolute; left: 0px; width: 8px; height: 5px;"></canvas><div class="minimap-slider" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; width: 8px; display: block; top: 0px; height: 0px;"><div class="minimap-slider-horizontal" style="position: absolute; left: 0px; width: 8px; top: 0px; height: 0px;"></div></div></div><div role="presentation" aria-hidden="true" class="blockDecorations-container"></div></div><div data-mprt="2" class="overflowingContentWidgets"></div><div data-mprt="5" class="overflowingOverlayWidgets"></div></div></div>
+                <div id="editor-container" class="absolute top-0 left-0 right-0 bottom-0"></div>
             </div>
 
             <div class="bg-[var(--main-ui-bg)] p-3 flex items-center justify-center space-x-2.5 flex-shrink-0">
-                <button id="execute-btn" class="action-button bg-transparent hover:bg-[var(--content-bg)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-2.5 rounded-md text-sm flex items-center focus:outline-none focus:ring-2 ring-accent btn-base overflow-hidden border-accent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play flex-shrink-0 text-accent">
-                        <polygon points="6 3 20 12 6 21 6 3"></polygon>
+                <button id="execute-btn" class="action-button bg-transparent hover:bg-[var(--content-bg)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-2.5 rounded-md text-sm flex items-center focus:outline-none focus:ring-2 ring-accent btn-base border-accent overflow-hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent lucide lucide-play flex-shrink-0">
+                        <polygon points="6 3 20 12 6 21 6 3"/>
                     </svg>
                     <span class="action-button-text">Execute</span>
                 </button>
                 <button id="open-file-btn" class="action-button bg-transparent hover:bg-[var(--content-bg)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-2.5 rounded-md text-sm flex items-center focus:outline-none focus:ring-1 ring-neutral-500 btn-base overflow-hidden">
                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open flex-shrink-0">
-                        <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L8.6 3.3a2 2 0 0 0-1.7-1H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path><path d="M2 10h20"></path>
+                        <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L8.6 3.3a2 2 0 0 0-1.7-1H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="M2 10h20"/>
                     </svg>
                     <span class="action-button-text">Open File</span>
                 </button>
                 <button id="save-file-btn" class="action-button bg-transparent hover:bg-[var(--content-bg)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-2.5 rounded-md text-sm flex items-center focus:outline-none focus:ring-1 ring-neutral-500 btn-base overflow-hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save flex-shrink-0">
-                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline>
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
                     </svg>
                     <span class="action-button-text">Save File</span>
                 </button>
                  <button id="attach-btn" class="action-button bg-transparent hover:bg-[var(--content-bg)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-2.5 rounded-md text-sm flex items-center focus:outline-none focus:ring-1 ring-neutral-500 btn-base overflow-hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-paperclip flex-shrink-0">
-                        <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                        <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
                     </svg>
                     <span class="action-button-text">Attach</span>
                 </button>
                 <button id="settings-action-btn" class="action-button bg-transparent hover:bg-[var(--content-bg)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-2.5 rounded-md text-sm flex items-center focus:outline-none focus:ring-1 ring-neutral-500 btn-base overflow-hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings flex-shrink-0">
-                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l-.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>
                     </svg>
                     <span class="action-button-text">Settings</span>
                 </button>
             </div>
         </div>
 
-        <div id="overview-section" class="flex-col flex-grow p-6 md:p-8 space-y-6 md:space-y-8 custom-scrollbar overflow-y-auto bg-[var(--main-ui-bg)] flex">
+        <div id="overview-section" class="hidden flex-col flex-grow p-6 md:p-8 space-y-6 md:space-y-8 custom-scrollbar overflow-y-auto bg-[var(--main-ui-bg)]">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 flex-grow min-h-[calc(100%-2rem)]">
                 <div class="md:col-span-1 bg-gradient-to-br from-[var(--accent-color)] to-[var(--accent-gradient-end)] p-6 rounded-lg shadow-xl flex flex-col items-center text-center editor-wrapper-stroke">
                     <div class="flex-grow flex flex-col items-center justify-center">
@@ -1404,29 +367,29 @@
                         <p class="text-neutral-200 text-sm mb-4 filter drop-shadow-sm">A modern, sleek and nice MacSploit theme.</p>
                     </div>
                     <div class="bg-white/20 text-white px-4 py-1.5 rounded-md text-xs font-medium border border-white/30 flex items-center mt-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info mr-1.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info mr-1.5"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
                         Version V.1
                     </div>
                 </div>
         
                 <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                     <div class="bg-[var(--content-bg)] p-5 rounded-lg editor-wrapper-stroke h-full flex flex-col">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-grid mb-2 flex-shrink-0"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><path d="M3 12h18"></path><path d="M12 3v18"></path></svg>
-                        <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">Sleek &amp; Modern UI</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-grid mb-2 flex-shrink-0"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 12h18"/><path d="M12 3v18"/></svg>
+                        <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">Sleek & Modern UI</h3>
                         <p class="text-xs text-[var(--text-secondary)] flex-grow">Lunaris UI has a nice, sleek UI fit for new and advanced users.</p>
                     </div>
                     <div class="bg-[var(--content-bg)] p-5 rounded-lg editor-wrapper-stroke h-full flex flex-col">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sliders-horizontal mb-2 flex-shrink-0"><line x1="21" x2="14" y1="4" y2="4"></line><line x1="10" x2="3" y1="4" y2="4"></line><line x1="21" x2="12" y1="12" y2="12"></line><line x1="8" x2="3" y1="12" y2="12"></line><line x1="21" x2="16" y1="20" y2="20"></line><line x1="12" x2="3" y1="20" y2="20"></line><line x1="14" x2="14" y1="2" y2="6"></line><line x1="8" x2="8" y1="10" y2="14"></line><line x1="16" x2="16" y1="18" y2="22"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sliders-horizontal mb-2 flex-shrink-0"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>
                         <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">A few customizable options</h3>
                         <p class="text-xs text-[var(--text-secondary)] flex-grow">Check out the settings page for a few customizable options. Featuring a dark and light theme and accent customization.</p>
                     </div>
                     <div class="bg-[var(--content-bg)] p-5 rounded-lg editor-wrapper-stroke h-full flex flex-col">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-library mb-2 flex-shrink-0"><path d="m16 6 4 14"></path><path d="M12 6v14"></path><path d="M8 8v12"></path><path d="M4 4v16"></path></svg>
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-library mb-2 flex-shrink-0"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
                         <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">Script Hub</h3>
                         <p class="text-xs text-[var(--text-secondary)] flex-grow">Featuring a script hub using the power of the RScripts API, search for scripts effortlessly and easily.</p>
                     </div>
                     <div class="bg-[var(--content-bg)] p-5 rounded-lg editor-wrapper-stroke h-full flex flex-col">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-edit-3 mb-2 flex-shrink-0"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-edit-3 mb-2 flex-shrink-0"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                         <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">Monaco Editor</h3>
                         <p class="text-xs text-[var(--text-secondary)] flex-grow">Our monaco editor has features for the smarter individuals, it features nice colors and nice animations.</p>
                     </div>
@@ -1436,7 +399,7 @@
         
         <div id="console-section-view" class="hidden flex-col flex-grow p-3 bg-[var(--main-ui-bg)] editor-wrapper-stroke rounded-lg mx-3 mb-1">
             <div id="console-output" class="flex-grow custom-scrollbar overflow-y-auto font-mono text-xs text-[var(--text-secondary)] space-y-1 p-2">
-                <div class="console-log-entry"><span class="console-timestamp">[21:57:33]</span><span class="console-type-badge" style="background-color: rgb(100, 116, 139); color: white;">THEME_EVENT</span><span class="console-message">Theme changed to: dark</span></div><div class="console-log-entry"><span class="console-timestamp">[21:57:33]</span><span class="console-type-badge" style="background-color: rgb(20, 184, 166); color: white;">ACCENT_EVENT</span><span class="console-message">Accent color changed to: Indigo Dye (#4F46E5)</span></div><div class="console-log-entry"><span class="console-timestamp">[21:57:34]</span><span class="console-type-badge" style="background-color: rgb(14, 165, 233); color: white;">TAB_EVENT</span><span class="console-message">Tab "Script 1" added.</span></div></div>
+                </div>
         </div>
 
         <div id="settings-section-view" class="hidden flex-col flex-grow p-6 md:p-8 space-y-6 md:space-y-8 custom-scrollbar overflow-y-auto bg-[var(--main-ui-bg)]">
@@ -1447,7 +410,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div id="theme-card-light" class="theme-preview-card p-4 rounded-lg cursor-pointer editor-wrapper-stroke relative">
                         <div class="absolute top-2 right-2 hidden" id="checkmark-light">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                         </div>
                         <div class="w-full h-28 bg-[#E2E8F0] rounded-md flex flex-col p-2 border border-[#CBD5E0]">
                             <div class="flex items-center space-x-1.5 mb-1.5">
@@ -1463,9 +426,9 @@
                         </div>
                         <p class="text-center text-sm font-medium text-[var(--text-secondary)] mt-2">Light</p>
                     </div>
-                    <div id="theme-card-dark" class="theme-preview-card p-4 rounded-lg cursor-pointer editor-wrapper-stroke relative active-theme">
-                         <div class="absolute top-2 right-2" id="checkmark-dark">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    <div id="theme-card-dark" class="theme-preview-card p-4 rounded-lg cursor-pointer editor-wrapper-stroke relative">
+                         <div class="absolute top-2 right-2 hidden" id="checkmark-dark">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                         </div>
                         <div class="w-full h-28 bg-[#08090d] rounded-md flex flex-col p-2 border border-[#181A1F]">
                              <div class="flex items-center space-x-1.5 mb-1.5">
@@ -1487,7 +450,7 @@
             <div class="mt-6">
                 <h3 class="text-lg font-medium text-[var(--text-primary)] mb-3">Accent Color</h3>
                 <div id="accent-color-picker" class="flex flex-wrap gap-3 p-3 bg-[var(--content-bg)] rounded-lg editor-wrapper-stroke">
-                    <div class="accent-color-circle" data-color="#7C3AED" data-hover="#6D28D9" data-gradient="#7C3AED" title="Lunaris Purple" style="background-color: rgb(124, 58, 237);"></div><div class="accent-color-circle" data-color="#EF4444" data-hover="#DC2626" data-gradient="#7f1d1d" title="Ruby Red" style="background-color: rgb(239, 68, 68);"></div><div class="accent-color-circle" data-color="#F59E0B" data-hover="#D97706" data-gradient="#78350f" title="Amber Orange" style="background-color: rgb(245, 158, 11);"></div><div class="accent-color-circle" data-color="#10B981" data-hover="#059669" data-gradient="#047857" title="Emerald Green" style="background-color: rgb(16, 185, 129);"></div><div class="accent-color-circle" data-color="#3B82F6" data-hover="#2563EB" data-gradient="#1e3a8a" title="Sapphire Blue" style="background-color: rgb(59, 130, 246);"></div><div class="accent-color-circle active-accent-color" data-color="#4F46E5" data-hover="#4338CA" data-gradient="#312e81" title="Indigo Dye" style="background-color: rgb(79, 70, 229);"><span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg></span></div><div class="accent-color-circle" data-color="#8B5CF6" data-hover="#7C3AED" data-gradient="#5b21b6" title="Violet Gem" style="background-color: rgb(139, 92, 246);"></div></div>
+                    </div>
             </div>
             <div class="mt-6">
                 <h3 class="text-lg font-medium text-[var(--text-primary)] mb-4">Editor</h3>
@@ -1502,14 +465,14 @@
                     <div class="flex items-center justify-between p-3 rounded-md setting-item">
                         <span class="text-sm text-[var(--text-secondary)]">Line Numbers</span>
                         <label class="toggle-switch-new">
-                            <input type="checkbox" id="toggle-line-numbers" checked="">
+                            <input type="checkbox" id="toggle-line-numbers" checked>
                             <span class="toggle-slider-new"></span>
                         </label>
                     </div>
                      <div class="flex items-center justify-between p-3 rounded-md setting-item">
                         <span class="text-sm text-[var(--text-secondary)]">UI Sounds</span>
                         <label class="toggle-switch-new">
-                            <input type="checkbox" id="toggle-ui-sounds" checked="">
+                            <input type="checkbox" id="toggle-ui-sounds" checked>
                             <span class="toggle-slider-new"></span>
                         </label>
                     </div>
@@ -1913,7 +876,6 @@
         }
     }
 
-    // --- Console Logging ---
     /**
      * Logs a message to the in-app console.
      * @param {string} type - The type of log entry (e.g., 'EXECUTE', 'ERROR').
@@ -1945,10 +907,15 @@
             case 'TAB_EVENT': typeBadge.style.backgroundColor = '#0EA5E9'; typeBadge.style.color = 'white'; break;
             case 'THEME_EVENT': typeBadge.style.backgroundColor = '#64748B'; typeBadge.style.color = 'white'; break;
             case 'ACCENT_EVENT': typeBadge.style.backgroundColor = '#14B8A6'; typeBadge.style.color = 'white'; break;
+            case 'NATIVE_PING': typeBadge.style.backgroundColor = '#6B7280'; typeBadge.style.color = 'white'; break;
+            case 'WINDOW_CONTROL': typeBadge.style.backgroundColor = '#4B5563'; typeBadge.style.color = 'white'; break;
+            case 'SIMULATED_EXECUTE': typeBadge.style.backgroundColor = '#60A5FA'; typeBadge.style.color = 'white'; break;
+            case 'SIMULATED_WINDOW': typeBadge.style.backgroundColor = '#9CA3AF'; typeBadge.style.color = 'white'; break;
+            case 'SIMULATED_FILE': typeBadge.style.backgroundColor = '#D1D5DB'; typeBadge.style.color = 'black'; break;
+            case 'WARN': typeBadge.style.backgroundColor = '#FBBF24'; typeBadge.style.color = 'black'; break;
             default: typeBadge.style.backgroundColor = '#6B7280'; typeBadge.style.color = 'white'; break; 
         }
 
-        // Log message
         const messageSpan = document.createElement('span');
         messageSpan.className = 'console-message';
         messageSpan.textContent = message;
@@ -1959,19 +926,13 @@
         
         if (consoleOutput) {
             consoleOutput.appendChild(logEntry);
-            consoleOutput.scrollTop = consoleOutput.scrollHeight; // Auto-scroll to bottom
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
         }
     }
 
-    // --- View Switching ---
-    /**
-     * Switches between different views (Overview, Code Editor, Console, Settings).
-     * @param {string} viewName - The ID of the view to switch to.
-     */
     function switchView(viewName) {
         const views = [overviewSection, codeEditorView, consoleSectionView, settingsSectionView];
         
-        // Save editor content if switching away from code editor
         if (codeEditorView && !codeEditorView.classList.contains('hidden') && viewName !== 'code-editor-view') {
              if (activeTabId && editor && typeof editor.getValue === 'function') {
                 const currentActiveTab = tabs.find(t => t.id === activeTabId);
@@ -1981,13 +942,11 @@
             }
         }
 
-        // Show the selected view, hide others
         views.forEach(view => {
             if (view) { 
                 if (view.id === viewName) { 
                     view.classList.remove('hidden');
                     view.classList.add('flex'); 
-                    // If switching to code editor, ensure Monaco layout is updated
                     if (view.id === 'code-editor-view' && editor && typeof editor.layout === 'function') {
                         editor.layout(); 
                     }
@@ -1998,27 +957,24 @@
             }
         });
         
-        // If switching to code editor, update its content
         if (viewName === 'code-editor-view') {
             updateEditorContent();
         }
 
-        // Update active state of top navigation links
         topNavigationLinks.forEach(link => {
             link.classList.remove('nav-link-active');
             link.classList.add('text-[var(--text-secondary)]'); 
-            link.classList.remove('text-white'); // Ensure text color resets
+            link.classList.remove('text-white'); 
 
             if (link.dataset.view === viewName) {
                 link.classList.add('nav-link-active');
             }
         });
         
-        // Special case for settings: keep "Overview" highlighted in nav if settings is opened via its own button
         if (viewName === 'settings-section-view') {
              const overviewLink = document.querySelector('a[data-view="overview-section"]');
              if (overviewLink) {
-                topNavigationLinks.forEach(tl => { // Clear all active states first
+                topNavigationLinks.forEach(tl => { 
                     tl.classList.remove('nav-link-active');
                     tl.classList.add('text-[var(--text-secondary)]');
                      tl.classList.remove('text-white');
@@ -2027,24 +983,17 @@
         }
     }
 
-    // --- Theme and Accent Color Management ---
-
-    /**
-     * Applies a theme (light/dark) to the application.
-     * @param {string} themeName - 'light' or 'dark'.
-     */
     function applyTheme(themeName) {
-        document.body.dataset.theme = themeName; // Set theme attribute on body
-        localStorage.setItem('lunarisTheme', themeName); // Save preference
+        document.body.dataset.theme = themeName; 
+        localStorage.setItem('lunarisTheme', themeName); 
         logToConsole('THEME_EVENT', `Theme changed to: ${themeName}`);
         
         const currentAccent = localStorage.getItem('lunarisAccentColor') || '#7C3AED';
-        defineMonacoThemes(currentAccent, themeName); // Redefine Monaco themes for the new body theme
+        defineMonacoThemes(currentAccent, themeName); 
         if (editor && typeof monaco !== 'undefined' && monaco.editor) {
             monaco.editor.setTheme(themeName === 'light' ? 'lunaris-light' : 'lunaris-dark');
         }
 
-        // Update theme selection UI (checkmarks on cards)
         if (checkmarkLight && checkmarkDark) {
             checkmarkLight.classList.toggle('hidden', themeName !== 'light');
             checkmarkDark.classList.toggle('hidden', themeName !== 'dark');
@@ -2054,12 +1003,10 @@
             themeCardDark.classList.toggle('active-theme', themeName === 'dark');
         }
         
-        // Adjust checkmark color in accent picker if needed for visibility on light theme
-        if (accentColorPicker) { // Check if accentColorPicker exists
+        if (accentColorPicker) { 
             const activeAccentCircle = accentColorPicker.querySelector('.active-accent-color .lucide-check svg');
             if (activeAccentCircle) {
                 const activeAccentColorValue = accentColorPicker.querySelector('.active-accent-color').dataset.color;
-                 // For certain light accents on light theme, make checkmark black
                  if (themeName === 'light' && (activeAccentColorValue === '#F59E0B' || activeAccentColorValue === '#10B981')) { 
                      activeAccentCircle.setAttribute('stroke', 'black');
                 } else {
@@ -2069,28 +1016,16 @@
         }
     }
 
-    /**
-     * Loads the saved theme from localStorage or defaults to dark.
-     */
     function loadTheme() {
         const savedTheme = localStorage.getItem('lunarisTheme') || 'dark';
         applyTheme(savedTheme);
     }
 
-    /**
-     * Applies an accent color to the application.
-     * @param {string} colorValue - The hex value of the accent color.
-     * @param {string} hoverValue - The hex value for hover state.
-     * @param {string} gradientEndValue - The hex value for gradient end.
-     * @param {string} colorName - The name of the accent color.
-     */
     function applyAccentColor(colorValue, hoverValue, gradientEndValue, colorName) {
         const root = document.documentElement;
-        // Set CSS custom properties for accent colors
         root.style.setProperty('--accent-color', colorValue);
         root.style.setProperty('--accent-color-hover', hoverValue);
         root.style.setProperty('--accent-gradient-end', gradientEndValue);
-        // Save preference
         localStorage.setItem('lunarisAccentColor', colorValue);
         localStorage.setItem('lunarisAccentColorHover', hoverValue);
         localStorage.setItem('lunarisAccentGradientEnd', gradientEndValue);
@@ -2099,17 +1034,15 @@
 
         logToConsole('ACCENT_EVENT', `Accent color changed to: ${colorName} (${colorValue})`);
 
-        // Update accent color picker UI
         if (accentColorPicker) {
             accentColorPicker.querySelectorAll('.accent-color-circle').forEach(circle => {
-                circle.innerHTML = ''; // Clear previous checkmark
+                circle.innerHTML = ''; 
                 circle.classList.remove('active-accent-color');
                 if (circle.dataset.color === colorValue) {
                     circle.classList.add('active-accent-color');
                     const check = document.createElement('span');
                     check.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"/></svg>`;
-                    // Adjust checkmark color for light accents on light theme
-                    if (document.body.dataset.theme === 'light' && (colorValue === '#F59E0B' || colorValue === '#10B981')) { 
+                    if (document.body.dataset.theme === 'light' && (color.value === '#F59E0B' || color.value === '#10B981')) { 
                         check.querySelector('svg').setAttribute('stroke', 'black');
                     }
                     circle.appendChild(check);
@@ -2117,7 +1050,6 @@
             });
         }
 
-        // Redefine and apply Monaco themes with the new accent color
         if (typeof monaco !== 'undefined' && monaco.editor) {
             defineMonacoThemes(colorValue, document.body.dataset.theme); 
             if (editor) {
@@ -2148,23 +1080,17 @@
         renderTabs(); 
     }
 
-    /**
-     * Loads the saved accent color from localStorage or defaults.
-     */
     function loadAccentColor() {
         const savedColor = localStorage.getItem('lunarisAccentColor') || '#7C3AED';
-        const selectedAccentObject = accentColors.find(ac => ac.value === savedColor) || accentColors[0];
-        applyAccentColor(selectedAccentObject.value, selectedAccentObject.hover, selectedAccentObject.gradientEnd, selectedAccentObject.name);
+        const savedHover = localStorage.getItem('lunarisAccentColorHover') || '#6D28D9';
+        const savedGradientEnd = localStorage.getItem('lunarisAccentGradientEnd') || '#7C3AED';
+        const savedName = localStorage.getItem('lunarisAccentColorName') || 'Lunaris Purple';
+        applyAccentColor(savedColor, savedHover, savedGradientEnd, savedName);
     }
 
-    /**
-     * Defines custom Monaco Editor themes (light and dark) using the current accent color.
-     * @param {string} currentAccentColor - The hex value of the current accent color.
-     * @param {string} bodyTheme - The current body theme ('light' or 'dark').
-     */
     function defineMonacoThemes(currentAccentColor, bodyTheme) {
         if (typeof monaco === 'undefined' || typeof monaco.editor === 'undefined') {
-            return; // Monaco not loaded
+            return; 
         }
         
         const darkThemeEditorColors = {
@@ -2216,13 +1142,11 @@
         });
     }
     
-    // --- DOMContentLoaded: Initialization ---
     document.addEventListener('DOMContentLoaded', () => {
         initializeSounds(); 
         loadTheme();        
         loadAccentColor();  
 
-        // Event listener for top navigation links
         topNavigationLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -2233,7 +1157,6 @@
             link.addEventListener('mouseenter', () => playUiSound('hover'));
         });
         
-        // Event listener for settings action button
         if(settingsActionButton) {
             settingsActionButton.addEventListener('click', () => {
                 playUiSound('click');
@@ -2242,20 +1165,17 @@
             settingsActionButton.addEventListener('mouseenter', () => playUiSound('hover'));
         }
 
-        // Event listeners for general action buttons (execute, open, save, attach)
         actionButtons.forEach(button => {
             button.addEventListener('click', function() {
-                if (this.id === 'settings-action-btn') return; // Settings button handled separately
+                if (this.id === 'settings-action-btn') return; 
                 playUiSound('click');
                 this.classList.add('is-bouncing'); 
                 
-                // Log actions to console
                 if (this.id === 'execute-btn') logToConsole('EXECUTE', 'Script execution initiated.');
                 else if (this.id === 'attach-btn') logToConsole('ATTACH', 'Process attachment sequence started.');
                 else if (this.id === 'open-file-btn') logToConsole('FILE_OPEN', 'Open file dialog invoked.');
                 else if (this.id === 'save-file-btn') logToConsole('FILE_SAVE', 'Save file operation triggered.');
 
-                // Remove bouncing animation after a short delay
                 setTimeout(() => { 
                     this.classList.remove('is-bouncing');
                 }, 300); 
@@ -2263,7 +1183,6 @@
              button.addEventListener('mouseenter', () => playUiSound('hover'));
         });
         
-        // Event listeners for theme selection cards
         if (themeCardLight) {
             themeCardLight.addEventListener('click', () => { playUiSound('click'); applyTheme('light'); });
             themeCardLight.addEventListener('mouseenter', () => playUiSound('hover'));
@@ -2273,7 +1192,6 @@
             themeCardDark.addEventListener('mouseenter', () => playUiSound('hover'));
         }
 
-        // Populate accent color picker and add event listeners
         if (accentColorPicker) {
             accentColors.forEach(color => {
                 const circle = document.createElement('div');
@@ -2304,7 +1222,6 @@
             });
         }
 
-        // Event listeners for editor settings toggles (Minimap, Line Numbers, UI Sounds)
         if (toggleMinimapCheckbox) {
             const savedMinimap = localStorage.getItem('lunarisMinimap') === 'true';
             toggleMinimapCheckbox.checked = savedMinimap;
@@ -2347,36 +1264,33 @@
             toggleUiSoundsCheckbox.closest('.toggle-switch-new').addEventListener('mouseenter', () => playUiSound('hover'));
         }
 
-        // Initialize Monaco Editor
         try {
             require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs' }});
             require(['vs/editor/editor.main'], function() { 
-                // Define custom themes for Monaco before creating the editor instance
                 defineMonacoThemes(localStorage.getItem('lunarisAccentColor') || '#7C3AED', document.body.dataset.theme); 
 
                 if (editorContainer) {
                     editor = monaco.editor.create(editorContainer, {
-                        value: '', // Initial content
-                        language: 'lua', // Default language
-                        theme: document.body.dataset.theme === 'light' ? 'lunaris-light' : 'lunaris-dark', // Apply current theme
-                        automaticLayout: true, // Adjust layout on resize
+                        value: '', 
+                        language: 'lua', 
+                        theme: document.body.dataset.theme === 'light' ? 'lunaris-light' : 'lunaris-dark', 
+                        automaticLayout: true, 
                         minimap: { enabled: localStorage.getItem('lunarisMinimap') === 'true' },
                         lineNumbers: localStorage.getItem('lunarisLineNumbers') !== 'false' ? 'on' : 'off',
-                        renderLineHighlight: "line", // Highlight current line
-                        smoothScrolling: true, // Enable smooth scrolling
-                        cursorSmoothCaretAnimation: 'on', // Enable smooth caret animation
+                        renderLineHighlight: "line", 
+                        smoothScrolling: true, 
+                        cursorSmoothCaretAnimation: 'on', 
                     });
                 } else {
                      console.error("Editor container not found in DOM on init.");
                 }
                 
-                // Add tab button functionality
                 if (addTabButton) {
                     addTabButton.addEventListener('click', () => { playUiSound('click'); addAnimatedTab("Script"); });
                     addTabButton.addEventListener('mouseenter', () => playUiSound('hover'));
                 }
-                addAnimatedTab("Script"); // Add an initial tab
-                switchView('overview-section'); // Set the initial view to Overview
+                addAnimatedTab("Script"); 
+                switchView('overview-section'); 
 
             }, function(error) { 
                 console.error("Error loading Monaco editor:", error);
@@ -2387,18 +1301,15 @@
             if(editorContainer) editorContainer.innerHTML = "<p class='text-red-500 p-4'>An error occurred setting up the page. Please check console.</p>";
         }
         
-        // Start Tone.js AudioContext on user interaction (click or keydown)
-        // This is often required by browsers to allow audio playback.
         const startToneHandler = () => {
             if (typeof Tone !== 'undefined' && Tone.context && Tone.context.state !== 'running') {
                 Tone.start().then(() => {
                     console.log("Tone.js AudioContext started by user interaction.");
-                    initializeSounds(); // Re-initialize sounds now that context is running
+                    initializeSounds(); 
                 }).catch(err => console.error("Error starting Tone.js AudioContext:", err));
             } else if (typeof Tone !== 'undefined' && Tone.context && Tone.context.state === 'running') {
-                 initializeSounds(); // Sounds might already be initializable
+                 initializeSounds(); 
             }
-            // Remove listeners after first interaction
             document.body.removeEventListener('click', startToneHandler, true);
             document.body.removeEventListener('keydown', startToneHandler, true);
         };
@@ -2407,45 +1318,5 @@
 
     });
 </script>
-<script>
-    
-    function sendThemeToNativeApp(themeName) {
-        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.scriptHandler) {
-            window.webkit.messageHandlers.scriptHandler.postMessage({ type: 'updateNativeTheme', themeName: themeName });
-            console.log(`[JS -> Native] Sent theme update: ${themeName}`);
-        } else {
-            console.warn(`[JS -> Native] Native bridge not available. Cannot send theme: ${themeName}`);
-            logToConsole('WARN', `Native bridge not available. Theme not sent: ${themeName}.`);
-        }
-    }
-
-    function applyTheme(themeName) {
-        document.body.dataset.theme = themeName;
-        localStorage.setItem('lunarisTheme', themeName);
-        logToConsole('THEME_EVENT', `Theme changed to: ${themeName}`);
-        
-        sendThemeToNativeApp(themeName);
-
-        const currentAccent = localStorage.getItem('lunarisAccentColor') || '#7C3AED';
-        defineMonacoThemes(currentAccent, themeName); 
-        if (editor && typeof monaco !== 'undefined' && monaco.editor) {
-            monaco.editor.setTheme(themeName === 'light' ? 'lunaris-light' : 'lunaris-dark');
-        }
-
-        
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        
-
-        const initialTheme = document.body.dataset.theme || 'dark';
-        sendThemeToNativeApp(initialTheme);
-        
-        
-    });
-
-    
-</script>
-
-
-<div class="context-view" aria-hidden="true" style="display: none;"></div><div class="monaco-aria-container"><div class="monaco-alert" role="alert" aria-atomic="true"></div><div class="monaco-alert" role="alert" aria-atomic="true"></div><div class="monaco-status" aria-live="polite" aria-atomic="true"></div><div class="monaco-status" aria-live="polite" aria-atomic="true"></div></div></body></html>
+</body>
+</html>
