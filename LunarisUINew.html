@@ -299,9 +299,9 @@
             </nav>
 
             <div class="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
-                <div class="w-3 h-3 bg-red-500 rounded-full cursor-pointer hover:bg-red-600"></div>
-                <div class="w-3 h-3 bg-yellow-500 hover:bg-yellow-600 rounded-full cursor-pointer"></div>
-                <div class="w-3 h-3 bg-green-500 hover:bg-green-600 rounded-full cursor-pointer"></div>
+                <div id="close-button" class="w-3 h-3 bg-red-500 rounded-full cursor-pointer hover:bg-red-600"></div>
+                <div id="minimize-button" class="w-3 h-3 bg-yellow-500 hover:bg-yellow-600 rounded-full cursor-pointer"></div>
+                <div id="maximize-button" class="w-3 h-3 bg-green-500 hover:bg-green-600 rounded-full cursor-pointer"></div>
             </div>
         </div>
         
@@ -348,7 +348,7 @@
                 </button>
                 <button id="settings-action-btn" class="action-button bg-transparent hover:bg-[var(--content-bg)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-2.5 rounded-md text-sm flex items-center focus:outline-none focus:ring-1 ring-neutral-500 btn-base overflow-hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings flex-shrink-0">
-                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>
+                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l-.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>
                     </svg>
                     <span class="action-button-text">Settings</span>
                 </button>
@@ -480,826 +480,931 @@
     </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/loader.min.js"></script>
 <script>
-    // --- Global Variables ---
-    let editor; 
-    let tabs = []; // Stores tab objects {id, name, content}
-    let activeTabId = null; // ID of the currently active tab
-    const tabsContainer = document.getElementById('tabs-container');
-    const addTabButton = document.getElementById('add-tab-button');
-    const editorContainer = document.getElementById('editor-container');
-    const codeEditorView = document.getElementById('code-editor-view');
-    const overviewSection = document.getElementById('overview-section');
-    const consoleSectionView = document.getElementById('console-section-view');
-    const settingsSectionView = document.getElementById('settings-section-view');
-    const consoleOutput = document.getElementById('console-output');
-    const topNavigationLinks = document.querySelectorAll('#top-navigation a');
-    const actionButtons = document.querySelectorAll('.action-button');
-    const settingsActionButton = document.getElementById('settings-action-btn');
-    const themeCardLight = document.getElementById('theme-card-light');
-    const themeCardDark = document.getElementById('theme-card-dark');
-    const checkmarkLight = document.getElementById('checkmark-light');
-    const checkmarkDark = document.getElementById('checkmark-dark');
-    const accentColorPicker = document.getElementById('accent-color-picker');
-    const toggleMinimapCheckbox = document.getElementById('toggle-minimap');
-    const toggleLineNumbersCheckbox = document.getElementById('toggle-line-numbers');
-    const toggleUiSoundsCheckbox = document.getElementById('toggle-ui-sounds');
-    let uiSoundsEnabled = true; // Controls if UI sounds play
+    // --- Global Monaco Loader Config (Must be global) ---
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs' }});
 
-    // --- Accent Color Definitions ---
-    const accentColors = [
-        { name: 'Lunaris Purple', value: '#7C3AED', hover: '#6D28D9', gradientEnd: '#7C3AED' },
-        { name: 'Ruby Red', value: '#EF4444', hover: '#DC2626', gradientEnd: '#7f1d1d' },
-        { name: 'Amber Orange', value: '#F59E0B', hover: '#D97706', gradientEnd: '#78350f' },
-        { name: 'Emerald Green', value: '#10B981', hover: '#059669', gradientEnd: '#047857' },
-        { name: 'Sapphire Blue', value: '#3B82F6', hover: '#2563EB', gradientEnd: '#1e3a8a' },
-        { name: 'Indigo Dye', value: '#4F46E5', hover: '#4338CA', gradientEnd: '#312e81' },
-        { name: 'Violet Gem', value: '#8B5CF6', hover: '#7C3AED', gradientEnd: '#5b21b6' }
-    ];
+    // --- Main UI Logic (Wrapped in IIFE for scope isolation) ---
+    (function() {
+        // --- Global Variables (scoped to this IIFE) ---
+        let editor; // Monaco editor instance
+        let tabs = []; // Stores tab objects {id, name, content, model}
+        let activeTabId = null; // ID of the currently active tab
+        let uiSoundsEnabled = true; // Controls if UI sounds play
 
-    // --- Sound Synthesizers (Tone.js) ---
-    let hoverSynth, clickSynth;
+        // --- DOM Elements ---
+        const tabsContainer = document.getElementById('tabs-container');
+        const addTabButton = document.getElementById('add-tab-button');
+        const editorContainer = document.getElementById('editor-container');
+        const codeEditorView = document.getElementById('code-editor-view');
+        const overviewSection = document.getElementById('overview-section');
+        const consoleSectionView = document.getElementById('console-section-view');
+        const settingsSectionView = document.getElementById('settings-section-view');
+        const consoleOutput = document.getElementById('console-output');
+        const topNavigationLinks = document.querySelectorAll('#top-navigation a');
+        const actionButtons = document.querySelectorAll('.action-button');
+        const settingsActionButton = document.getElementById('settings-action-btn');
+        const themeCardLight = document.getElementById('theme-card-light');
+        const themeCardDark = document.getElementById('theme-card-dark');
+        const checkmarkLight = document.getElementById('checkmark-light');
+        const checkmarkDark = document.getElementById('checkmark-dark');
+        const accentColorPicker = document.getElementById('accent-color-picker');
+        const toggleMinimapCheckbox = document.getElementById('toggle-minimap');
+        const toggleLineNumbersCheckbox = document.getElementById('toggle-line-numbers');
+        const toggleUiSoundsCheckbox = document.getElementById('toggle-ui-sounds');
 
-    /**
-     * Initializes the Tone.js synthesizers for UI sounds.
-     */
-    function initializeSounds() {
-        if (typeof Tone !== 'undefined') {
-            hoverSynth = new Tone.NoiseSynth({
-                noise: { type: 'pink' },
-                envelope: { attack: 0.001, decay: 0.015, sustain: 0 }
-            }).toDestination();
-            hoverSynth.volume.value = -25; // Set hover sound volume
+        // Window control buttons
+        const closeButton = document.getElementById('close-button');
+        const minimizeButton = document.getElementById('minimize-button');
+        const maximizeButton = document.getElementById('maximize-button');
 
-            clickSynth = new Tone.MembraneSynth({
-                pitchDecay: 0.008, octaves: 2,
-                envelope: { attack: 0.001, decay: 0.1, sustain: 0.005, release: 0.15 }
-            }).toDestination();
-            clickSynth.volume.value = -18; // Set click sound volume
-        } else {
-            console.warn("Tone.js not loaded. UI sounds will be disabled.");
-            uiSoundsEnabled = false;
-            if(toggleUiSoundsCheckbox) toggleUiSoundsCheckbox.disabled = true;
-        }
-    }
+        // --- Login/Loading Screen Elements ---
+        const loginScreen = document.getElementById('loginScreen');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainAppContainer = document.getElementById('mainAppContainer');
+        const loginForm = document.getElementById('loginForm');
+        const loginUsernameInput = document.getElementById('loginUsername');
+        const loginPasswordInput = document.getElementById('loginPassword');
+        const loginError = document.getElementById('loginError');
+        const loadingUsernameSpan = document.getElementById('loadingUsername');
+        const progressBarFill = document.getElementById('progressBarFill');
+        const progressText = document.getElementById('progressText');
+        let loggedInUsername = 'techy_codes'; // Default username for display in UI
 
-    /**
-     * Plays a UI sound if enabled and Tone.js is available.
-     * @param {string} type - The type of sound to play ('hover' or 'click').
-     */
-    function playUiSound(type) {
-        if (!uiSoundsEnabled || typeof Tone === 'undefined' || !Tone.context || Tone.context.state !== 'running') {
-            return; // Do nothing if sounds are off or Tone.js isn't ready
-        }
-        try {
-            const now = Tone.now();
-            if (type === 'hover' && hoverSynth) {
-                hoverSynth.triggerAttackRelease("8n", now);
-            } else if (type === 'click' && clickSynth) {
-                clickSynth.triggerAttackRelease("C2", "16n", now);
-            }
-        } catch(e) {
-            console.warn("Error playing sound:", e);
-        }
-    }
+        // --- Custom Alert/Confirm Modal Elements ---
+        const customAlertModalOverlay = document.getElementById('customAlertModalOverlay');
+        const customAlertMessage = document.getElementById('customAlertMessage');
+        const customAlertConfirmBtn = document.getElementById('customAlertConfirmBtn');
+        const customAlertCancelBtn = document.getElementById('customAlertCancelBtn');
 
-    // --- Tab Management Functions ---
+        // --- Accent Color Definitions ---
+        const accentColors = [
+            { name: 'Lunaris Purple', value: '#7C3AED', hover: '#6D28D9', gradientEnd: '#7C3AED' },
+            { name: 'Ruby Red', value: '#EF4444', hover: '#DC2626', gradientEnd: '#7f1d1d' },
+            { name: 'Amber Orange', value: '#F59E0B', hover: '#D97706', gradientEnd: '#78350f' },
+            { name: 'Emerald Green', value: '#10B981', hover: '#059669', gradientEnd: '#047857' },
+            { name: 'Sapphire Blue', value: '#3B82F6', hover: '#2563EB', gradientEnd: '#1e3a8a' },
+            { name: 'Indigo Dye', value: '#4F46E5', hover: '#4338CA', gradientEnd: '#312e81' },
+            { name: 'Violet Gem', value: '#8B5CF6', hover: '#7C3AED', gradientEnd: '#5b21b6' }
+        ];
 
-    /**
-     * Creates a DOM element for a tab.
-     * @param {object} tab - The tab object {id, name, content}.
-     * @returns {HTMLElement} The created tab button element.
-     */
-    function createTabElement(tab) {
-        const tabElement = document.createElement('button');
-        tabElement.dataset.tabId = tab.id;
-        
-        // Base styling for tab buttons
-        let baseClasses = "tab-base px-3 py-1.5 rounded-lg text-sm flex items-center justify-between space-x-2 focus:outline-none shadow-md min-w-[150px] btn-base focus:ring-2 ring-[var(--accent-color)]";
-        let iconColorClass = "text-accent"; 
-        let textColorClass = "text-[var(--text-primary)]";
-        
-        // Apply active state styling
-        if (tab.id === activeTabId) {
-            tabElement.className = `${baseClasses} bg-[var(--content-bg)] hover:brightness-110`;
-            iconColorClass = "text-accent"; 
-            textColorClass = "text-accent font-semibold"; 
-        } else {
-            tabElement.className = `${baseClasses} bg-[var(--content-bg)] hover:brightness-110 text-[var(--text-primary)]`;
-        }
+        // --- Sound Synthesizers (Tone.js) ---
+        let hoverSynth, clickSynth;
 
-        // Tab icon
-        const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-code-2 mr-1.5 ${iconColorClass}"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"/><path d="M14 2v6h6"/><path d="m10 13-2 2 2 2"/><path d="m14 17 2-2-2-2"/></svg>`;
-        
-        // Tab name (editable on double click)
-        const textSpan = document.createElement('span');
-        textSpan.textContent = tab.name;
-        textSpan.className = `flex-grow text-left ${textColorClass}`;
-        textSpan.dataset.originalName = tab.name; // Store original name for revert
+        /**
+         * Initializes the Tone.js synthesizers for UI sounds.
+         */
+        function initializeSounds() {
+            if (typeof Tone !== 'undefined') {
+                hoverSynth = new Tone.NoiseSynth({
+                    noise: { type: 'pink' },
+                    envelope: { attack: 0.001, decay: 0.015, sustain: 0 }
+                }).toDestination();
+                hoverSynth.volume.value = -25; // Set hover sound volume
 
-        textSpan.ondblclick = (e) => { // Enable editing on double click
-            e.stopPropagation();
-            playUiSound('click');
-            textSpan.contentEditable = 'true';
-            textSpan.focus();
-            textSpan.dataset.originalName = textSpan.textContent; // Update original name before editing
-            document.execCommand('selectAll', false, null); 
-        };
-        textSpan.onblur = () => { // Save changes on blur
-            textSpan.contentEditable = 'false';
-            const newName = textSpan.textContent.trim();
-            if (newName && newName !== textSpan.dataset.originalName) {
-                renameTab(tab.id, newName);
+                clickSynth = new Tone.MembraneSynth({
+                    pitchDecay: 0.008, octaves: 2,
+                    envelope: { attack: 0.001, decay: 0.1, sustain: 0.005, release: 0.15 }
+                }).toDestination();
+                clickSynth.volume.value = -18; // Set click sound volume
             } else {
-                textSpan.textContent = textSpan.dataset.originalName; // Revert if empty or unchanged
-            }
-        };
-        textSpan.onkeydown = (e) => { // Handle Enter/Escape during editing
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                textSpan.blur(); // Save
-            } else if (e.key === 'Escape') {
-                e.preventDefault();
-                textSpan.textContent = textSpan.dataset.originalName; // Revert
-                textSpan.blur();
-            }
-        };
-
-        // Close button for the tab
-        const closeButton = document.createElement('button');
-        closeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--text-muted)] hover:text-[var(--text-primary)] lucide lucide-x transition-colors duration-200"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
-        closeButton.classList.add('ml-2', 'flex-shrink-0');
-        closeButton.onclick = (e) => {
-            e.stopPropagation(); // Prevent tab click event
-            playUiSound('click');
-            closeAnimatedTab(tab.id); // Close with animation
-        };
-        closeButton.onmouseenter = () => playUiSound('hover');
-        
-        // Assemble tab element
-        tabElement.innerHTML = iconSvg;
-        tabElement.appendChild(textSpan);
-        tabElement.appendChild(closeButton);
-        
-        tabElement.onclick = () => { // Switch to this tab on click
-            playUiSound('click');
-            setActiveTab(tab.id);
-        };
-        tabElement.onmouseenter = () => playUiSound('hover');
-        
-        return tabElement;
-    }
-    
-    /**
-     * Renames a tab.
-     * @param {string} tabId - The ID of the tab to rename.
-     * @param {string} newName - The new name for the tab.
-     */
-    function renameTab(tabId, newName) {
-        const tab = tabs.find(t => t.id === tabId);
-        if (tab) {
-            tab.name = newName;
-            // Update the originalName dataset for future edits
-            const tabElementTextSpan = tabsContainer.querySelector(`[data-tab-id="${tabId}"] .flex-grow.text-left`);
-            if (tabElementTextSpan) {
-                tabElementTextSpan.dataset.originalName = newName; 
-            }
-            if (tab.id === activeTabId) { 
-                 updateEditorContent(); // Refresh editor if active tab is renamed
+                console.warn("Tone.js not loaded. UI sounds will be disabled.");
+                uiSoundsEnabled = false;
+                if(toggleUiSoundsCheckbox) toggleUiSoundsCheckbox.disabled = true;
             }
         }
-    }
 
-    /**
-     * Renders all tabs in the tabs container.
-     */
-    function renderTabs() {
-        if (!tabsContainer) return;
-        tabsContainer.innerHTML = ''; // Clear existing tabs
-        tabs.forEach(tab => {
-            const tabEl = createTabElement(tab);
-            tabsContainer.appendChild(tabEl);
-        });
-        updateEditorContent(); // Ensure editor content matches the active tab
-    }
-
-    /**
-     * Sets the active tab.
-     * @param {string} tabId - The ID of the tab to activate.
-     */
-    function setActiveTab(tabId) {
-        // If already active and editor is visible, do nothing
-        if (activeTabId === tabId && editor && codeEditorView && !codeEditorView.classList.contains('hidden')) {
-             return;
-        }
-
-        // Save content of the previously active tab
-        if (activeTabId && editor && typeof editor.getValue === 'function') { 
-            const oldTab = tabs.find(t => t.id === activeTabId);
-            if (oldTab) {
-                oldTab.content = editor.getValue();
+        /**
+         * Plays a UI sound if enabled and Tone.js is available.
+         * @param {string} type - The type of sound to play ('hover' or 'click').
+         */
+        function playUiSound(type) {
+            if (!uiSoundsEnabled || typeof Tone === 'undefined' || !Tone.context || Tone.context.state !== 'running') {
+                return; // Do nothing if sounds are off or Tone.js isn't ready
+            }
+            try {
+                const now = Tone.now();
+                if (type === 'hover' && hoverSynth) {
+                    hoverSynth.triggerAttackRelease("8n", now);
+                } else if (type === 'click' && clickSynth) {
+                    clickSynth.triggerAttackRelease("C2", "16n", now);
+                }
+            } catch(e) {
+                console.warn("Error playing sound:", e);
             }
         }
-        activeTabId = tabId;
-        renderTabs(); // Re-render tabs to reflect the new active tab
-    }
 
-    /**
-     * Updates the Monaco editor's content to match the active tab.
-     */
-    function updateEditorContent() {
-        if (!editor || typeof editor.setValue !== 'function') {
-            return; // Editor not ready
-        }
-        // Only update if code editor view is active
-        const activeView = document.querySelector('.flex-col.flex-grow:not(.hidden)');
-        if (!activeView || activeView.id !== 'code-editor-view') {
-             return; 
-        }
-
-        if (activeTabId) {
-            const currentTab = tabs.find(tab => tab.id === activeTabId);
-            if (currentTab) {
-                editor.setValue(currentTab.content);
+        // --- Native App Communication ---
+        /**
+         * Sends a message to the native macOS application (Swift/Objective-C).
+         * This function assumes `window.webkit.messageHandlers.scriptHandler` is available.
+         * @param {string} type - The type of message/action (e.g., 'executeScript', 'closeWindow').
+         * @param {object} [payload={}] - Optional data to send with the message.
+         */
+        function callNativeApp(type, payload = {}) {
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.scriptHandler) {
+                window.webkit.messageHandlers.scriptHandler.postMessage({ type: type, ...payload });
             } else {
-                 // Fallback if active tab somehow doesn't exist
-                 editor.setValue('  -- Enjoy Lunaris Interface! --');
-            }
-        } else if (tabs.length > 0) {
-            // If no active tab but tabs exist, activate the first one
-            setActiveTab(tabs[0].id);
-        } else {
-            // If no tabs exist, show default message
-            editor.setValue('  -- Enjoy Lunaris Interface! --');
-        }
-    }
-    
-    /**
-     * Gets the next available number for a new script tab name (e.g., "Script 3").
-     * @returns {number} The next available script number.
-     */
-    function getNextAvailableScriptNumber() {
-        let nextNum = 1;
-        if (tabs.length > 0) {
-            // Extract existing script numbers from tab names
-            const existingNumbers = tabs
-                .map(tab => {
-                    const match = tab.name.match(/^Script (\d+)$/); // Regex to find "Script X"
-                    return match ? parseInt(match[1]) : null;
-                })
-                .filter(num => num !== null) // Remove non-matches
-                .sort((a, b) => a - b); // Sort numbers
-
-            // Find the first gap or the number after the highest existing one
-            for (const num of existingNumbers) {
-                if (num === nextNum) {
-                    nextNum++;
-                } else if (num > nextNum) {
-                    break; // Found a gap
+                console.warn(`Native bridge not available. Message type: ${type}, Payload:`, payload);
+                logToConsole('WARN', `Native bridge not available for ${type}.`);
+                // Simulate native action for development if bridge is missing
+                if (type === 'executeScript') {
+                    logToConsole('SIMULATED_EXECUTE', `Simulated execution of script: ${payload.script.substring(0, 50)}...`);
+                } else if (type === 'closeWindow') {
+                    logToConsole('SIMULATED_WINDOW', 'Simulated close window.');
+                } else if (type === 'minimizeWindow') {
+                    logToConsole('SIMULATED_WINDOW', 'Simulated minimize window.');
+                } else if (type === 'maximizeWindow') {
+                    logToConsole('SIMULATED_WINDOW', 'Simulated maximize window.');
+                } else if (type === 'saveScriptAsTextFile') {
+                     logToConsole('SIMULATED_FILE', `Simulated saving file: ${payload.suggestedFileName}`);
+                } else if (type === 'revealScriptInFinder') {
+                     logToConsole('SIMULATED_FILE', `Simulated revealing file: ${payload.fileNameHint}`);
                 }
             }
         }
-        return nextNum;
-    }
 
-    /**
-     * Adds a new tab with an animation.
-     * @param {string} [namePrefix="Script"] - The prefix for the new tab's name.
-     */
-    function addAnimatedTab(namePrefix = "Script") {
-        const currentScriptNumber = getNextAvailableScriptNumber();
-        const newTabName = `${namePrefix} ${currentScriptNumber}`;
-        const newTab = {
-            id: `tab-${Date.now()}-${currentScriptNumber}`, // Unique ID
-            name: newTabName,
-            content: '  -- Enjoy Lunaris Interface! --' // Default content
-        };
-        tabs.push(newTab);
-        logToConsole('TAB_EVENT', `Tab "${newTabName}" added.`);
-        
-        const tabEl = createTabElement(newTab);
-        if (tabsContainer) {
-            // Animation: Fade in and scale up
-            tabEl.classList.add('tab-enter');
-            tabsContainer.appendChild(tabEl);
+        // --- Tab Management Functions ---
 
-            // Trigger animation by adding active class in next frame
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => { // Double requestAnimationFrame for reliability
-                    tabEl.classList.remove('tab-enter');
-                    tabEl.classList.add('tab-enter-active');
-                });
-            });
-        }
-        setActiveTab(newTab.id); // Make the new tab active
-    }
-
-    /**
-     * Closes a tab with an animation.
-     * @param {string} tabId - The ID of the tab to close.
-     */
-    function closeAnimatedTab(tabId) {
-        const tabEl = tabsContainer ? tabsContainer.querySelector(`[data-tab-id="${tabId}"]`) : null;
-        if (tabEl) {
-            // Animation: Fade out and scale down
-            tabEl.classList.remove('tab-enter-active'); 
-            tabEl.classList.add('tab-leave');
+        /**
+         * Creates a DOM element for a tab.
+         * @param {object} tab - The tab object {id, name, content}.
+         * @returns {HTMLElement} The created tab button element.
+         */
+        function createTabElement(tab) {
+            const tabElement = document.createElement('button');
+            tabElement.dataset.tabId = tab.id;
             
-            requestAnimationFrame(() => {
-                tabEl.classList.add('tab-leave-active');
-            });
+            // Base styling for tab buttons
+            let baseClasses = "tab-base px-3 py-1.5 rounded-lg text-sm flex items-center justify-between space-x-2 focus:outline-none shadow-md min-w-[150px] btn-base focus:ring-2 ring-accent";
+            let iconColorClass = "text-accent"; 
+            let textColorClass = "text-[var(--text-primary)]";
+            
+            // Apply active state styling
+            if (tab.id === activeTabId) {
+                tabElement.className = `${baseClasses} bg-[var(--content-bg)] hover:brightness-110`;
+                iconColorClass = "text-accent"; 
+                textColorClass = "text-accent font-semibold"; 
+            } else {
+                tabElement.className = `${baseClasses} bg-[var(--content-bg)] hover:brightness-110 text-[var(--text-primary)]`;
+            }
 
-            const animationDuration = 300; // Match CSS transition duration
-            let animationEnded = false;
+            // Tab icon (using lucide-file-code-2)
+            const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-code-2 mr-1.5 ${iconColorClass}"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"/><path d="M14 2v6h6"/><path d="m10 13-2 2 2 2"/><path d="m14 17 2-2-2-2"/></svg>`;
+            
+            // Tab name (editable on double click)
+            const textSpan = document.createElement('span');
+            textSpan.textContent = tab.name;
+            textSpan.className = `flex-grow text-left ${textColorClass}`;
+            textSpan.dataset.originalName = tab.name; // Store original name for revert
 
-            // Listener for transition end to remove the element
-            const onTransitionEnd = (event) => {
-                // Ensure the event is for the correct element and property
-                if (event.target !== tabEl || (event.propertyName !== 'opacity' && event.propertyName !== 'transform')) {
-                    return;
-                }
-                if (animationEnded) return; // Prevent multiple calls
-                animationEnded = true;
-                tabEl.removeEventListener('transitionend', onTransitionEnd);
-                performCloseTabLogic(tabId); // Actual logic to remove tab data
+            textSpan.ondblclick = (e) => { // Enable editing on double click
+                e.stopPropagation();
+                playUiSound('click');
+                textSpan.contentEditable = 'true';
+                textSpan.focus();
+                document.execCommand('selectAll', false, null); 
             };
-            
-            tabEl.addEventListener('transitionend', onTransitionEnd);
-            // Fallback timeout if transitionend event doesn't fire
-            setTimeout(() => {
-                if (!animationEnded) {
-                    onTransitionEnd({ target: tabEl, propertyName: 'opacity' }); 
-                }
-            }, animationDuration + 50); 
-        } else {
-            performCloseTabLogic(tabId); // If element not found, just run logic
-        }
-    }
-    
-    /**
-     * Performs the actual logic of removing a tab from the `tabs` array and updating UI.
-     * @param {string} tabId - The ID of the tab to close.
-     */
-    function performCloseTabLogic(tabId) {
-        const tabIndex = tabs.findIndex(tab => tab.id === tabId);
-        if (tabIndex > -1) {
-            const closedTabName = tabs[tabIndex].name;
-            tabs.splice(tabIndex, 1); // Remove tab from array
-            logToConsole('TAB_EVENT', `Tab "${closedTabName}" closed.`);
-            
-            const oldActiveTabId = activeTabId;
-            activeTabId = null; // Temporarily unset active tab
-
-            if (oldActiveTabId === tabId) { // If the closed tab was active
-                if (tabs.length > 0) {
-                    // Activate previous tab or first tab if previous doesn't exist
-                    setActiveTab(tabs[Math.max(0, tabIndex - 1)]?.id || tabs[0]?.id);
+            textSpan.onblur = () => { // Save changes on blur
+                textSpan.contentEditable = 'false';
+                const newName = textSpan.textContent.trim();
+                if (newName && newName !== textSpan.dataset.originalName) {
+                    renameTab(tab.id, newName);
                 } else {
-                     addAnimatedTab(); // Add a new default tab if all are closed
+                    textSpan.textContent = textSpan.dataset.originalName; // Revert if empty or unchanged
                 }
-            } else if (tabs.length === 0) {
-                 addAnimatedTab(); // Add a new default tab if all are closed
-            }
-             else {
-                // If closed tab wasn't active, ensure current active tab is still valid
-                const stillActiveTab = tabs.find(t => t.id === oldActiveTabId);
-                if (stillActiveTab) {
-                    setActiveTab(oldActiveTabId);
-                } else if (tabs.length > 0) {
-                    setActiveTab(tabs[0].id); // Fallback to first tab
-                } else { 
-                    renderTabs(); // Just re-render if no tabs left (should be handled by addAnimatedTab)
+            };
+            textSpan.onkeydown = (e) => { // Handle Enter/Escape during editing
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    textSpan.blur(); // Save
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    textSpan.textContent = textSpan.dataset.originalName; // Revert
+                    textSpan.blur();
                 }
-            }
+            };
+
+            // Close button for the tab
+            const closeButton = document.createElement('button');
+            closeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--text-muted)] hover:text-[var(--text-primary)] lucide lucide-x transition-colors duration-200"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
+            closeButton.classList.add('ml-2', 'flex-shrink-0');
+            closeButton.onclick = (e) => {
+                e.stopPropagation(); // Prevent tab click event
+                playUiSound('click');
+                closeAnimatedTab(tab.id); // Close with animation
+            };
+            closeButton.onmouseenter = () => playUiSound('hover');
+            
+            // Assemble tab element
+            tabElement.innerHTML = iconSvg;
+            tabElement.appendChild(textSpan);
+            tabElement.appendChild(closeButton);
+            
+            tabElement.onclick = () => { // Switch to this tab on click
+                playUiSound('click');
+                setActiveTab(tab.id);
+            };
+            tabElement.onmouseenter = () => playUiSound('hover');
+            
+            return tabElement;
         }
-    }
-
-    // --- Console Logging ---
-    /**
-     * Logs a message to the in-app console.
-     * @param {string} type - The type of log entry (e.g., 'EXECUTE', 'ERROR').
-     * @param {string} message - The message to log.
-     */
-    function logToConsole(type, message) {
-        if (!consoleOutput) return; // Console element not found
-
-        const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'});
-        const logEntry = document.createElement('div');
-        logEntry.className = 'console-log-entry';
-
-        // Timestamp
-        const timestampSpan = document.createElement('span');
-        timestampSpan.className = 'console-timestamp';
-        timestampSpan.textContent = `[${time}]`;
-
-        // Type badge (styled based on type)
-        const typeBadge = document.createElement('span');
-        typeBadge.className = 'console-type-badge';
-        typeBadge.textContent = type;
-
-        switch(type.toUpperCase()) {
-            case 'EXECUTE': typeBadge.style.backgroundColor = '#3B82F6'; typeBadge.style.color = 'white'; break; 
-            case 'ATTACH': typeBadge.style.backgroundColor = '#10B981'; typeBadge.style.color = 'white'; break; 
-            case 'FILE_OPEN': typeBadge.style.backgroundColor = '#F59E0B'; typeBadge.style.color = 'white'; break; 
-            case 'FILE_SAVE': typeBadge.style.backgroundColor = '#8B5CF6'; typeBadge.style.color = 'white'; break; 
-            case 'ERROR': typeBadge.style.backgroundColor = '#EF4444'; typeBadge.style.color = 'white'; break; 
-            case 'TAB_EVENT': typeBadge.style.backgroundColor = '#0EA5E9'; typeBadge.style.color = 'white'; break;
-            case 'THEME_EVENT': typeBadge.style.backgroundColor = '#64748B'; typeBadge.style.color = 'white'; break;
-            case 'ACCENT_EVENT': typeBadge.style.backgroundColor = '#14B8A6'; typeBadge.style.color = 'white'; break;
-            default: typeBadge.style.backgroundColor = '#6B7280'; typeBadge.style.color = 'white'; break; 
-        }
-
-        // Log message
-        const messageSpan = document.createElement('span');
-        messageSpan.className = 'console-message';
-        messageSpan.textContent = message;
-
-        logEntry.appendChild(timestampSpan);
-        logEntry.appendChild(typeBadge);
-        logEntry.appendChild(messageSpan);
         
-        if (consoleOutput) {
-            consoleOutput.appendChild(logEntry);
-            consoleOutput.scrollTop = consoleOutput.scrollHeight; // Auto-scroll to bottom
-        }
-    }
-
-    // --- View Switching ---
-    /**
-     * Switches between different views (Overview, Code Editor, Console, Settings).
-     * @param {string} viewName - The ID of the view to switch to.
-     */
-    function switchView(viewName) {
-        const views = [overviewSection, codeEditorView, consoleSectionView, settingsSectionView];
-        
-        // Save editor content if switching away from code editor
-        if (codeEditorView && !codeEditorView.classList.contains('hidden') && viewName !== 'code-editor-view') {
-             if (activeTabId && editor && typeof editor.getValue === 'function') {
-                const currentActiveTab = tabs.find(t => t.id === activeTabId);
-                if (currentActiveTab) {
-                    currentActiveTab.content = editor.getValue();
+        /**
+         * Renames a tab.
+         * @param {string} tabId - The ID of the tab to rename.
+         * @param {string} newName - The new name for the tab.
+         */
+        function renameTab(tabId, newName) {
+            const tab = tabs.find(t => t.id === tabId);
+            if (tab) {
+                tab.name = newName;
+                // Update the originalName dataset for future edits
+                const tabElementTextSpan = tabsContainer.querySelector(`[data-tab-id="${tabId}"] .flex-grow.text-left`);
+                if (tabElementTextSpan) {
+                    tabElementTextSpan.dataset.originalName = newName; 
+                }
+                if (tab.id === activeTabId) { 
+                    // No need to call updateEditorContent here, as Monaco handles model changes
+                    // when setActiveTab is called, which happens after rename if active.
                 }
             }
         }
 
-        // Show the selected view, hide others
-        views.forEach(view => {
-            if (view) { 
-                if (view.id === viewName) { 
-                    view.classList.remove('hidden');
-                    view.classList.add('flex'); 
-                    // If switching to code editor, ensure Monaco layout is updated
-                    if (view.id === 'code-editor-view' && editor && typeof editor.layout === 'function') {
-                        editor.layout(); 
+        /**
+         * Renders all tabs in the tabs container.
+         */
+        function renderTabs() {
+            if (!tabsContainer) return;
+            tabsContainer.innerHTML = ''; // Clear existing tabs
+            tabs.forEach(tab => {
+                const tabEl = createTabElement(tab);
+                tabsContainer.appendChild(tabEl);
+            });
+            // Ensure editor content matches the active tab
+            if (editor && activeTabId) {
+                const currentTab = tabs.find(tab => tab.id === activeTabId);
+                if (currentTab && editor.getModel() !== currentTab.model) {
+                    editor.setModel(currentTab.model);
+                }
+            }
+        }
+
+        /**
+         * Sets the active tab.
+         * @param {string} tabId - The ID of the tab to activate.
+         */
+        function setActiveTab(tabId) {
+            // If already active and editor is visible, do nothing
+            if (activeTabId === tabId && editor && codeEditorView && !codeEditorView.classList.contains('hidden')) {
+                return;
+            }
+
+            // Save content of the previously active tab to its model
+            if (activeTabId && editor && typeof editor.getValue === 'function') { 
+                const oldTab = tabs.find(t => t.id === activeTabId);
+                if (oldTab && oldTab.model) {
+                    // Content is automatically saved by Monaco to its model
+                    // when editor.getValue() is called.
+                    // If we were manually tracking content, we'd do: oldTab.content = editor.getValue();
+                }
+            }
+            
+            activeTabId = tabId;
+            renderTabs(); // Re-render tabs to reflect the new active tab
+
+            // Set editor model to the new active tab's model
+            const newActiveTab = tabs.find(tab => tab.id === activeTabId);
+            if (newActiveTab && newActiveTab.model) {
+                editor.setModel(newActiveTab.model);
+            } else if (editor) {
+                editor.setValue('// No content for this tab or tab not found.');
+            }
+        }
+        
+        /**
+         * Gets the next available number for a new script tab name (e.g., "Script 3").
+         * @returns {number} The next available script number.
+         */
+        function getNextAvailableScriptNumber() {
+            let nextNum = 1;
+            if (tabs.length > 0) {
+                // Extract existing script numbers from tab names
+                const existingNumbers = tabs
+                    .map(tab => {
+                        const match = tab.name.match(/^Script (\d+)$/); // Regex to find "Script X"
+                        return match ? parseInt(match[1]) : null;
+                    })
+                    .filter(num => num !== null) // Remove non-matches
+                    .sort((a, b) => a - b); // Sort numbers
+
+                // Find the first gap or the number after the highest existing one
+                for (const num of existingNumbers) {
+                    if (num === nextNum) {
+                        nextNum++;
+                    } else if (num > nextNum) {
+                        break; // Found a gap
                     }
-                } else {
-                    view.classList.add('hidden');
-                    view.classList.remove('flex');
                 }
             }
-        });
-        
-        // If switching to code editor, update its content
-        if (viewName === 'code-editor-view') {
-            updateEditorContent();
+            return nextNum;
         }
 
-        // Update active state of top navigation links
-        topNavigationLinks.forEach(link => {
-            link.classList.remove('nav-link-active');
-            link.classList.add('text-[var(--text-secondary)]'); 
-            link.classList.remove('text-white'); // Ensure text color resets
+        /**
+         * Adds a new tab with an animation.
+         * @param {string} [namePrefix="Script"] - The prefix for the new tab's name.
+         */
+        function addAnimatedTab(namePrefix = "Script") {
+            const currentScriptNumber = getNextAvailableScriptNumber();
+            const newTabName = `${namePrefix} ${currentScriptNumber}`;
+            
+            const newModel = monaco.editor.createModel('  -- Enjoy Lunaris Interface! --', 'lua'); // Create a new model for the tab
+            const newTab = {
+                id: `tab-${Date.now()}-${currentScriptNumber}`, // Unique ID
+                name: newTabName,
+                content: '  -- Enjoy Lunaris Interface! --', // Initial content
+                model: newModel // Store the Monaco editor model
+            };
+            tabs.push(newTab);
+            logToConsole('TAB_EVENT', `Tab "${newTabName}" added.`);
+            
+            const tabEl = createTabElement(newTab);
+            if (tabsContainer) {
+                tabEl.classList.add('tab-enter');
+                tabsContainer.appendChild(tabEl);
 
-            if (link.dataset.view === viewName) {
-                link.classList.add('nav-link-active');
-            }
-        });
-        
-        // Special case for settings: keep "Overview" highlighted in nav if settings is opened via its own button
-        if (viewName === 'settings-section-view') {
-             const overviewLink = document.querySelector('a[data-view="overview-section"]');
-             if (overviewLink) {
-                topNavigationLinks.forEach(tl => { // Clear all active states first
-                    tl.classList.remove('nav-link-active');
-                    tl.classList.add('text-[var(--text-secondary)]');
-                     tl.classList.remove('text-white');
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => { 
+                        tabEl.classList.remove('tab-enter');
+                        tabEl.classList.add('tab-enter-active');
+                    });
                 });
-             }
-        }
-    }
-
-    // --- Theme and Accent Color Management ---
-
-    /**
-     * Applies a theme (light/dark) to the application.
-     * @param {string} themeName - 'light' or 'dark'.
-     */
-    function applyTheme(themeName) {
-        document.body.dataset.theme = themeName; // Set theme attribute on body
-        localStorage.setItem('lunarisTheme', themeName); // Save preference
-        logToConsole('THEME_EVENT', `Theme changed to: ${themeName}`);
-        
-        const currentAccent = localStorage.getItem('lunarisAccentColor') || '#7C3AED';
-        defineMonacoThemes(currentAccent, themeName); // Redefine Monaco themes for the new body theme
-        if (editor && typeof monaco !== 'undefined' && monaco.editor) {
-            monaco.editor.setTheme(themeName === 'light' ? 'lunaris-light' : 'lunaris-dark');
-        }
-
-        // Update theme selection UI (checkmarks on cards)
-        if (checkmarkLight && checkmarkDark) {
-            checkmarkLight.classList.toggle('hidden', themeName !== 'light');
-            checkmarkDark.classList.toggle('hidden', themeName !== 'dark');
-        }
-        if (themeCardLight && themeCardDark) {
-            themeCardLight.classList.toggle('active-theme', themeName === 'light');
-            themeCardDark.classList.toggle('active-theme', themeName === 'dark');
-        }
-        
-        // Adjust checkmark color in accent picker if needed for visibility on light theme
-        const activeAccentCircle = accentColorPicker.querySelector('.active-accent-color .lucide-check svg');
-        if (activeAccentCircle) {
-            const activeAccentColorValue = accentColorPicker.querySelector('.active-accent-color').dataset.color;
-             // For certain light accents on light theme, make checkmark black
-             if (themeName === 'light' && (activeAccentColorValue === '#F59E0B' || activeAccentColorValue === '#10B981')) { 
-                 activeAccentCircle.setAttribute('stroke', 'black');
-            } else {
-                 activeAccentCircle.setAttribute('stroke', 'white');
             }
-        }
-    }
-
-    /**
-     * Loads the saved theme from localStorage or defaults to dark.
-     */
-    function loadTheme() {
-        const savedTheme = localStorage.getItem('lunarisTheme') || 'dark';
-        applyTheme(savedTheme);
-    }
-
-    /**
-     * Applies an accent color to the application.
-     * @param {string} colorValue - The hex value of the accent color.
-     * @param {string} hoverValue - The hex value for hover state.
-     * @param {string} gradientEndValue - The hex value for gradient end.
-     * @param {string} colorName - The name of the accent color.
-     */
-    function applyAccentColor(colorValue, hoverValue, gradientEndValue, colorName) {
-        const root = document.documentElement;
-        // Set CSS custom properties for accent colors
-        root.style.setProperty('--accent-color', colorValue);
-        root.style.setProperty('--accent-color-hover', hoverValue);
-        root.style.setProperty('--accent-gradient-end', gradientEndValue);
-        // Save preference
-        localStorage.setItem('lunarisAccentColor', colorValue);
-        localStorage.setItem('lunarisAccentColorHover', hoverValue);
-        localStorage.setItem('lunarisAccentGradientEnd', gradientEndValue);
-        localStorage.setItem('lunarisAccentColorName', colorName);
-
-
-        logToConsole('ACCENT_EVENT', `Accent color changed to: ${colorName} (${colorValue})`);
-
-        // Update accent color picker UI
-        if (accentColorPicker) {
-            accentColorPicker.querySelectorAll('.accent-color-circle').forEach(circle => {
-                circle.innerHTML = ''; // Clear previous checkmark
-                circle.classList.remove('active-accent-color');
-                if (circle.dataset.color === colorValue) {
-                    circle.classList.add('active-accent-color');
-                    const check = document.createElement('span');
-                    check.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"/></svg>`;
-                    // Adjust checkmark color for light accents on light theme
-                    if (document.body.dataset.theme === 'light' && (colorValue === '#F59E0B' || colorValue === '#10B981')) { 
-                        check.querySelector('svg').setAttribute('stroke', 'black');
-                    }
-                    circle.appendChild(check);
-                }
-            });
+            setActiveTab(newTab.id); 
         }
 
-        // Redefine and apply Monaco themes with the new accent color
-        if (typeof monaco !== 'undefined' && monaco.editor) {
-            defineMonacoThemes(colorValue, document.body.dataset.theme); 
-            if (editor) {
-                 monaco.editor.setTheme(document.body.dataset.theme === 'light' ? 'lunaris-light' : 'lunaris-dark');
-            }
-        }
-        
-        topNavigationLinks.forEach(link => {
-            if(link.classList.contains('nav-link-active')) {
-                link.classList.remove('nav-link-active');
-                requestAnimationFrame(() => link.classList.add('nav-link-active'));
-            }
-        });
-        if(addTabButton && addTabButton.classList.contains('btn-accent-styled')) {
-             addTabButton.classList.remove('btn-accent-styled');
-             requestAnimationFrame(() =>  addTabButton.classList.add('btn-accent-styled'));
-        }
-        const executeButton = document.getElementById('execute-btn');
-        if(executeButton) {
-            executeButton.classList.remove('border-accent'); 
-            const playIcon = executeButton.querySelector('.lucide-play');
-            if(playIcon) playIcon.classList.remove('text-accent');
-             requestAnimationFrame(() => {
-                executeButton.classList.add('border-accent');
-                if(playIcon) playIcon.classList.add('text-accent');
-             });
-        }
-        renderTabs(); 
-    }
-
-    /**
-     * Loads the saved accent color from localStorage or defaults.
-     */
-    function loadAccentColor() {
-        const savedColor = localStorage.getItem('lunarisAccentColor') || '#7C3AED';
-        const selectedAccentObject = accentColors.find(ac => ac.value === savedColor) || accentColors[0];
-        applyAccentColor(selectedAccentObject.value, selectedAccentObject.hover, selectedAccentObject.gradientEnd, selectedAccentObject.name);
-    }
-
-    /**
-     * Defines custom Monaco Editor themes (light and dark) using the current accent color.
-     * @param {string} currentAccentColor - The hex value of the current accent color.
-     * @param {string} bodyTheme - The current body theme ('light' or 'dark').
-     */
-    function defineMonacoThemes(currentAccentColor, bodyTheme) {
-        if (typeof monaco === 'undefined' || typeof monaco.editor === 'undefined') {
-            return; // Monaco not loaded
-        }
-        
-        const darkThemeEditorColors = {
-            'editor.background': '#050609', 
-            'editor.foreground': '#E5E7EB', 
-            'editorGutter.background': '#050609', 
-            'editorLineNumber.foreground': '#6B7280', 
-            'editor.lineHighlightBackground': '#08090d', 
-            'editorCursor.foreground': '#9CA3AF', 
-            'scrollbarSlider.background': '#181A1F', 
-            'scrollbarSlider.hoverBackground': '#202125',
-            'scrollbarSlider.activeBackground': '#28292D',
-        };
-        const lightThemeEditorColors = {
-            'editor.background': '#FFFFFF', 
-            'editor.foreground': '#1F2937',
-            'editorGutter.background': '#F7F7F8', 
-            'editorLineNumber.foreground': '#A0AEC0',
-            'editor.lineHighlightBackground': '#E2E8F0', 
-            'editorCursor.foreground': '#2D3748',
-            'scrollbarSlider.background': '#D1D5DB', 
-            'scrollbarSlider.hoverBackground': '#9CA3AF',
-            'scrollbarSlider.activeBackground': '#6B7280',
-        };
-
-        monaco.editor.defineTheme('lunaris-dark', {
-            base: 'vs-dark', 
-            inherit: true,
-            rules: [ 
-                { token: '', foreground: darkThemeEditorColors['editor.foreground'] }, 
-                { token: 'comment', foreground: currentAccentColor }, 
-                { token: 'string', foreground: currentAccentColor }, 
-                { token: 'keyword', foreground: currentAccentColor }, 
-                { token: 'number', foreground: 'b5cea8' },  
-            ], 
-            colors: darkThemeEditorColors 
-        });
-        monaco.editor.defineTheme('lunaris-light', {
-            base: 'vs', 
-            inherit: true,
-            rules: [
-                { token: '', foreground: lightThemeEditorColors['editor.foreground'] }, 
-                { token: 'comment', foreground: currentAccentColor }, 
-                { token: 'string', foreground: currentAccentColor }, 
-                { token: 'keyword', foreground: currentAccentColor }, 
-                { token: 'number', foreground: '059669' },  
-            ],
-            colors: lightThemeEditorColors
-        });
-    }
-    
-    // --- DOMContentLoaded: Initialization ---
-    document.addEventListener('DOMContentLoaded', () => {
-        initializeSounds(); 
-        loadTheme();        
-        loadAccentColor();  
-
-        topNavigationLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                playUiSound('click');
-                const view = link.dataset.view;
-                switchView(view);
-            });
-            link.addEventListener('mouseenter', () => playUiSound('hover'));
-        });
-        
-        if(settingsActionButton) {
-            settingsActionButton.addEventListener('click', () => {
-                playUiSound('click');
-                switchView('settings-section-view');
-            });
-            settingsActionButton.addEventListener('mouseenter', () => playUiSound('hover'));
-        }
-
-        actionButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                if (this.id === 'settings-action-btn') return; 
-                playUiSound('click');
-                this.classList.add('is-bouncing'); 
+        /**
+         * Closes a tab with an animation.
+         * @param {string} tabId - The ID of the tab to close.
+         */
+        function closeAnimatedTab(tabId) {
+            const tabEl = tabsContainer ? tabsContainer.querySelector(`[data-tab-id="${tabId}"]`) : null;
+            if (tabEl) {
+                tabEl.classList.remove('tab-enter-active'); 
+                tabEl.classList.add('tab-leave');
                 
-                if (this.id === 'execute-btn') logToConsole('EXECUTE', 'Script execution initiated.');
-                else if (this.id === 'attach-btn') logToConsole('ATTACH', 'Process attachment sequence started.');
-                else if (this.id === 'open-file-btn') logToConsole('FILE_OPEN', 'Open file dialog invoked.');
-                else if (this.id === 'save-file-btn') logToConsole('FILE_SAVE', 'Save file operation triggered.');
+                requestAnimationFrame(() => {
+                    tabEl.classList.add('tab-leave-active');
+                });
 
-                setTimeout(() => { 
-                    this.classList.remove('is-bouncing');
-                }, 300); 
-            });
-             button.addEventListener('mouseenter', () => playUiSound('hover'));
-        });
-        
-        if (themeCardLight) {
-            themeCardLight.addEventListener('click', () => { playUiSound('click'); applyTheme('light'); });
-            themeCardLight.addEventListener('mouseenter', () => playUiSound('hover'));
-        }
-        if (themeCardDark) {
-            themeCardDark.addEventListener('click', () => { playUiSound('click'); applyTheme('dark'); });
-            themeCardDark.addEventListener('mouseenter', () => playUiSound('hover'));
-        }
+                const animationDuration = 300; 
+                let animationEnded = false;
 
-        if (accentColorPicker) {
-            accentColors.forEach(color => {
-                const circle = document.createElement('div');
-                circle.className = 'accent-color-circle';
-                circle.style.backgroundColor = color.value;
-                circle.dataset.color = color.value;
-                circle.dataset.hover = color.hover;
-                circle.dataset.gradient = color.gradientEnd;
-                circle.title = color.name; 
-                
-                const currentAccent = localStorage.getItem('lunarisAccentColor') || '#7C3AED';
-                if (color.value === currentAccent) {
-                    circle.classList.add('active-accent-color');
-                    const check = document.createElement('span');
-                    check.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"/></svg>`;
-                    if (document.body.dataset.theme === 'light' && (color.value === '#F59E0B' || color.value === '#10B981')) { 
-                        check.querySelector('svg').setAttribute('stroke', 'black');
+                const onTransitionEnd = (event) => {
+                    if (event.target !== tabEl || (event.propertyName !== 'opacity' && event.propertyName !== 'transform')) {
+                        return;
                     }
-                    circle.appendChild(check);
-                }
-
-                circle.onclick = () => {
-                    playUiSound('click');
-                    applyAccentColor(color.value, color.hover, color.gradientEnd, color.name);
+                    if (animationEnded) return; 
+                    animationEnded = true;
+                    tabEl.removeEventListener('transitionend', onTransitionEnd);
+                    performCloseTabLogic(tabId); 
                 };
-                 circle.addEventListener('mouseenter', () => playUiSound('hover'));
-                accentColorPicker.appendChild(circle);
-            });
+                
+                tabEl.addEventListener('transitionend', onTransitionEnd);
+                setTimeout(() => {
+                    if (!animationEnded) {
+                        onTransitionEnd({ target: tabEl, propertyName: 'opacity' }); 
+                    }
+                }, animationDuration + 50); 
+            } else {
+                performCloseTabLogic(tabId); 
+            }
+        }
+        
+        /**
+         * Performs the actual logic of removing a tab from the `tabs` array and updating UI.
+         * @param {string} tabId - The ID of the tab to close.
+         */
+        function performCloseTabLogic(tabId) {
+            const tabIndex = tabs.findIndex(tab => tab.id === tabId);
+            if (tabIndex > -1) {
+                const closedTab = tabs[tabIndex];
+                closedTab.model.dispose(); // Dispose of the Monaco model to free memory
+                tabs.splice(tabIndex, 1); // Remove tab from array
+                logToConsole('TAB_EVENT', `Tab "${closedTab.name}" closed.`);
+                
+                const oldActiveTabId = activeTabId;
+                activeTabId = null; 
+
+                if (oldActiveTabId === tabId) { // If the closed tab was active
+                    if (tabs.length > 0) {
+                        setActiveTab(tabs[Math.max(0, tabIndex - 1)]?.id || tabs[0]?.id);
+                    } else {
+                        addAnimatedTab(); 
+                    }
+                } else if (tabs.length === 0) {
+                    addAnimatedTab(); 
+                }
+                else {
+                    const stillActiveTab = tabs.find(t => t.id === oldActiveTabId);
+                    if (stillActiveTab) {
+                        setActiveTab(oldActiveTabId);
+                    } else if (tabs.length > 0) {
+                        setActiveTab(tabs[0].id); 
+                    } else { 
+                        renderTabs(); 
+                    }
+                }
+            }
         }
 
-        if (toggleMinimapCheckbox) {
-            const savedMinimap = localStorage.getItem('lunarisMinimap') === 'true';
-            toggleMinimapCheckbox.checked = savedMinimap;
-            if (editor && typeof editor.updateOptions === 'function') { 
-                editor.updateOptions({ minimap: { enabled: savedMinimap } });
+        // --- Console Logging ---
+        /**
+         * Logs a message to the in-app console.
+         * @param {string} type - The type of log entry (e.g., 'EXECUTE', 'ERROR').
+         * @param {string} message - The message to log.
+         */
+        function logToConsole(type, message) {
+            if (!consoleOutput) return; // Console element not found
+
+            const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'});
+            const logEntry = document.createElement('div');
+            logEntry.className = 'console-log-entry';
+
+            // Timestamp
+            const timestampSpan = document.createElement('span');
+            timestampSpan.className = 'console-timestamp';
+            timestampSpan.textContent = `[${time}]`;
+
+            // Type badge (styled based on type)
+            const typeBadge = document.createElement('span');
+            typeBadge.className = 'console-type-badge';
+            typeBadge.textContent = type;
+
+            switch(type.toUpperCase()) {
+                case 'EXECUTE': typeBadge.style.backgroundColor = '#3B82F6'; typeBadge.style.color = 'white'; break; 
+                case 'ATTACH': typeBadge.style.backgroundColor = '#10B981'; typeBadge.style.color = 'white'; break; 
+                case 'FILE_OPEN': typeBadge.style.backgroundColor = '#F59E0B'; typeBadge.style.color = 'white'; break; 
+                case 'FILE_SAVE': typeBadge.style.backgroundColor = '#8B5CF6'; typeBadge.style.color = 'white'; break; 
+                case 'ERROR': typeBadge.style.backgroundColor = '#EF4444'; typeBadge.style.color = 'white'; break; 
+                case 'TAB_EVENT': typeBadge.style.backgroundColor = '#0EA5E9'; typeBadge.style.color = 'white'; break;
+                case 'THEME_EVENT': typeBadge.style.backgroundColor = '#64748B'; typeBadge.style.color = 'white'; break;
+                case 'ACCENT_EVENT': typeBadge.style.backgroundColor = '#14B8A6'; typeBadge.style.color = 'white'; break;
+                case 'NATIVE_PING': typeBadge.style.backgroundColor = '#6B7280'; typeBadge.style.color = 'white'; break;
+                case 'WINDOW_CONTROL': typeBadge.style.backgroundColor = '#4B5563'; typeBadge.style.color = 'white'; break;
+                case 'SIMULATED_EXECUTE': typeBadge.style.backgroundColor = '#60A5FA'; typeBadge.style.color = 'white'; break;
+                case 'SIMULATED_WINDOW': typeBadge.style.backgroundColor = '#9CA3AF'; typeBadge.style.color = 'white'; break;
+                case 'SIMULATED_FILE': typeBadge.style.backgroundColor = '#D1D5DB'; typeBadge.style.color = 'black'; break;
+                case 'WARN': typeBadge.style.backgroundColor = '#FBBF24'; typeBadge.style.color = 'black'; break;
+                default: typeBadge.style.backgroundColor = '#6B7280'; typeBadge.style.color = 'white'; break; 
             }
-            toggleMinimapCheckbox.addEventListener('change', (e) => {
-                playUiSound('click');
-                if(editor && typeof editor.updateOptions === 'function') {
-                    editor.updateOptions({ minimap: { enabled: e.target.checked } });
-                }
-                localStorage.setItem('lunarisMinimap', e.target.checked);
-            });
-            toggleMinimapCheckbox.closest('.toggle-switch-new').addEventListener('mouseenter', () => playUiSound('hover'));
-        }
-        if (toggleLineNumbersCheckbox) {
-            const savedLineNumbers = localStorage.getItem('lunarisLineNumbers') !== 'false'; 
-            toggleLineNumbersCheckbox.checked = savedLineNumbers;
-            if (editor && typeof editor.updateOptions === 'function') { 
-                 editor.updateOptions({ lineNumbers: savedLineNumbers ? 'on' : 'off' });
+
+            // Log message
+            const messageSpan = document.createElement('span');
+            messageSpan.className = 'console-message';
+            messageSpan.textContent = message;
+
+            logEntry.appendChild(timestampSpan);
+            logEntry.appendChild(typeBadge);
+            logEntry.appendChild(messageSpan);
+            
+            if (consoleOutput) {
+                consoleOutput.appendChild(logEntry);
+                consoleOutput.scrollTop = consoleOutput.scrollHeight; // Auto-scroll to bottom
             }
-            toggleLineNumbersCheckbox.addEventListener('change', (e) => {
-                playUiSound('click');
-                if(editor && typeof editor.updateOptions === 'function') {
-                    editor.updateOptions({ lineNumbers: e.target.checked ? 'on' : 'off' });
-                }
-                localStorage.setItem('lunarisLineNumbers', e.target.checked);
-            });
-            toggleLineNumbersCheckbox.closest('.toggle-switch-new').addEventListener('mouseenter', () => playUiSound('hover'));
-        }
-        if (toggleUiSoundsCheckbox) {
-            const savedUiSoundsEnabled = localStorage.getItem('lunarisUiSoundsEnabled');
-            uiSoundsEnabled = savedUiSoundsEnabled !== null ? JSON.parse(savedUiSoundsEnabled) : true; 
-            toggleUiSoundsCheckbox.checked = uiSoundsEnabled;
-            toggleUiSoundsCheckbox.addEventListener('change', (e) => {
-                uiSoundsEnabled = e.target.checked;
-                localStorage.setItem('lunarisUiSoundsEnabled', uiSoundsEnabled);
-                playUiSound('click'); 
-            });
-            toggleUiSoundsCheckbox.closest('.toggle-switch-new').addEventListener('mouseenter', () => playUiSound('hover'));
         }
 
-        try {
-            require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs' }});
-            require(['vs/editor/editor.main'], function() { 
+        // --- View Switching ---
+        /**
+         * Switches between different views (Overview, Code Editor, Console, Settings).
+         * @param {string} viewName - The ID of the view to switch to.
+         */
+        function switchView(viewName) {
+            const views = [overviewSection, codeEditorView, consoleSectionView, settingsSectionView];
+            
+            // Save editor content if switching away from code editor
+            if (codeEditorView && !codeEditorView.classList.contains('hidden') && viewName !== 'code-editor-view') {
+                if (activeTabId && editor && typeof editor.getValue === 'function') {
+                    const currentActiveTab = tabs.find(t => t.id === activeTabId);
+                    if (currentActiveTab && currentActiveTab.model) {
+                        // Content is already in the model, no need to manually save from getValue()
+                    }
+                }
+            }
+
+            // Show the selected view, hide others
+            views.forEach(view => {
+                if (view) { 
+                    if (view.id === viewName) { 
+                        view.classList.remove('hidden');
+                        view.classList.add('flex'); 
+                        // If switching to code editor, ensure Monaco layout is updated
+                        if (view.id === 'code-editor-view' && editor && typeof editor.layout === 'function') {
+                            editor.layout(); 
+                        }
+                    } else {
+                        view.classList.add('hidden');
+                        view.classList.remove('flex');
+                    }
+                }
+            });
+            
+            // Update active state of top navigation links
+            topNavigationLinks.forEach(link => {
+                link.classList.remove('nav-link-active');
+                link.classList.add('text-[var(--text-secondary)]'); 
+                link.classList.remove('text-white'); 
+
+                if (link.dataset.view === viewName) {
+                    link.classList.add('nav-link-active');
+                }
+            });
+            
+            // Special handling for settings modal
+            if (viewName === 'settings-section-view') {
+                settingsModalOverlay.classList.add('visible');
+            } else {
+                settingsModalOverlay.classList.remove('visible');
+            }
+        }
+
+        // --- Theme and Accent Color Management ---
+
+        /**
+         * Applies a theme (light/dark) to the application.
+         * @param {string} themeName - 'light' or 'dark'.
+         */
+        function applyTheme(themeName) {
+            document.body.dataset.theme = themeName; // Set theme attribute on body
+            localStorage.setItem('lunarisTheme', themeName); // Save preference
+            logToConsole('THEME_EVENT', `Theme changed to: ${themeName}`);
+            
+            const currentAccent = localStorage.getItem('lunarisAccentColor') || '#7C3AED';
+            defineMonacoThemes(currentAccent, themeName); // Redefine Monaco themes for the new body theme
+            if (editor && typeof monaco !== 'undefined' && monaco.editor) {
+                monaco.editor.setTheme(themeName === 'light' ? 'lunaris-light' : 'lunaris-dark');
+            }
+
+            // Update theme selection UI (checkmarks on cards)
+            if (checkmarkLight && checkmarkDark) {
+                checkmarkLight.classList.toggle('hidden', themeName !== 'light');
+                checkmarkDark.classList.toggle('hidden', themeName !== 'dark');
+            }
+            if (themeCardLight && themeCardDark) {
+                themeCardLight.classList.toggle('active-theme', themeName === 'light');
+                themeCardDark.classList.toggle('active-theme', themeName === 'dark');
+            }
+            
+            // Adjust checkmark color in accent picker if needed for visibility on light theme
+            const activeAccentCircle = accentColorPicker.querySelector('.active-accent-color .lucide-check svg');
+            if (activeAccentCircle) {
+                const activeAccentColorValue = accentColorPicker.querySelector('.active-accent-color').dataset.color;
+                if (document.body.dataset.theme === 'light' && (activeAccentColorValue === '#F59E0B' || activeAccentColorValue === '#10B981')) { 
+                    activeAccentCircle.setAttribute('stroke', 'black');
+                } else {
+                    activeAccentCircle.setAttribute('stroke', 'white');
+                }
+            }
+        }
+
+        /**
+         * Loads the saved theme from localStorage or defaults to dark.
+         */
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('lunarisTheme') || 'dark';
+            applyTheme(savedTheme);
+        }
+
+        /**
+         * Applies an accent color to the application.
+         * @param {string} colorValue - The hex value of the accent color.
+         * @param {string} hoverValue - The hex value for hover state.
+         * @param {string} gradientEndValue - The hex value for gradient end.
+         * @param {string} colorName - The name of the accent color.
+         */
+        function applyAccentColor(colorValue, hoverValue, gradientEndValue, colorName) {
+            const root = document.documentElement;
+            // Set CSS custom properties for accent colors
+            root.style.setProperty('--accent-color', colorValue);
+            root.style.setProperty('--accent-color-hover', hoverValue);
+            root.style.setProperty('--accent-gradient-end', gradientEndValue);
+            // Save preference
+            localStorage.setItem('lunarisAccentColor', colorValue);
+            localStorage.setItem('lunarisAccentColorHover', hoverValue);
+            localStorage.setItem('lunarisAccentGradientEnd', gradientEndValue);
+            localStorage.setItem('lunarisAccentColorName', colorName);
+
+
+            logToConsole('ACCENT_EVENT', `Accent color changed to: ${colorName} (${colorValue})`);
+
+            // Update accent color picker UI
+            if (accentColorPicker) {
+                accentColorPicker.querySelectorAll('.accent-color-circle').forEach(circle => {
+                    circle.innerHTML = ''; // Clear previous checkmark
+                    circle.classList.remove('active-accent-color');
+                    if (circle.dataset.color === colorValue) {
+                        circle.classList.add('active-accent-color');
+                        const check = document.createElement('span');
+                        check.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"/></svg>`;
+                        // Adjust checkmark color for light accents on light theme
+                        if (document.body.dataset.theme === 'light' && (color.value === '#F59E0B' || color.value === '#10B981')) { 
+                            check.querySelector('svg').setAttribute('stroke', 'black');
+                        }
+                        circle.appendChild(check);
+                    }
+                });
+            }
+
+            // Redefine and apply Monaco themes with the new accent color
+            if (typeof monaco !== 'undefined' && monaco.editor) {
+                defineMonacoThemes(colorValue, document.body.dataset.theme); 
+                if (editor) {
+                    monaco.editor.setTheme(document.body.dataset.theme === 'light' ? 'lunaris-light' : 'lunaris-dark');
+                }
+            }
+            
+            // Re-apply styles that use accent color via Tailwind classes
+            topNavigationLinks.forEach(link => {
+                if(link.classList.contains('nav-link-active')) {
+                    link.classList.remove('nav-link-active');
+                    requestAnimationFrame(() => link.classList.add('nav-link-active'));
+                }
+            });
+            if(addTabButton && addTabButton.classList.contains('btn-accent-styled')) {
+                addTabButton.classList.remove('btn-accent-styled');
+                requestAnimationFrame(() =>  addTabButton.classList.add('btn-accent-styled'));
+            }
+            const executeButton = document.getElementById('execute-btn');
+            if(executeButton) {
+                executeButton.classList.remove('border-accent'); 
+                const playIcon = executeButton.querySelector('.lucide-play');
+                if(playIcon) playIcon.classList.remove('text-accent');
+                requestAnimationFrame(() => {
+                    executeButton.classList.add('border-accent');
+                    if(playIcon) playIcon.classList.add('text-accent');
+                });
+            }
+            renderTabs(); // Re-render tabs to ensure active tab styling updates
+        }
+
+        /**
+         * Loads the saved accent color from localStorage or defaults.
+         */
+        function loadAccentColor() {
+            const savedColor = localStorage.getItem('lunarisAccentColor') || '#7C3AED';
+            const savedHover = localStorage.getItem('lunarisAccentColorHover') || '#6D28D9';
+            const savedGradientEnd = localStorage.getItem('lunarisAccentGradientEnd') || '#7C3AED';
+            const savedName = localStorage.getItem('lunarisAccentColorName') || 'Lunaris Purple';
+            applyAccentColor(savedColor, savedHover, savedGradientEnd, savedName);
+        }
+
+        /**
+         * Defines custom Monaco Editor themes (light and dark) using the current accent color.
+         * @param {string} currentAccentColor - The hex value of the current accent color.
+         * @param {string} bodyTheme - The current body theme ('light' or 'dark').
+         */
+        function defineMonacoThemes(currentAccentColor, bodyTheme) {
+            if (typeof monaco === 'undefined' || typeof monaco.editor === 'undefined') {
+                return; // Monaco not loaded
+            }
+            
+            const darkThemeEditorColors = {
+                'editor.background': '#050609', 
+                'editor.foreground': '#E5E7EB', 
+                'editorGutter.background': '#050609', 
+                'editorLineNumber.foreground': '#6B7280', 
+                'editor.lineHighlightBackground': '#08090d', 
+                'editorCursor.foreground': '#9CA3AF', 
+                'scrollbarSlider.background': '#181A1F', 
+                'scrollbarSlider.hoverBackground': '#202125',
+                'scrollbarSlider.activeBackground': '#28292D',
+            };
+            const lightThemeEditorColors = {
+                'editor.background': '#FFFFFF', 
+                'editor.foreground': '#1F2937',
+                'editorGutter.background': '#F7F7F8', 
+                'editorLineNumber.foreground': '#A0AEC0',
+                'editor.lineHighlightBackground': '#E2E8F0', 
+                'editorCursor.foreground': '#2D3748',
+                'scrollbarSlider.background': '#D1D5DB', 
+                'scrollbarSlider.hoverBackground': '#9CA3AF',
+                'scrollbarSlider.activeBackground': '#6B7280',
+            };
+
+            monaco.editor.defineTheme('lunaris-dark', {
+                base: 'vs-dark', 
+                inherit: true,
+                rules: [ 
+                    { token: '', foreground: darkThemeEditorColors['editor.foreground'] }, 
+                    { token: 'comment', foreground: currentAccentColor }, // Example: comments use accent
+                    { token: 'string', foreground: currentAccentColor }, // Example: strings use accent
+                    { token: 'keyword', foreground: currentAccentColor }, // Example: keywords use accent
+                    { token: 'number', foreground: 'b5cea8' },  
+                ], 
+                colors: darkThemeEditorColors 
+            });
+            monaco.editor.defineTheme('lunaris-light', {
+                base: 'vs', 
+                inherit: true,
+                rules: [
+                    { token: '', foreground: lightThemeEditorColors['editor.foreground'] }, 
+                    { token: 'comment', foreground: currentAccentColor }, 
+                    { token: 'string', foreground: currentAccentColor }, 
+                    { token: 'keyword', foreground: currentAccentColor }, 
+                    { token: 'number', foreground: '059669' },  
+                ],
+                colors: lightThemeEditorColors
+            });
+        }
+        
+        // --- DOMContentLoaded: Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeSounds(); 
+            loadTheme();        
+            loadAccentColor();  
+
+            // --- Window Control Buttons ---
+            if (closeButton) {
+                closeButton.addEventListener('click', () => {
+                    playUiSound('click');
+                    callNativeApp('closeWindow');
+                });
+                closeButton.addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+            if (minimizeButton) {
+                minimizeButton.addEventListener('click', () => {
+                    playUiSound('click');
+                    callNativeApp('minimizeWindow');
+                });
+                minimizeButton.addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+            if (maximizeButton) {
+                maximizeButton.addEventListener('click', () => {
+                    playUiSound('click');
+                    callNativeApp('maximizeWindow');
+                });
+                maximizeButton.addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+
+            // --- Top Navigation Links ---
+            topNavigationLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    playUiSound('click');
+                    const view = link.dataset.view;
+                    switchView(view);
+                });
+                link.addEventListener('mouseenter', () => playUiSound('hover'));
+            });
+            
+            // --- Action Buttons (Execute, Open, Save, Attach, Settings) ---
+            if(document.getElementById('execute-btn')) {
+                document.getElementById('execute-btn').addEventListener('click', function() {
+                    playUiSound('click');
+                    this.classList.add('is-bouncing'); 
+                    const activeTab = tabs.find(t => t.id === activeTabId);
+                    if (activeTab && editor) {
+                        callNativeApp('executeScript', { script: editor.getValue(), tabName: activeTab.name });
+                    } else {
+                        logToConsole('ERROR', 'No active script to execute.');
+                    }
+                    setTimeout(() => { this.classList.remove('is-bouncing'); }, 300); 
+                });
+                document.getElementById('execute-btn').addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+
+            if(document.getElementById('open-file-btn')) {
+                document.getElementById('open-file-btn').addEventListener('click', function() {
+                    playUiSound('click');
+                    this.classList.add('is-bouncing');
+                    const activeTab = tabs.find(t => t.id === activeTabId);
+                    if (activeTab && editor) {
+                        callNativeApp('revealScriptInFinder', { scriptContent: editor.getValue(), fileNameHint: activeTab.name });
+                    } else {
+                        logToConsole('ERROR', 'No active tab content to reveal.');
+                    }
+                    setTimeout(() => { this.classList.remove('is-bouncing'); }, 300);
+                });
+                document.getElementById('open-file-btn').addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+
+            if(document.getElementById('save-file-btn')) {
+                document.getElementById('save-file-btn').addEventListener('click', function() {
+                    playUiSound('click');
+                    this.classList.add('is-bouncing');
+                    const activeTab = tabs.find(t => t.id === activeTabId);
+                    if (activeTab && editor) {
+                        callNativeApp('saveScriptAsTextFile', { scriptContent: editor.getValue(), suggestedFileName: activeTab.name });
+                    } else {
+                        logToConsole('ERROR', 'No active tab content to save.');
+                    }
+                    setTimeout(() => { this.classList.remove('is-bouncing'); }, 300);
+                });
+                document.getElementById('save-file-btn').addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+
+            if(document.getElementById('attach-btn')) {
+                document.getElementById('attach-btn').addEventListener('click', function() {
+                    playUiSound('click');
+                    this.classList.add('is-bouncing');
+                    logToConsole('ATTACH', 'Process attachment sequence started.');
+                    setTimeout(() => { this.classList.remove('is-bouncing'); }, 300);
+                });
+                document.getElementById('attach-btn').addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+
+            if(settingsActionButton) {
+                settingsActionButton.addEventListener('click', () => {
+                    playUiSound('click');
+                    switchView('settings-section-view'); // This will call renderSettings
+                });
+                settingsActionButton.addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+            
+            // --- Theme/Accent Color UI Interaction ---
+            if (themeCardLight) {
+                themeCardLight.addEventListener('click', () => { playUiSound('click'); applyTheme('light'); });
+                themeCardLight.addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+            if (themeCardDark) {
+                themeCardDark.addEventListener('click', () => { playUiSound('click'); applyTheme('dark'); });
+                themeCardDark.addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+
+            if (accentColorPicker) {
+                accentColors.forEach(color => {
+                    const circle = document.createElement('div');
+                    circle.className = 'accent-color-circle';
+                    circle.style.backgroundColor = color.value;
+                    circle.dataset.color = color.value;
+                    circle.dataset.hover = color.hover;
+                    circle.dataset.gradient = color.gradientEnd;
+                    circle.title = color.name; 
+                    
+                    const currentAccent = localStorage.getItem('lunarisAccentColor') || '#7C3AED';
+                    if (color.value === currentAccent) {
+                        circle.classList.add('active-accent-color');
+                        const check = document.createElement('span');
+                        check.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"/></svg>`;
+                        if (document.body.dataset.theme === 'light' && (color.value === '#F59E0B' || color.value === '#10B981')) { 
+                            check.querySelector('svg').setAttribute('stroke', 'black');
+                        }
+                        circle.appendChild(check);
+                    }
+
+                    circle.onclick = () => {
+                        playUiSound('click');
+                        applyAccentColor(color.value, color.hover, color.gradientEnd, color.name);
+                    };
+                    circle.addEventListener('mouseenter', () => playUiSound('hover'));
+                    accentColorPicker.appendChild(circle);
+                });
+            }
+
+            // --- Settings Toggles ---
+            if (toggleMinimapCheckbox) {
+                const savedMinimap = localStorage.getItem('lunarisMinimap') === 'true';
+                toggleMinimapCheckbox.checked = savedMinimap;
+                if (editor && typeof editor.updateOptions === 'function') { 
+                    editor.updateOptions({ minimap: { enabled: savedMinimap } });
+                }
+                toggleMinimapCheckbox.addEventListener('change', (e) => {
+                    playUiSound('click');
+                    if(editor && typeof editor.updateOptions === 'function') {
+                        editor.updateOptions({ minimap: { enabled: e.target.checked } });
+                    }
+                    localStorage.setItem('lunarisMinimap', e.target.checked);
+                });
+                toggleMinimapCheckbox.closest('.toggle-switch-new').addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+            if (toggleLineNumbersCheckbox) {
+                const savedLineNumbers = localStorage.getItem('lunarisLineNumbers') !== 'false'; 
+                toggleLineNumbersCheckbox.checked = savedLineNumbers;
+                if (editor && typeof editor.updateOptions === 'function') { 
+                    editor.updateOptions({ lineNumbers: savedLineNumbers ? 'on' : 'off' });
+                }
+                toggleLineNumbersCheckbox.addEventListener('change', (e) => {
+                    playUiSound('click');
+                    if(editor && typeof editor.updateOptions === 'function') {
+                        editor.updateOptions({ lineNumbers: e.target.checked ? 'on' : 'off' });
+                    }
+                    localStorage.setItem('lunarisLineNumbers', e.target.checked);
+                });
+                toggleLineNumbersCheckbox.closest('.toggle-switch-new').addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+            if (toggleUiSoundsCheckbox) {
+                const savedUiSoundsEnabled = localStorage.getItem('lunarisUiSoundsEnabled');
+                uiSoundsEnabled = savedUiSoundsEnabled !== null ? JSON.parse(savedUiSoundsEnabled) : true; 
+                toggleUiSoundsCheckbox.checked = uiSoundsEnabled;
+                toggleUiSoundsCheckbox.addEventListener('change', (e) => {
+                    uiSoundsEnabled = e.target.checked;
+                    localStorage.setItem('lunarisUiSoundsEnabled', uiSoundsEnabled);
+                    playUiSound('click'); 
+                });
+                toggleUiSoundsCheckbox.closest('.toggle-switch-new').addEventListener('mouseenter', () => playUiSound('hover'));
+            }
+
+            // --- Monaco Editor Initialization ---
+            require(['vs/editor/editor.main'], function(monaco) { 
                 defineMonacoThemes(localStorage.getItem('lunarisAccentColor') || '#7C3AED', document.body.dataset.theme); 
 
                 if (editorContainer) {
@@ -1315,41 +1420,57 @@
                         cursorSmoothCaretAnimation: 'on', 
                     });
                 } else {
-                     console.error("Editor container not found in DOM on init.");
+                    console.error("Editor container not found in DOM on init.");
                 }
                 
-                if (addTabButton) {
-                    addTabButton.addEventListener('click', () => { playUiSound('click'); addAnimatedTab("Script"); });
-                    addTabButton.addEventListener('mouseenter', () => playUiSound('hover'));
-                }
+                // Add initial tab after editor is ready
                 addAnimatedTab("Script"); 
-                switchView('overview-section'); 
-
+                // Set initial view
+                switchView('overview-section'); // Default to overview
             }, function(error) { 
                 console.error("Error loading Monaco editor:", error);
                 if(editorContainer) editorContainer.innerHTML = "<p class='text-red-500 p-4'>Failed to load code editor. Please check console.</p>";
             });
-        } catch (e) { 
-            console.error("Error in DOMContentLoaded setup:", e);
-            if(editorContainer) editorContainer.innerHTML = "<p class='text-red-500 p-4'>An error occurred setting up the page. Please check console.</p>";
-        }
-        
-        const startToneHandler = () => {
-            if (typeof Tone !== 'undefined' && Tone.context && Tone.context.state !== 'running') {
-                Tone.start().then(() => {
-                    console.log("Tone.js AudioContext started by user interaction.");
-                    initializeSounds(); 
-                }).catch(err => console.error("Error starting Tone.js AudioContext:", err));
-            } else if (typeof Tone !== 'undefined' && Tone.context && Tone.context.state === 'running') {
-                 initializeSounds(); 
-            }
-            document.body.removeEventListener('click', startToneHandler, true);
-            document.body.removeEventListener('keydown', startToneHandler, true);
-        };
-        document.body.addEventListener('click', startToneHandler, { once: true, capture: true });
-        document.body.addEventListener('keydown', startToneHandler, { once: true, capture: true });
+            
+            // --- Login Screen Logic ---
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = loginUsernameInput.value.trim();
+                const password = loginPasswordInput.value.trim();
 
-    });
+                if (username === '' || password === '') {
+                    loginError.textContent = 'Please enter both username and password.';
+                    loginError.classList.remove('hidden');
+                } else {
+                    loginError.classList.add('hidden');
+                    loggedInUsername = username; // Store the entered username
+                    loginScreen.classList.add('hidden');
+                    loadingScreen.classList.remove('hidden');
+                    loadingUsernameSpan.textContent = username; // Display username on loading screen
+
+                    let progress = 0;
+                    const loadingInterval = setInterval(() => {
+                        progress += Math.random() * 10;
+                        if (progress >= 100) {
+                            progress = 100;
+                            clearInterval(loadingInterval);
+                            setTimeout(() => {
+                                loadingScreen.classList.add('hidden');
+                                mainAppContainer.classList.remove('hidden');
+                                // Update username in top bar after login
+                                document.querySelector('.top-bar-actions div:last-child').textContent = username.charAt(0).toUpperCase(); // Update initial
+                                // Assuming there's a span for full username next to it, if needed
+                                // document.querySelector('.top-bar-actions span.font-semibold').textContent = username; 
+                            }, 500); // Small delay after 100%
+                        }
+                        progressBarFill.style.width = `${progress}%`;
+                        progressText.textContent = `${Math.floor(progress)}% loaded`;
+                    }, 150);
+                }
+            });
+
+        }); // End DOMContentLoaded
+    })(); // End IIFE
 </script>
 </body>
 </html>
